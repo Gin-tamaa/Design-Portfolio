@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sumedh Kamble</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f3f2f0;
+    --ink:#111111;
+    --muted:#b3b1ad;
+    --line:#e2e0dc;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    display:flex;align-items:center;justify-content:center;
+    min-height:100vh;padding:32px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    display:flex;align-items:center;gap:80px;
+    max-width:880px;width:100%;
+    animation:fade 1s ease both;
+  }
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .mono{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;font-weight:500;
+    font-size:120px;line-height:1;
+    letter-spacing:.01em;white-space:nowrap;
+    flex-shrink:0;
+  }
+  .mono sup{
+    font-family:'Inter',sans-serif;font-style:normal;
+    font-size:15px;font-weight:400;
+    position:relative;top:34px;left:4px;
+  }
+
+  .copy{max-width:360px}
+  .copy .lede{font-size:17px;line-height:1.55;font-weight:400}
+  .copy hr{border:none;border-top:1px solid var(--line);margin:24px 0}
+  .copy .note{font-size:17px;line-height:1.55;color:var(--muted)}
+  .copy a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+  .copy a:hover{color:var(--ink)}
+
+  @media(max-width:720px){
+    .wrap{flex-direction:column;gap:32px;align-items:flex-start}
+    .mono{font-size:88px}
+    .copy{max-width:none}
+  }
+</style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="mono">S&mdash;K<sup>&copy;</sup></div>
+    <div class="copy">
+      <p class="lede">Sumedh Kamble is a product designer &amp; frontend developer building AI-native products. Currently designing &amp; shipping ShopOS.</p>
+      <hr />
+      <p class="note">New portfolio soon. Meanwhile, find me on <a href="https://www.linkedin.com/in/sumedhux/" target="_blank" rel="noopener">LinkedIn</a>, or say <a href="mailto:kamblesumedh39@gmail.com">kamblesumedh39@gmail.com</a>.</p>
+    </div>
+  </main>
+</body>
+</html>
