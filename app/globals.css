@@ -1,0 +1,301 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Masonry stack (3-column, static, all cards fully visible) ===== */
+.masonry {
+  width: 100%;
+  background: #fff;
+  padding: 48px 20px;
+}
+.masonry-track {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: flex-start;
+}
+.masonry-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+.masonry-item {
+  position: relative;
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f6f6f6;
+  display: block;
+  transition: box-shadow 0.3s ease;
+}
+.masonry-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.masonry-item:hover,
+.masonry-item:focus-visible {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+.masonry-item:hover img,
+.masonry-item:focus-visible img {
+  transform: scale(1.05);
+}
+
+/* Chip — hidden until hover, bottom-left, slight bouncy pop on reveal */
+.masonry-chip {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  z-index: 2;
+  background: #ffffff;
+  color: #000000;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: scale(0.9);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+}
+.masonry-item:hover .masonry-chip,
+.masonry-item:focus-visible .masonry-chip {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (max-width: 1024px) {
+  .masonry-track { flex-wrap: wrap; }
+  .masonry-column { flex: 1 1 calc(50% - 8px); }
+  .masonry-column:nth-child(3) { display: none; }
+}
+@media (max-width: 640px) {
+  .masonry-column { flex: 1 1 100%; }
+  .masonry-column:nth-child(2) { display: none; }
+}
+
+/* CaseCards: stack like a deck on mobile (matches md: breakpoint at 768px) */
+@media (max-width: 767px) {
+  .sticky-stack-item {
+    position: sticky;
+    top: 20px;
+    margin-bottom: 50px;
+  }
+}
+
+/* ===== Intro (typewriter + font-morph onboarding) ===== */
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: #fff;
+  overflow: hidden;
+}
+.intro-stage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 64rem);
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+.intro-zoom {
+  display: inline-block;
+  white-space: nowrap;
+  transform-origin: center center;
+  will-change: transform, opacity;
+}
+.intro-type {
+  display: inline-block;
+  vertical-align: middle;
+  white-space: nowrap;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  line-height: 1.07;
+  color: #0a0a0a;
+  letter-spacing: -0.006em;
+  transform-origin: center center;
+}
+.intro-caret {
+  display: inline-block;
+  width: 0.055em;
+  height: 0.92em;
+  background: #0a0a0a;
+  margin-left: 0.06em;
+  vertical-align: middle;
+  animation: intro-caret-blink 1.05s steps(1, end) infinite;
+}
+@keyframes intro-caret-blink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+.intro-pre {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  opacity: 0;
+  pointer-events: none;
+}
+.intro-ui {
+  position: fixed;
+  z-index: 51;
+  font: 500 0.68rem/1 'Space Mono', monospace;
+  letter-spacing: 0.16em;
+  text-transform: lowercase;
+  color: rgba(10, 10, 10, 0.52);
+}
+.intro-ui--brand { left: 24px; bottom: 22px; }
+.intro-ui--ctrls {
+  right: 24px;
+  bottom: 22px;
+  display: flex;
+  gap: 20px;
+}
+.intro-ui--ctrls button {
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: rgba(10, 10, 10, 0.52);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.intro-ui--ctrls button:hover { color: #0a0a0a; }
+
+@media (max-width: 680px) {
+  .intro-stage { width: 92vw; font-size: clamp(1rem, 4vw, 2rem); }
+  .intro-type { line-height: 1.12; }
+}
+@media (max-width: 380px) {
+  .intro-stage { font-size: clamp(1rem, 4vw, 1.5rem); }
+}
+
+/* ===== Hero (ported from hero-proto.html, scoped under .hero) ===== */
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+  font-family: ui-monospace, Menlo, monospace;
+  background: #ffffff;
+}
+
+.hero .stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  will-change: transform;
+}
+
+.hero .wm-float {
+  position: relative;
+  z-index: 10;
+  animation: hero-float 5s ease-in-out infinite;
+}
+.hero .wordmark {
+  width: 60vw;
+  height: auto;
+  display: block;
+  margin-bottom: -10vw;
+}
+
+.hero .row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+  z-index: 50;
+  overflow: visible;
+}
+.hero .cell {
+  position: relative;
+  margin: 0 -2vw;
+}
+
+.hero .shadow {
+  position: absolute;
+  bottom: 1.5vw;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2.2vw;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(40, 30, 60, 0.22), transparent 70%);
+  filter: blur(4px);
+  z-index: -1;
+}
+
+.hero .float { display: block; }
+.hero .figimg {
+  height: 24vw;
+  width: auto;
+  display: block;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  transform-origin: 50% 100%;
+}
+.hero .figimg:hover { transform: scale(1.05); }
+
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5%); }
+}
+.hero .fa { animation: hero-float 4s ease-in-out infinite; }
+.hero .fb { animation: hero-float 4s ease-in-out infinite 0.6s; }
+.hero .fc { animation: hero-float 4s ease-in-out infinite 1.2s; }
+.hero .fd { animation: hero-float 4s ease-in-out infinite 1.8s; }
+
+.hero .label {
+  position: absolute;
+  top: 26px;
+  left: 30px;
+  z-index: 200;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: #9a958c;
+  text-transform: uppercase;
+}
+
+.hero .btns {
+  position: absolute;
+  top: 22px;
+  right: 26px;
+  z-index: 200;
+  display: flex;
+  gap: 10px;
+}
+.hero .btns button {
+  font: 600 11px ui-monospace, monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 9px 15px;
+  border: 1px solid #d8d3c8;
+  border-radius: 999px;
+  background: transparent;
+  color: #6b665d;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.hero .btns button:hover {
+  background: #fff;
+  border-color: #b8b2a5;
+}
