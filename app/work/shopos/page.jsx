@@ -392,29 +392,29 @@ export default function ShopOSCaseStudy() {
         />
       </Container>
 
-      {/* ===== Metadata strip ============================================ */}
+      {/* ===== Metadata strip ============================================
+           Clean 5-column rail, Google-case-study style: small uppercase
+           eyebrow + larger single-line value, no dividers, generous gaps.
+           Values wrap naturally when long (Tools tends to spill to 2 lines
+           on narrower viewports). */}
       <Container className="reveal pt-20 md:pt-28">
-        <dl className="grid grid-cols-1 divide-y divide-[#E5E5E5] border-y border-[#E5E5E5] md:grid-cols-4 md:divide-x md:divide-y-0">
+        <dl
+          className="grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-5 md:gap-x-10"
+          style={{ fontFamily: "Inter, sans-serif" }}
+        >
           {[
-            {
-              k: "Role",
-              v: ["Founding Product Designer", "Design Engineer (React)"],
-            },
-            { k: "Team", v: ["Founding team · engineers · me"] },
-            { k: "Timeline", v: ["Mar 2026 – Present"] },
-            {
-              k: "Skills",
-              v: ["Multi-agent UX", "Interaction design", "Design engineering"],
-            },
+            { k: "My Role", v: "Founding Product Designer & Design Engineer" },
+            { k: "Team", v: "Founding team · engineers" },
+            { k: "Company", v: "ShopOS" },
+            { k: "Duration", v: "Mar 2026 – Present" },
+            { k: "Tools", v: "Figma, React, Next.js, Tailwind, OpenAI" },
           ].map(({ k, v }) => (
-            <div key={k} className="px-0 py-6 md:px-7 md:py-7">
-              <dt className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#525252]">
+            <div key={k}>
+              <dt className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#525252]">
                 {k}
               </dt>
-              <dd className="mt-3 space-y-1 text-[14px] leading-[1.55] text-[#0a0a0a]">
-                {v.map((line) => (
-                  <div key={line}>{line}</div>
-                ))}
+              <dd className="mt-3 text-[16px] leading-[1.5] text-[#0a0a0a]">
+                {v}
               </dd>
             </div>
           ))}
