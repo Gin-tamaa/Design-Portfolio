@@ -101,7 +101,7 @@ const SUGGESTED_PROMPTS = [
 ];
 
 const SESSION_CAP = 20;
-const CONTACT_EMAIL = "hello@sumedhkamble.com";
+const CONTACT_EMAIL = "kamblesumedh39@gmail.com";
 const STREAM_MS_PER_TICK = 16;
 const STREAM_CHARS_PER_TICK = 3;
 
