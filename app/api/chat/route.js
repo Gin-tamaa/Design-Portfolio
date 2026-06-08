@@ -19,7 +19,7 @@ import { Redis } from "@upstash/redis";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const MODEL = "gpt-4o-mini";
+const MODEL = "gpt-5.4-mini";
 
 const ALLOWED_PROJECTS = new Set(["shopos"]);
 const VOICES = ["creative-head", "vibe-coder", "ai-tinkerer", "funny-side"];
