@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "content:bundle": "node scripts/generate-content-bundle.js",
+    "prebuild": "node scripts/generate-content-bundle.js"
   },
   "dependencies": {
     "@upstash/ratelimit": "^2.0.8",
