@@ -21,7 +21,26 @@ const WIPE_MS = 620;
 export default function ChatLauncher({ project }) {
   const [mounted, setMounted] = useState(false); // overlay DOM present
   const [open, setOpen] = useState(false);       // wipe-up triggered
+  const [atFooter, setAtFooter] = useState(false); // hide near page bottom
   const closeTimerRef = useRef(null);
+
+  // Hide the launcher (and its fade backdrop) when the user is within
+  // ~280px of the page bottom — that's where the case-study footer lives
+  // (py-24 = ~250px). Without this, the fixed launcher overlaps the
+  // "Back to Work" / "Next" links. Reappears when user scrolls back up.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const FOOTER_THRESHOLD = 280;
+    const onScroll = () => {
+      const distFromBottom =
+        document.documentElement.scrollHeight -
+        (window.scrollY + window.innerHeight);
+      setAtFooter(distFromBottom < FOOTER_THRESHOLD);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const openOverlay = useCallback(() => {
     if (closeTimerRef.current) {
@@ -73,14 +92,14 @@ export default function ChatLauncher({ project }) {
           is tuned to end roughly at the TOP edge of the chat box (chip
           box ~56px tall + helper ~16px + gap 8px + bottom offset 24px ≈
           110px, with a small soft-fade margin above). Hidden while the
-          takeover is open. */}
+          takeover is open OR when near the footer. */}
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-x-0 bottom-0 z-20 h-[120px] bg-gradient-to-b from-transparent to-white"
         style={{
           backdropFilter: "blur(2px)",
           WebkitBackdropFilter: "blur(2px)",
-          opacity: mounted ? 0 : 1,
+          opacity: mounted || atFooter ? 0 : 1,
           transition: "opacity 300ms ease",
         }}
       />
@@ -92,10 +111,19 @@ export default function ChatLauncher({ project }) {
           in both surfaces — no jump across the open/close transition. */}
       <div
         className="pointer-events-none fixed inset-x-0 z-30 px-4 md:px-6 lg:px-16"
-        style={{ bottom: 24 }}
-        aria-hidden={mounted}
+        style={{
+          bottom: 24,
+          opacity: atFooter ? 0 : 1,
+          transition: "opacity 300ms ease",
+        }}
+        aria-hidden={mounted || atFooter}
       >
-        <div className="pointer-events-auto mx-auto w-full max-w-[48rem]">
+        <div
+          className="mx-auto w-full max-w-[48rem]"
+          style={{
+            pointerEvents: mounted || atFooter ? "none" : "auto",
+          }}
+        >
           <ChatBox mode="display" onClick={openOverlay} />
 
           {/* Helper line — same 12px / #525252 as the takeover. mt-2 is
