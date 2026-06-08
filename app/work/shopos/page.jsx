@@ -33,24 +33,19 @@ function Container({ children, className = "" }) {
   );
 }
 
+// Type helpers driven by the .cs-scope variables in globals.css. Adjust
+// the scale once in globals.css; these stay layout-only.
+
 function Eyebrow({ children, dark = false }) {
   return (
-    <p
-      className={`text-[11px] font-medium uppercase tracking-[0.22em] ${
-        dark ? "text-white/55" : "text-[#0d8a8a]"
-      }`}
-    >
-      {children}
-    </p>
+    <p className={`cs-eyebrow ${dark ? "cs-on-dark" : ""}`}>{children}</p>
   );
 }
 
 function SectionHeader({ children, className = "", dark = false }) {
   return (
     <h2
-      className={`mt-6 max-w-[22ch] text-4xl font-black uppercase leading-[1.04] tracking-tight md:text-5xl lg:text-6xl ${
-        dark ? "text-white" : "text-[#0a0a0a]"
-      } ${className}`}
+      className={`cs-section mt-6 max-w-[32ch] ${dark ? "cs-on-dark" : ""} ${className}`}
     >
       {children}
     </h2>
@@ -59,9 +54,7 @@ function SectionHeader({ children, className = "", dark = false }) {
 
 function Prose({ children, className = "" }) {
   return (
-    <div
-      className={`max-w-[68ch] space-y-6 text-[17px] leading-[1.72] text-[#525252] md:text-[18px] ${className}`}
-    >
+    <div className={`cs-body cs-prose max-w-[var(--cs-prose-col)] ${className}`}>
       {children}
     </div>
   );
@@ -250,7 +243,7 @@ export default function ShopOSCaseStudy() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-white text-[#0a0a0a] antialiased">
+    <main className="cs-scope min-h-screen bg-white text-[#0a0a0a] antialiased">
       {/* ===== HERO — parallax stage ===================================== */}
       <section
         ref={heroRef}
@@ -358,10 +351,10 @@ export default function ShopOSCaseStudy() {
           Work
         </Link>
 
-        <p className="mt-10 max-w-3xl text-2xl font-medium leading-tight text-[#0a0a0a] md:text-3xl">
+        <p className="cs-thesis mt-10 max-w-[var(--cs-prose-col)]">
           An AI team that runs your store.
         </p>
-        <p className="mt-6 max-w-3xl text-[17px] leading-[1.7] text-[#525252] md:text-[18px]">
+        <p className="cs-lede mt-6 max-w-[var(--cs-prose-col)]">
           I designed the system and built its frontend for an AI-agent operating
           system where a brand owner directs a team of named AI agents &mdash;
           an entire marketing and ops department, staffed by agents instead of
@@ -410,12 +403,8 @@ export default function ShopOSCaseStudy() {
             { k: "Tools", v: "Figma, React, Next.js, Tailwind, OpenAI" },
           ].map(({ k, v }) => (
             <div key={k}>
-              <dt className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#525252]">
-                {k}
-              </dt>
-              <dd className="mt-3 text-[16px] leading-[1.5] text-[#0a0a0a]">
-                {v}
-              </dd>
+              <dt className="cs-eyebrow">{k}</dt>
+              <dd className="cs-meta-value mt-3">{v}</dd>
             </div>
           ))}
         </dl>
@@ -546,7 +535,7 @@ export default function ShopOSCaseStudy() {
               <span className="text-[14px] font-medium tabular-nums text-[#525252]">
                 01
               </span>
-              <h3 className="text-2xl font-black uppercase tracking-tight md:text-3xl">
+              <h3 className="cs-thesis">
                 The card stack
               </h3>
             </div>
@@ -584,7 +573,7 @@ export default function ShopOSCaseStudy() {
               <span className="text-[14px] font-medium tabular-nums text-[#525252]">
                 02
               </span>
-              <h3 className="text-2xl font-black uppercase tracking-tight md:text-3xl">
+              <h3 className="cs-thesis">
                 Personalization: name +{" "}
                 <code className="px-1 text-[0.85em]">soul.md</code>
               </h3>
@@ -636,7 +625,7 @@ export default function ShopOSCaseStudy() {
               <span className="text-[14px] font-medium tabular-nums text-[#525252]">
                 03
               </span>
-              <h3 className="text-2xl font-black uppercase tracking-tight md:text-3xl">
+              <h3 className="cs-thesis">
                 The bracketed org view
               </h3>
             </div>
@@ -930,9 +919,7 @@ export default function ShopOSCaseStudy() {
                   <div className="text-[10px] font-medium uppercase tracking-[0.22em] text-white/45">
                     {`Step ${String(i + 1).padStart(2, "0")}`}
                   </div>
-                  <p className="mt-4 text-3xl font-black uppercase tracking-tight text-white md:text-5xl">
-                    {node.label}
-                  </p>
+                  <p className="cs-thesis cs-on-dark mt-4">{node.label}</p>
                   <p className="mx-auto mt-4 max-w-md text-[15px] leading-[1.65] text-white/55 md:text-[16px]">
                     {node.copy}
                   </p>
@@ -983,7 +970,7 @@ export default function ShopOSCaseStudy() {
 
           <div className="mt-20 grid grid-cols-1 gap-x-12 gap-y-20 md:mt-28 md:grid-cols-2 md:gap-y-24">
             <article>
-              <h3 className="text-2xl font-black uppercase leading-[1.1] tracking-tight text-[#0a0a0a] md:text-3xl">
+              <h3 className="cs-thesis">
                 The interface problem was an org problem.
               </h3>
               <p className="mt-6 text-[17px] leading-[1.7] text-[#525252] md:text-[18px]">
@@ -994,7 +981,7 @@ export default function ShopOSCaseStudy() {
               </p>
             </article>
             <article>
-              <h3 className="text-2xl font-black uppercase leading-[1.1] tracking-tight text-[#0a0a0a] md:text-3xl">
+              <h3 className="cs-thesis">
                 Comprehension can outrank elegance.
               </h3>
               <p className="mt-6 text-[17px] leading-[1.7] text-[#525252] md:text-[18px]">
@@ -1006,7 +993,7 @@ export default function ShopOSCaseStudy() {
               </p>
             </article>
             <article>
-              <h3 className="text-2xl font-black uppercase leading-[1.1] tracking-tight text-[#0a0a0a] md:text-3xl">
+              <h3 className="cs-thesis">
                 Designing trust is mostly designing the unhappy path.
               </h3>
               <p className="mt-6 text-[17px] leading-[1.7] text-[#525252] md:text-[18px]">
@@ -1017,7 +1004,7 @@ export default function ShopOSCaseStudy() {
               </p>
             </article>
             <article>
-              <h3 className="text-2xl font-black uppercase leading-[1.1] tracking-tight text-[#0a0a0a] md:text-3xl">
+              <h3 className="cs-thesis">
                 Building it made me a better designer of it.
               </h3>
               <p className="mt-6 text-[17px] leading-[1.7] text-[#525252] md:text-[18px]">
@@ -1040,9 +1027,7 @@ export default function ShopOSCaseStudy() {
                 <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-white/55">
                   By the numbers
                 </p>
-                <h2 className="mt-4 text-3xl font-black uppercase tracking-tight md:text-4xl">
-                  Proof
-                </h2>
+                <h2 className="cs-section cs-on-dark mt-4">Proof</h2>
               </div>
               <p className="max-w-sm text-[14px] leading-[1.55] text-white/55">
                 Data pending — three slots stubbed until I have real numbers in
@@ -1074,7 +1059,10 @@ export default function ShopOSCaseStudy() {
                 },
               ].map((m) => (
                 <div key={m.label}>
-                  <div className="text-5xl font-black leading-none tracking-tight md:text-6xl">
+                  <div
+                    className="font-semibold leading-none tracking-tight"
+                    style={{ fontSize: "clamp(2.25rem, 1.8rem + 1.5vw, 3rem)" }}
+                  >
                     {m.value}
                   </div>
                   <p className="mt-5 max-w-[22ch] text-[11px] font-medium uppercase tracking-[0.16em] text-white/60">

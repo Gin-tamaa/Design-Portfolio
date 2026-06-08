@@ -127,6 +127,79 @@ body.shopos-hero.shopos-nav-solid header button {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ===== Case-study type scale =====
+   Restrained editorial scale for the ShopOS (and future) case-study prose.
+   Single source of truth — adjust sizes here, not at use sites.
+   Reading column caps at 920px; clamps scale the headings smoothly. */
+.cs-scope {
+  --cs-eyebrow:        0.8125rem;                                /* 13px */
+  --cs-eyebrow-track:  0.08em;
+  --cs-section:        clamp(1.6rem, 1.2rem + 1.4vw, 2.3rem);    /* ~26→37px */
+  --cs-thesis:         clamp(1.35rem, 1.1rem + 0.9vw, 1.8rem);   /* ~22→29px */
+  --cs-lede:           clamp(1.2rem, 1.05rem + 0.5vw, 1.45rem);  /* ~19→23px */
+  --cs-body:           1.0625rem;                                /* 17px */
+  --cs-meta-value:     0.9375rem;                                /* 15px */
+  --cs-muted:          #6b6b6b;
+  --cs-secondary:      #525252;
+  --cs-ink:            #0a0a0a;
+  --cs-prose-col:      920px;
+}
+
+.cs-eyebrow {
+  font-size: var(--cs-eyebrow);
+  letter-spacing: var(--cs-eyebrow-track);
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--cs-muted);
+  font-family: "Inter", sans-serif;
+}
+
+.cs-section {
+  font-size: var(--cs-section);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--cs-ink);
+}
+
+.cs-thesis {
+  font-size: var(--cs-thesis);
+  line-height: 1.25;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--cs-ink);
+}
+
+.cs-lede {
+  font-size: var(--cs-lede);
+  line-height: 1.5;
+  color: var(--cs-secondary);
+}
+
+.cs-body {
+  font-size: var(--cs-body);
+  line-height: 1.65;
+  color: var(--cs-secondary);
+}
+
+.cs-meta-value {
+  font-size: var(--cs-meta-value);
+  line-height: 1.5;
+  color: var(--cs-ink);
+}
+
+/* Paragraph rhythm inside prose blocks — comfortable bottom space without
+   exploding gaps. Adjacent-sibling so single paragraphs aren't padded;
+   covers any element pair (p, ul, blockquote, etc.). */
+.cs-prose > * + * {
+  margin-top: 1.1em;
+}
+
+/* Inverted (dark section) variants — only the colors change. */
+.cs-scope .cs-eyebrow.cs-on-dark { color: rgba(255, 255, 255, 0.55); }
+.cs-scope .cs-section.cs-on-dark { color: #ffffff; }
+.cs-scope .cs-thesis.cs-on-dark  { color: #ffffff; }
+
 /* Reduced motion: collapse animations */
 @media (prefers-reduced-motion: reduce) {
   .csc-bubble-in,
