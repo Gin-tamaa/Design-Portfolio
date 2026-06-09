@@ -60,40 +60,9 @@ export default function TooManyTasks() {
           "radial-gradient(120% 80% at 50% 50%, #ffffff 0%, #f4f5f8 65%, #ebedf2 100%)",
       }}
     >
-      {/* Floating chips. Rendered FIRST so the centred wordmark sits on
-          top via its own higher z-index. Bloom-in: at rest each chip is
-          centred + scaled 0.5 + opacity 0; when expanded it slides to its
-          target at its target scale / opacity. Staggered delay gives a
-          soft cascade out from the centre. */}
-      <div className="pointer-events-none absolute inset-0 z-0">
-        {TASKS.map((task) => {
-          const dist = Math.hypot(task.x, task.y);
-          const delay = Math.round(dist * 4);
-          return (
-            <div
-              key={task.text}
-              className="absolute left-1/2 top-1/2"
-              style={{
-                // Position multipliers control how far chips spread from the
-                // centre. 8x horizontal / 5.5x vertical opens up the cluster
-                // so the chips breathe instead of crowding each other.
-                transform: expanded
-                  ? `translate(calc(-50% + ${task.x * 8}px), calc(-50% + ${task.y * 5.5}px)) scale(${task.size})`
-                  : "translate(-50%, -50%) scale(0.5)",
-                opacity: expanded ? task.opacity : 0,
-                transition: `transform 820ms cubic-bezier(0.22, 0.61, 0.36, 1) ${delay}ms, opacity 540ms cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms`,
-                willChange: "transform, opacity",
-              }}
-            >
-              <Chip emoji={task.emoji} iconBg={task.iconBg} text={task.text} />
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Centred wordmark — z-10 puts it above every chip so the text is
-          always legible, never hidden behind the cluster. */}
-      <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
+      {/* Centred wordmark — the static BASE layer (z-0). The chips fall in
+          on top of it. */}
+      <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
         <h3
           className="select-none font-bold tracking-tight"
           style={{
@@ -109,6 +78,37 @@ export default function TooManyTasks() {
         >
           too many tasks
         </h3>
+      </div>
+
+      {/* Floating chips — z-10, ABOVE the wordmark. "Fall from front":
+          chips start at their target position but slightly LARGER (scale
+          1.15) and 24px above, so they read as closer to the viewer; on
+          expand they shrink to target scale + settle to target y, like
+          they're falling into the frame from above & in front of the text.
+          Staggered by distance from centre for a soft cascade. */}
+      <div className="pointer-events-none absolute inset-0 z-10">
+        {TASKS.map((task) => {
+          const dist = Math.hypot(task.x, task.y);
+          const delay = Math.round(dist * 4);
+          const targetX = task.x * 8;
+          const targetY = task.y * 5.5;
+          return (
+            <div
+              key={task.text}
+              className="absolute left-1/2 top-1/2"
+              style={{
+                transform: expanded
+                  ? `translate(calc(-50% + ${targetX}px), calc(-50% + ${targetY}px)) scale(${task.size})`
+                  : `translate(calc(-50% + ${targetX}px), calc(-50% + ${targetY - 24}px)) scale(1.15)`,
+                opacity: expanded ? task.opacity : 0,
+                transition: `transform 720ms cubic-bezier(0.22, 0.61, 0.36, 1) ${delay}ms, opacity 480ms cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms`,
+                willChange: "transform, opacity",
+              }}
+            >
+              <Chip emoji={task.emoji} iconBg={task.iconBg} text={task.text} />
+            </div>
+          );
+        })}
       </div>
     </div>
   );
