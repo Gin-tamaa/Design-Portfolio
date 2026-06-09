@@ -34,14 +34,19 @@ export default function AgentsFanOut() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    // Bidirectional: expand when ≥50% is in view, collapse back to stacked
-    // when the thumbnail scrolls out. User can replay the fan-out by
-    // scrolling away and back.
+    // Bidirectional. We use rootMargin to define a centered "trigger zone"
+    // (middle ~60% of the viewport) — the frame has to actually sit in
+    // that zone before the fan-out fires, so the animation doesn't burn
+    // off-screen at the very moment the frame's top edge slides in.
+    // Collapses back to stacked when it leaves the zone.
     const io = new IntersectionObserver(
       ([entry]) => {
-        setExpanded(entry.isIntersecting && entry.intersectionRatio >= 0.5);
+        setExpanded(entry.isIntersecting && entry.intersectionRatio >= 0.65);
       },
-      { threshold: [0, 0.5, 1] }
+      {
+        threshold: [0, 0.35, 0.65, 1],
+        rootMargin: "-15% 0px -15% 0px",
+      }
     );
     io.observe(el);
     return () => io.disconnect();
