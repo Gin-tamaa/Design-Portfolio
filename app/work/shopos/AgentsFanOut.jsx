@@ -30,6 +30,7 @@ const CENTER_INDEX = (AGENTS.length - 1) / 2;
 export default function AgentsFanOut() {
   const ref = useRef(null);
   const [expanded, setExpanded] = useState(false);
+  const [hoveredIdx, setHoveredIdx] = useState(null);
 
   useEffect(() => {
     const el = ref.current;
@@ -75,26 +76,44 @@ export default function AgentsFanOut() {
             // Stagger from the center outward — middle agents move first
             // visually because they have the smallest distance to cover.
             const delay = Math.abs(i - CENTER_INDEX) * 45;
+            const isHovered = hoveredIdx === i;
             return (
+              // Outer carrier: drives the fan-out translateX, gets a z-index
+              // bump while hovered so the popped agent comes to front.
               <div
                 key={agent.src}
-                className="absolute top-0 left-0 overflow-hidden rounded-full border-[6px] border-white shadow-[0_4px_16px_-8px_rgba(0,0,0,0.25)]"
+                className="absolute top-0 left-0"
                 style={{
                   width: SIZE,
                   height: SIZE,
-                  background: agent.bg,
                   transform: `translateX(${offset}px)`,
                   transition: `transform 900ms cubic-bezier(0.22, 0.61, 0.36, 1) ${delay}ms`,
-                  zIndex: i + 1, // last agent on top in stacked state (matches Figma)
+                  zIndex: isHovered ? 100 : i + 1,
                   willChange: "transform",
                 }}
               >
-                <img
-                  src={agent.src}
-                  alt={agent.alt}
-                  draggable={false}
-                  className="pointer-events-none h-full w-full object-cover"
-                />
+                {/* Inner visual: handles the hover pop on its own short
+                    transition so the slow fan-out ease doesn't drag the
+                    pop out. Slight overshoot ease for the "spring". */}
+                <div
+                  className="relative h-full w-full cursor-pointer overflow-hidden rounded-full border-[6px] border-white shadow-[0_4px_16px_-8px_rgba(0,0,0,0.25)]"
+                  style={{
+                    background: agent.bg,
+                    transform: isHovered ? "scale(1.1)" : "scale(1)",
+                    transition: "transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1)",
+                  }}
+                  onMouseEnter={() => setHoveredIdx(i)}
+                  onMouseLeave={() => setHoveredIdx(null)}
+                  onFocus={() => setHoveredIdx(i)}
+                  onBlur={() => setHoveredIdx(null)}
+                >
+                  <img
+                    src={agent.src}
+                    alt={agent.alt}
+                    draggable={false}
+                    className="pointer-events-none h-full w-full object-cover"
+                  />
+                </div>
               </div>
             );
           })}
