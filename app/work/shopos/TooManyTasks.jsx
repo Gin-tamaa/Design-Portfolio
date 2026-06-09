@@ -56,8 +56,10 @@ export default function TooManyTasks() {
       className="relative w-full overflow-hidden rounded-3xl"
       style={{
         aspectRatio: "16 / 9",
+        // Very soft near-white wash — preserves the radial vignette so the
+        // chips' shadows still anchor, but lifts the overall surface.
         background:
-          "radial-gradient(120% 80% at 50% 50%, #ffffff 0%, #f4f5f8 65%, #ebedf2 100%)",
+          "radial-gradient(120% 80% at 50% 50%, #ffffff 0%, #fafbfd 70%, #f4f5f9 100%)",
       }}
     >
       {/* Centred wordmark — the static BASE layer (z-0). The chips fall in
