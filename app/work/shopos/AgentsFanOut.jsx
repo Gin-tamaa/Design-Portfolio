@@ -34,15 +34,14 @@ export default function AgentsFanOut() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    // Bidirectional. Fires when exactly half of the thumbnail is visible
-    // in the viewport — late enough that the user actually sees the
-    // fan-out happen, not before they get to it. Collapses when it
-    // drops back below 50%.
+    // Bidirectional. Fires when 80% of the thumbnail is visible — well
+    // settled in view before the fan-out plays. Collapses when it drops
+    // back below 80%.
     const io = new IntersectionObserver(
       ([entry]) => {
-        setExpanded(entry.isIntersecting && entry.intersectionRatio >= 0.5);
+        setExpanded(entry.isIntersecting && entry.intersectionRatio >= 0.8);
       },
-      { threshold: [0, 0.5, 1] }
+      { threshold: [0, 0.5, 0.8, 1] }
     );
     io.observe(el);
     return () => io.disconnect();
