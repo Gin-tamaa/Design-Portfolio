@@ -82,16 +82,17 @@ export default function TooManyTasks() {
         </h3>
       </div>
 
-      {/* Floating chips — z-10, ABOVE the wordmark. "Fall from front":
-          chips start at their target position but slightly LARGER (scale
-          1.15) and 24px above, so they read as closer to the viewer; on
-          expand they shrink to target scale + settle to target y, like
-          they're falling into the frame from above & in front of the text.
-          Staggered by distance from centre for a soft cascade. */}
+      {/* Floating chips — z-10, ABOVE the wordmark. "Thrown from front":
+          each chip starts at its target X/Y but scaled up (1.5) and
+          transparent — reads as sitting closer to the viewer, in front of
+          the text. On expand it scales DOWN to its target size and fades
+          in, like the chip is being pushed back into the frame onto the
+          headline. Same target X/Y for both states = no lateral motion,
+          just depth + opacity. Subtle stagger by distance for cohesion. */}
       <div className="pointer-events-none absolute inset-0 z-10">
         {TASKS.map((task) => {
           const dist = Math.hypot(task.x, task.y);
-          const delay = Math.round(dist * 4);
+          const delay = Math.round(dist * 3);
           const targetX = task.x * 8;
           const targetY = task.y * 5.5;
           return (
@@ -99,11 +100,9 @@ export default function TooManyTasks() {
               key={task.text}
               className="absolute left-1/2 top-1/2"
               style={{
-                transform: expanded
-                  ? `translate(calc(-50% + ${targetX}px), calc(-50% + ${targetY}px)) scale(${task.size})`
-                  : `translate(calc(-50% + ${targetX}px), calc(-50% + ${targetY - 24}px)) scale(1.15)`,
+                transform: `translate(calc(-50% + ${targetX}px), calc(-50% + ${targetY}px)) scale(${expanded ? task.size : 1.5})`,
                 opacity: expanded ? task.opacity : 0,
-                transition: `transform 720ms cubic-bezier(0.22, 0.61, 0.36, 1) ${delay}ms, opacity 480ms cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms`,
+                transition: `transform 640ms cubic-bezier(0.22, 0.61, 0.36, 1) ${delay}ms, opacity 480ms cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms`,
                 willChange: "transform, opacity",
               }}
             >
