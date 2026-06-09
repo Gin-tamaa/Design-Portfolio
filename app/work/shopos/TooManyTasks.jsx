@@ -116,27 +116,27 @@ export default function TooManyTasks() {
   );
 }
 
-// Chip — matches Figma node 124:4685: white pill, 24×24 rounded icon tile
-// with a colored bg, Inter Regular text on the right. Slight drop shadow
-// to lift it off the gradient surface.
+// Chip — white pill matching Figma node 124:4685, with a colored 28×28
+// rounded icon tile and Inter Regular text. Slight drop shadow to lift
+// it off the near-white surface.
 function Chip({ emoji, iconBg, text }) {
   return (
     <div
-      className="inline-flex items-center gap-2 rounded-full bg-white"
+      className="inline-flex items-center gap-[10px] rounded-full bg-white"
       style={{
-        padding: "8px 14px 8px 8px",
+        padding: "10px 20px 10px 10px",
         boxShadow:
-          "0 1px 2px rgba(0,0,0,0.04), 0 4px 16px -6px rgba(0,0,0,0.10)",
+          "0 1px 2px rgba(0,0,0,0.04), 0 6px 20px -6px rgba(0,0,0,0.12)",
       }}
     >
       <span
-        className="inline-flex h-6 w-6 items-center justify-center rounded-md text-[14px] leading-none"
+        className="inline-flex h-7 w-7 items-center justify-center rounded-md text-[16px] leading-none"
         style={{ background: iconBg }}
       >
         {emoji}
       </span>
       <span
-        className="whitespace-nowrap text-[15px] leading-[22px]"
+        className="whitespace-nowrap text-[17px] leading-[24px]"
         style={{ fontFamily: "Inter, sans-serif", color: "#34322d" }}
       >
         {text}
