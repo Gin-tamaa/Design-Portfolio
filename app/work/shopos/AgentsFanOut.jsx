@@ -2,8 +2,10 @@
 
 // Thumbnail block: 8 agent portraits stacked at center on a warm gradient.
 // As soon as the thumbnail is on screen the agents fan out horizontally
-// from the center, staggered, on a smooth Apple-ish ease. Triggered once
-// per page load — they don't re-collapse on scroll back up.
+// from the center, staggered, on a smooth Apple-ish ease. Bidirectional —
+// when the thumbnail leaves the viewport the agents collapse back to the
+// stacked single-agent state, ready to fan out again on the next scroll
+// pass. Reduced motion: collapses to the static expanded state, no transit.
 
 import { useEffect, useRef, useState } from "react";
 
@@ -32,15 +34,14 @@ export default function AgentsFanOut() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    // Trigger expand when the thumbnail is meaningfully in view.
+    // Bidirectional: expand when ≥50% is in view, collapse back to stacked
+    // when the thumbnail scrolls out. User can replay the fan-out by
+    // scrolling away and back.
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          setExpanded(true);
-          io.disconnect(); // one-shot — don't re-collapse on scroll up
-        }
+        setExpanded(entry.isIntersecting && entry.intersectionRatio >= 0.5);
       },
-      { threshold: 0.5 }
+      { threshold: [0, 0.5, 1] }
     );
     io.observe(el);
     return () => io.disconnect();
@@ -84,7 +85,7 @@ export default function AgentsFanOut() {
                   background: agent.bg,
                   transform: `translateX(${offset}px)`,
                   transition: `transform 900ms cubic-bezier(0.22, 0.61, 0.36, 1) ${delay}ms`,
-                  zIndex: AGENTS.length - i, // first agent stays on top while stacked
+                  zIndex: i + 1, // last agent on top in stacked state (matches Figma)
                   willChange: "transform",
                 }}
               >
