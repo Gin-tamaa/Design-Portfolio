@@ -17,6 +17,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import VideoBlock from "./VideoBlock";
 import ChatLauncher from "../../components/ChatLauncher";
+import AgentsFanOut from "./AgentsFanOut";
 
 const SKY_SRC = "/images/shopos-hero-sky.png";
 const AGENTS_SRC = "/images/agents-hero.png";
@@ -360,29 +361,14 @@ export default function ShopOSCaseStudy() {
           an entire marketing and ops department, staffed by agents instead of
           hires.
         </p>
-        <div className="mt-10">
-          <Pill href="#" external>
-            Visit ShopOS
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M5 12h14M13 6l6 6-6 6"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </Pill>
-        </div>
       </Container>
 
-      {/* ===== Intro video ================================================ */}
+      {/* ===== Agents fan-out thumbnail ====================================
+           One agent stacked centre-screen; as the user scrolls into the
+           thumbnail the agents fan out horizontally on a staggered ease.
+           Replaces the placeholder intro video. */}
       <Container className="reveal pt-16 md:pt-24">
-        <VideoBlock
-          src="/videos/shopos-intro.mp4"
-          name="Intro video"
-          description="A 30–60s walkthrough — the moment a brand owner briefs the team and watches a multi-agent thread assemble around the request."
-        />
+        <AgentsFanOut />
       </Container>
 
       {/* ===== Metadata strip ============================================
