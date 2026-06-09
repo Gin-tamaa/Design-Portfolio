@@ -74,8 +74,11 @@ export default function TooManyTasks() {
               key={task.text}
               className="absolute left-1/2 top-1/2"
               style={{
+                // Position multipliers control how far chips spread from the
+                // centre. 8x horizontal / 5.5x vertical opens up the cluster
+                // so the chips breathe instead of crowding each other.
                 transform: expanded
-                  ? `translate(calc(-50% + ${task.x * 6}px), calc(-50% + ${task.y * 4}px)) scale(${task.size})`
+                  ? `translate(calc(-50% + ${task.x * 8}px), calc(-50% + ${task.y * 5.5}px)) scale(${task.size})`
                   : "translate(-50%, -50%) scale(0.5)",
                 opacity: expanded ? task.opacity : 0,
                 transition: `transform 820ms cubic-bezier(0.22, 0.61, 0.36, 1) ${delay}ms, opacity 540ms cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms`,
