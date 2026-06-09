@@ -18,6 +18,7 @@ import Link from "next/link";
 import VideoBlock from "./VideoBlock";
 import ChatLauncher from "../../components/ChatLauncher";
 import AgentsFanOut from "./AgentsFanOut";
+import TooManyTasks from "./TooManyTasks";
 
 const SKY_SRC = "/images/shopos-hero-sky.png";
 const AGENTS_SRC = "/images/agents-hero.png";
@@ -420,6 +421,13 @@ export default function ShopOSCaseStudy() {
               with the work.
             </p>
           </Prose>
+
+          {/* Context thumbnail — chips bloom in around the headline
+              when the frame settles in view, mirroring the AgentsFanOut
+              scroll trigger pattern. */}
+          <div className="mt-16 md:mt-20">
+            <TooManyTasks />
+          </div>
         </Container>
       </section>
 
