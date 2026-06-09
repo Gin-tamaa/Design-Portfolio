@@ -7,20 +7,29 @@
 
 import { useEffect, useRef, useState } from "react";
 
-// Each task has a fixed scatter position in the frame, expressed as a
-// percentage from the centre. Hand-tuned for visual rhythm — chips of
-// different widths feather around the centred wordmark without colliding.
+// Each task is scattered around the centre wordmark at a fixed (x, y)
+// percentage offset. Size/opacity vary per chip — a few big foreground
+// ones, more small background ones, like Apple's App-actions reference.
+//   size: 1.0 = foreground/full-presence, 0.72 = mid, 0.6 = ghosted bg
+//   opacity: 1 / 0.78 / 0.55
 const TASKS = [
-  { emoji: "✉️", iconBg: "#00bbff", text: "Write a launch email",       x: -34, y: -32 },
-  { emoji: "📸", iconBg: "#ff7a59", text: "Generate a product shot",    x:  28, y: -36 },
-  { emoji: "✍️", iconBg: "#9c6cff", text: "Write a product caption",    x: -40, y:  -4 },
-  { emoji: "📊", iconBg: "#0eaf6b", text: "Pull yesterday's ROAS",      x:  34, y:  -2 },
-  { emoji: "📄", iconBg: "#f5a623", text: "Draft a video script",       x: -28, y:  24 },
-  { emoji: "🎯", iconBg: "#e85d75", text: "Run a paid campaign",        x:  30, y:  26 },
-  { emoji: "📈", iconBg: "#5b8def", text: "Check store analytics",      x:  -2, y: -42 },
-  { emoji: "💬", iconBg: "#34c759", text: "Reply to customers",         x:  -4, y:  40 },
-  { emoji: "🔍", iconBg: "#a06bff", text: "SEO audit",                  x: -45, y:  38 },
-  { emoji: "📱", iconBg: "#f0506e", text: "Post to social",             x:  42, y:  38 },
+  // Foreground — big & opaque
+  { emoji: "✉️", iconBg: "#00bbff", text: "Write a launch email",     x: -26, y: -18, size: 1.00, opacity: 1.00 },
+  { emoji: "📸", iconBg: "#ff7a59", text: "Generate a product shot",  x:  22, y: -28, size: 1.00, opacity: 1.00 },
+  { emoji: "🎯", iconBg: "#e85d75", text: "Run a paid campaign",      x:  26, y:  24, size: 1.00, opacity: 1.00 },
+  { emoji: "📊", iconBg: "#0eaf6b", text: "Pull yesterday's ROAS",    x: -28, y:  22, size: 1.00, opacity: 1.00 },
+
+  // Mid — medium scale
+  { emoji: "✍️", iconBg: "#9c6cff", text: "Write a product caption", x: -44, y:  -2, size: 0.78, opacity: 0.85 },
+  { emoji: "📈", iconBg: "#5b8def", text: "Check store analytics",   x:  46, y:  -4, size: 0.78, opacity: 0.85 },
+  { emoji: "💬", iconBg: "#34c759", text: "Reply to customers",      x:   2, y:  38, size: 0.80, opacity: 0.90 },
+
+  // Background — small & ghosted
+  { emoji: "📄", iconBg: "#f5a623", text: "Draft a video script",    x: -42, y: -32, size: 0.62, opacity: 0.55 },
+  { emoji: "🔍", iconBg: "#a06bff", text: "SEO audit",               x:  44, y: -38, size: 0.62, opacity: 0.55 },
+  { emoji: "📱", iconBg: "#f0506e", text: "Post to social",          x:  40, y:  38, size: 0.62, opacity: 0.55 },
+  { emoji: "🛍️", iconBg: "#ff8c4a", text: "Restock alerts",          x: -40, y:  36, size: 0.62, opacity: 0.55 },
+  { emoji: "💌", iconBg: "#7c5cff", text: "Send newsletter",         x:  -4, y: -42, size: 0.65, opacity: 0.60 },
 ];
 
 export default function TooManyTasks() {
@@ -51,8 +60,37 @@ export default function TooManyTasks() {
           "radial-gradient(120% 80% at 50% 50%, #ffffff 0%, #f4f5f8 65%, #ebedf2 100%)",
       }}
     >
-      {/* Centred wordmark with the Apple-style multi-stop gradient text. */}
-      <div className="absolute inset-0 flex items-center justify-center">
+      {/* Floating chips. Rendered FIRST so the centred wordmark sits on
+          top via its own higher z-index. Bloom-in: at rest each chip is
+          centred + scaled 0.5 + opacity 0; when expanded it slides to its
+          target at its target scale / opacity. Staggered delay gives a
+          soft cascade out from the centre. */}
+      <div className="pointer-events-none absolute inset-0 z-0">
+        {TASKS.map((task) => {
+          const dist = Math.hypot(task.x, task.y);
+          const delay = Math.round(dist * 4);
+          return (
+            <div
+              key={task.text}
+              className="absolute left-1/2 top-1/2"
+              style={{
+                transform: expanded
+                  ? `translate(calc(-50% + ${task.x * 6}px), calc(-50% + ${task.y * 4}px)) scale(${task.size})`
+                  : "translate(-50%, -50%) scale(0.5)",
+                opacity: expanded ? task.opacity : 0,
+                transition: `transform 820ms cubic-bezier(0.22, 0.61, 0.36, 1) ${delay}ms, opacity 540ms cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms`,
+                willChange: "transform, opacity",
+              }}
+            >
+              <Chip emoji={task.emoji} iconBg={task.iconBg} text={task.text} />
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Centred wordmark — z-10 puts it above every chip so the text is
+          always legible, never hidden behind the cluster. */}
+      <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
         <h3
           className="select-none font-bold tracking-tight"
           style={{
@@ -68,35 +106,6 @@ export default function TooManyTasks() {
         >
           too many tasks
         </h3>
-      </div>
-
-      {/* Floating chips. Each is absolutely positioned at frame centre and
-          translated to its target via percentage offsets. Bloom-in: at rest
-          the chip is centred + scaled 0.6 + opacity 0; when expanded it
-          slides to its target at scale 1 / opacity 1. Staggered delay gives
-          a soft cascade — alternating sign of x for a left/right ripple. */}
-      <div className="pointer-events-none absolute inset-0">
-        {TASKS.map((task, i) => {
-          // Stagger by distance from centre so closer chips appear first.
-          const dist = Math.hypot(task.x, task.y);
-          const delay = Math.round(dist * 4);
-          return (
-            <div
-              key={task.text}
-              className="absolute left-1/2 top-1/2"
-              style={{
-                transform: expanded
-                  ? `translate(calc(-50% + ${task.x * 6}px), calc(-50% + ${task.y * 4}px)) scale(1)`
-                  : "translate(-50%, -50%) scale(0.55)",
-                opacity: expanded ? 1 : 0,
-                transition: `transform 820ms cubic-bezier(0.22, 0.61, 0.36, 1) ${delay}ms, opacity 540ms cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms`,
-                willChange: "transform, opacity",
-              }}
-            >
-              <Chip emoji={task.emoji} iconBg={task.iconBg} text={task.text} />
-            </div>
-          );
-        })}
       </div>
     </div>
   );
