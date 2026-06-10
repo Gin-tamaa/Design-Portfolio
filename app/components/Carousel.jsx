@@ -1,105 +1,72 @@
-// 3-column static masonry stack. Each image card has a small chip in the
-// top-left that reveals on hover (project name only, white bg, 6px radius).
+// Home feed — clean stacked project cards. Figma node 64:444.
 //
-// Item shape:
-//   { img, title, href?, alt? }     → image card (chip reveals on hover)
-//   { height, bg }                  → structural spacer (no chip)
-// Add `href` to make the card a Link.
+// Each card: small meta line (project · year) → big Inter Semi-Bold title →
+// full-width 480px visual with rounded-8 corners. Placeholder images come
+// from the user later; for now a gradient placeholder fills each visual so
+// the rhythm + spacing already read correctly.
+//
+// `.feed-card` is observed by the homepage's IntersectionObserver for the
+// scroll-reveal entrance.
 
 import Link from "next/link";
 
-const COL_1 = [
+const CARDS = [
   {
-    img: "/images/card-shopos.png",
-    title: "ShopOS",
+    project: "ShopOS",
+    year: "2026",
+    title: "ShopOS Agents",
     href: "/work/shopos",
-    alt: "ShopOS — AI workforce for commerce",
+    img: null,
+    placeholderBg: "linear-gradient(to bottom, #000000, #2e2e2e)",
+    alt: "ShopOS Agents — AI workforce for commerce",
   },
-  { height: 250, bg: "#eeeeee" },
   {
-    img: "/images/creative-head.png",
-    title: "HEYY",
-    alt: "HEYY — character & motion system",
-  },
-];
-
-const COL_2 = [
-  { height: 317, bg: "#dddddd" },
-  {
-    img: "/images/card-project2.png",
+    project: "ShopOS",
+    year: "2026",
     title: "Brand Memory",
+    href: null,
+    img: null,
+    placeholderBg: "linear-gradient(to bottom, #fafafa, #eeeeee)",
     alt: "Brand Memory — identity system",
   },
-  { height: 400, bg: "#dddddd" },
 ];
 
-const COL_3 = [
-  {
-    img: "/images/vibe-coder.png",
-    title: "Vibe Coder",
-    alt: "Vibe Coder — agent persona",
-  },
-  { height: 364, bg: "#cccccc" },
-  {
-    img: "/images/ai-tinkerer.png",
-    title: "AI Tinkerer",
-    alt: "AI Tinkerer — agent persona",
-  },
-];
-
-function Item({ img, height, bg, href, title, alt = "" }) {
-  const style = height
-    ? { height: `${height}px`, background: bg || "#f0f0f0" }
-    : undefined;
-
-  const content = (
-    <>
-      {img ? <img src={img} alt={alt} draggable={false} /> : null}
-      {title ? (
-        <span className="masonry-chip" aria-hidden="true">
-          {title}
-        </span>
-      ) : null}
-    </>
-  );
-
-  if (href) {
-    return (
-      <Link
-        href={href}
-        className="masonry-item"
-        style={style}
-        aria-label={title}
-      >
-        {content}
-      </Link>
-    );
-  }
+function FeedCardInner({ project, year, title, img, alt, placeholderBg }) {
   return (
-    <div className="masonry-item" style={style}>
-      {content}
-    </div>
+    <article className="feed-card">
+      <div className="feed-card-meta">
+        <span>{project}</span>
+        <span className="feed-card-dot" aria-hidden="true" />
+        <span>{year}</span>
+      </div>
+      <h2 className="feed-card-title">{title}</h2>
+      <div
+        className="feed-card-visual"
+        style={img ? undefined : { background: placeholderBg }}
+      >
+        {img ? <img src={img} alt={alt || title} draggable={false} /> : null}
+      </div>
+    </article>
   );
 }
 
-function Column({ items }) {
-  return (
-    <div className="masonry-column">
-      {items.map((item, i) => (
-        <Item key={i} {...item} />
-      ))}
-    </div>
-  );
+function FeedCard(props) {
+  if (props.href) {
+    return (
+      <Link href={props.href} className="feed-card-link" aria-label={props.title}>
+        <FeedCardInner {...props} />
+      </Link>
+    );
+  }
+  return <FeedCardInner {...props} />;
 }
 
 export default function Carousel() {
   return (
-    <section className="masonry">
-      <div className="masonry-track">
-        <Column items={COL_1} />
-        <Column items={COL_2} />
-        <Column items={COL_3} />
-      </div>
+    <section className="feed">
+      {CARDS.map((card) => (
+        <FeedCard key={card.title} {...card} />
+      ))}
     </section>
   );
 }

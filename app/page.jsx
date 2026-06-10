@@ -92,9 +92,8 @@ export default function Home() {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) return;
 
-    const cards = Array.from(document.querySelectorAll(".masonry-item"));
+    const cards = Array.from(document.querySelectorAll(".feed-card"));
     if (cards.length === 0) return;
-    cards.forEach((c) => c.classList.add("reveal"));
 
     if (!("IntersectionObserver" in window)) {
       cards.forEach((c) => c.classList.add("is-visible"));
