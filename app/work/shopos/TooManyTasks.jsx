@@ -63,19 +63,14 @@ export default function TooManyTasks() {
       }}
     >
       {/* Centred wordmark — the static BASE layer (z-0). The chips fall in
-          on top of it. */}
+          on top of it. Solid black for stronger anchor against the busy
+          chip layer above. */}
       <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
         <h3
-          className="select-none font-bold tracking-tight"
+          className="select-none font-bold tracking-tight text-[#0a0a0a]"
           style={{
             fontFamily: "Inter, sans-serif",
             fontSize: "clamp(2rem, 4.2vw, 4rem)",
-            backgroundImage:
-              "linear-gradient(90deg, #1a2452 0%, #c25b3a 22%, #d29a48 42%, #aabf68 58%, #5b9bb8 78%, #2a3e7a 100%)",
-            WebkitBackgroundClip: "text",
-            backgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            color: "transparent",
           }}
         >
           too many tasks
@@ -115,9 +110,9 @@ export default function TooManyTasks() {
   );
 }
 
-// Chip — white pill matching Figma node 124:4685. Container has more
-// padding for a chunkier shape; icon stays at the original 24×24 and
-// text at 15px so the inner content reads the same as before.
+// Chip — white pill matching Figma node 124:4685. Softer drop shadow so
+// the chips feel like they're gently floating instead of stamped. Text
+// in muted grey so it doesn't outshout the black headline behind them.
 function Chip({ emoji, iconBg, text }) {
   return (
     <div
@@ -125,7 +120,7 @@ function Chip({ emoji, iconBg, text }) {
       style={{
         padding: "14px 22px 14px 14px",
         boxShadow:
-          "0 1px 2px rgba(0,0,0,0.04), 0 6px 20px -6px rgba(0,0,0,0.12)",
+          "0 1px 2px rgba(0,0,0,0.025), 0 6px 18px -8px rgba(0,0,0,0.07)",
       }}
     >
       <span
@@ -136,7 +131,7 @@ function Chip({ emoji, iconBg, text }) {
       </span>
       <span
         className="whitespace-nowrap text-[15px] leading-[22px]"
-        style={{ fontFamily: "Inter, sans-serif", color: "#34322d" }}
+        style={{ fontFamily: "Inter, sans-serif", color: "#6b6b6b" }}
       >
         {text}
       </span>
