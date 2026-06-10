@@ -19,6 +19,7 @@ import VideoBlock from "./VideoBlock";
 import ChatLauncher from "../../components/ChatLauncher";
 import AgentsFanOut from "./AgentsFanOut";
 import TooManyTasks from "./TooManyTasks";
+import SolutionSection from "./SolutionSection";
 
 const SKY_SRC = "/images/shopos-hero-sky.png";
 const AGENTS_SRC = "/images/agents-hero.png";
@@ -431,42 +432,12 @@ export default function ShopOSCaseStudy() {
         </Container>
       </section>
 
-      {/* ===== 02 · THE SOLUTION ========================================= */}
-      <section className="reveal py-32 md:py-44">
-        <Container>
-          <Eyebrow>The solution</Eyebrow>
-          <SectionHeader>
-            One AI team, eight functions, one place to direct them.
-          </SectionHeader>
-          <Prose className="mt-12">
-            <p>
-              ShopOS lets a brand owner connect their tools once, and a roster
-              of named agents spins up to cover the whole store: Gavin on paid,
-              Monica on creative, Jian-Yang reading the market, Russ watching
-              the numbers, Richard minding the store &mdash; plus agents for
-              GEO, social, email, and brand intelligence. Eight functions, eight
-              teammates.
-            </p>
-            <p>
-              You don&rsquo;t prompt a model. You hand work to a team, the way
-              you&rsquo;d brief a department.
-            </p>
-          </Prose>
-
-          <p className="mt-12 max-w-3xl border-l-2 border-[#0a0a0a] pl-6 text-[19px] font-medium leading-[1.5] text-[#0a0a0a] md:text-[21px]">
-            Connect your tools &rarr; agents provision themselves &rarr; you
-            give them work &rarr; a lead agent pulls the right specialists into
-            one thread, reasons through it, and ships the output.
-          </p>
-
-          <Prose className="mt-12">
-            <p>
-              The home surface is Mission Control: the one screen where a
-              founder sees what their team is doing and what needs them.
-            </p>
-          </Prose>
-        </Container>
-      </section>
+      {/* ===== 02 · THE SOLUTION =========================================
+           Full-bleed visual break with the agents composite, badge,
+           headline, and roster paragraph. Figma node 134:1031. */}
+      <div className="reveal">
+        <SolutionSection />
+      </div>
 
       {/* ===== 03 · THE HARD PART ======================================== */}
       <section className="reveal py-32 md:py-44">
