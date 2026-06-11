@@ -426,7 +426,7 @@ export default function CaseStudyChat({ project = "shopos", onClose }) {
           of <header> so the case-study nav-inversion rules in globals.css
           (`body.shopos-hero header button { color: #fff }`) don't paint
           the button white-on-white when the takeover is open. */}
-      <div className="h-16 border-b border-[#E5E5E5]">
+      <div className="h-16">
         <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-6 md:px-10">
           <button
             type="button"
