@@ -137,12 +137,20 @@ body.shopos-hero.shopos-nav-solid header button {
   100% { background-position: -200% 0; }
 }
 .shimmer-thinking {
+  /* Figma 158:2188 — DotGothic16 pixel font for actionable thinking
+     phrases, sweeping #dbdbdb (faded) through the persona accent (or
+     #0d0d0d by default — the readable "ink" portion) back to #dbdbdb. */
   display: inline-block;
+  font-family: "DotGothic16", monospace;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  letter-spacing: 0;
   background: linear-gradient(
     90deg,
-    rgba(0, 0, 0, 0.22) 0%,
-    var(--shimmer-accent, rgba(0, 0, 0, 0.85)) 50%,
-    rgba(0, 0, 0, 0.22) 100%
+    #dbdbdb 0%,
+    var(--shimmer-accent, #0d0d0d) 50%,
+    #dbdbdb 100%
   );
   background-size: 200% 100%;
   -webkit-background-clip: text;
@@ -150,7 +158,6 @@ body.shopos-hero.shopos-nav-solid header button {
   color: transparent;
   -webkit-text-fill-color: transparent;
   animation: shimmerSweep 1.5s ease-in-out infinite;
-  font-weight: 500;
 }
 
 @keyframes trailPulse {
@@ -183,8 +190,8 @@ body.shopos-hero.shopos-nav-solid header button {
   .shimmer-thinking {
     animation: none;
     background: none;
-    color: rgba(0, 0, 0, 0.5);
-    -webkit-text-fill-color: rgba(0, 0, 0, 0.5);
+    color: #0d0d0d;
+    -webkit-text-fill-color: #0d0d0d;
   }
   .trail-icon { animation: none; }
   .thinking-avatar { animation: none !important; }

@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
           crossOrigin=""
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Bebas+Neue&family=Caveat:wght@700&family=DM+Serif+Display:ital@1&family=Fraunces:ital,opsz,wght@1,9..144,500&family=Inter:wght@400;500;600;700&family=League+Spartan:wght@300;400;500&family=Major+Mono+Display&family=Pacifico&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Poppins:wght@400;500;600;800&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@800&family=Tiro+Devanagari+Hindi&family=Unbounded:wght@800&family=Yeseva+One&family=Zilla+Slab:ital,wght@1,600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Bebas+Neue&family=Caveat:wght@700&family=DM+Serif+Display:ital@1&family=DotGothic16&family=Fraunces:ital,opsz,wght@1,9..144,500&family=Inter:wght@400;500;600;700&family=League+Spartan:wght@300;400;500&family=Major+Mono+Display&family=Pacifico&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Poppins:wght@400;500;600;800&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Syne:wght@800&family=Tiro+Devanagari+Hindi&family=Unbounded:wght@800&family=Yeseva+One&family=Zilla+Slab:ital,wght@1,600&display=swap"
           rel="stylesheet"
         />
       </head>
