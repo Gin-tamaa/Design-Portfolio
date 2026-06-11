@@ -19,6 +19,7 @@
 // resolved yet).
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import AgentAvatar, { CyclingAgentAvatar } from "./AgentAvatar";
 
 /* ============================================================================
    Data — phrases, persona maps, timing
@@ -91,27 +92,15 @@ const PERSONA_COLORS = {
   funnySide: "#E0A93B",
 };
 
-// Two-state 8-bit avatar atlas (Figma 162:1223). `default` = idle pose,
-// `thinking` = alternate pose. We swap between the two on a short loop
-// while the agent is thinking, so the portrait reads as alive rather
-// than a frozen still.
-const PERSONA_AVATARS = {
-  creativeHead: {
-    default:  "/images/agents-chat/creative-head.png",
-    thinking: "/images/agents-chat/creative-head-thinking.png",
-  },
-  vibeCoder: {
-    default:  "/images/agents-chat/vibe-coder.png",
-    thinking: "/images/agents-chat/vibe-coder-thinking.png",
-  },
-  aiTinkerer: {
-    default:  "/images/agents-chat/ai-tinkerer.png",
-    thinking: "/images/agents-chat/ai-tinkerer-thinking.png",
-  },
-  funnySide: {
-    default:  "/images/agents-chat/funny-side.png",
-    thinking: "/images/agents-chat/funny-side-thinking.png",
-  },
+// Avatar atlas lives in AgentAvatar.jsx now (colored bg in CSS + raw
+// high-res portrait PNG composited on top, so it doesn't pixelate).
+// We just need the camel→kebab mapping to feed AgentAvatar the
+// kebab-case persona id it expects.
+const CAMEL_TO_KEBAB = {
+  creativeHead: "creative-head",
+  vibeCoder: "vibe-coder",
+  aiTinkerer: "ai-tinkerer",
+  funnySide: "funny-side",
 };
 
 const PERSONA_LABELS = {
@@ -214,63 +203,9 @@ function CyclingText({ phrases, color, reducedMotion }) {
 }
 
 /* ============================================================================
-   CyclingAvatar — swaps between an agent's `default` and `thinking` pose
-   every FRAME_INTERVAL so the portrait reads as alive. Each instance can
-   pass an `offset` to phase its cycle (so a row of 4 doesn't all swap on
-   the same frame). With reduced motion: just shows the default still.
-============================================================================ */
-
-function CyclingAvatar({
-  defaultSrc,
-  thinkingSrc,
-  size = 24,
-  className = "",
-  offset = 0,
-  reducedMotion,
-  innerStyle = {},
-}) {
-  const [showThinking, setShowThinking] = useState(false);
-
-  useEffect(() => {
-    if (reducedMotion) return;
-    // Stagger the cycle start using offset so 4 avatars don't twitch in
-    // lockstep — feels more like a team, less like a slideshow.
-    let interval = null;
-    const startDelay = setTimeout(() => {
-      setShowThinking(true);
-      interval = setInterval(() => {
-        setShowThinking((v) => !v);
-      }, FRAME_INTERVAL);
-    }, offset);
-    return () => {
-      clearTimeout(startDelay);
-      if (interval) clearInterval(interval);
-    };
-  }, [reducedMotion, offset]);
-
-  const src = showThinking && thinkingSrc ? thinkingSrc : defaultSrc;
-
-  return (
-    <img
-      src={src}
-      alt=""
-      aria-hidden="true"
-      draggable={false}
-      width={size}
-      height={size}
-      className={`rounded-full object-cover ${className}`}
-      style={{
-        width: size,
-        height: size,
-        ...innerStyle,
-      }}
-    />
-  );
-}
-
-/* ============================================================================
    AvatarRow — Phase 1 row of 4 → Phase 2 single lead. Each face cycles
-   between default / thinking via CyclingAvatar, staggered per index.
+   default ↔ thinking via the shared CyclingAgentAvatar, staggered per
+   index so the row doesn't twitch in lockstep.
 ============================================================================ */
 
 const AVATAR_SIZE = 24; // smaller than the previous 36 — matches the
@@ -285,8 +220,10 @@ function AvatarRow({ phase, chosenPersona, reducedMotion }) {
         const isCollapsed = phase !== "team" && !isChosen;
         const isLead = phase !== "team" && isChosen;
 
-        // Outer wrapper handles entrance / handoff / lead-scale.
-        // Inner img handles the idle bob so the two animations compose.
+        // Outer wrapper handles entrance / handoff / lead-scale + the
+        // gentle idle bob. The avatar itself is the new composited
+        // (CSS bg + raw portrait) AgentAvatar, so transforms here
+        // don't fight with image rendering.
         const outerStyle = {
           opacity: isCollapsed ? 0 : 1,
           transform: isCollapsed
@@ -297,13 +234,11 @@ function AvatarRow({ phase, chosenPersona, reducedMotion }) {
           transition: reducedMotion
             ? "none"
             : `opacity ${HANDOFF_DURATION}ms ease, transform ${HANDOFF_DURATION}ms cubic-bezier(0.22, 0.61, 0.36, 1)`,
-          // staggered entrance during Phase 1
           transitionDelay:
             phase === "team" && !reducedMotion ? `${i * 80}ms` : "0ms",
           pointerEvents: isCollapsed ? "none" : "auto",
-        };
-
-        const bobStyle = {
+          // bob the wrapper, not the inner avatar — keeps the bg+portrait
+          // composite stable while only the row position shifts.
           animation: reducedMotion
             ? "none"
             : "thinkingBob 1.8s ease-in-out infinite",
@@ -312,13 +247,11 @@ function AvatarRow({ phase, chosenPersona, reducedMotion }) {
 
         return (
           <div key={key} style={outerStyle}>
-            <CyclingAvatar
-              defaultSrc={PERSONA_AVATARS[key].default}
-              thinkingSrc={PERSONA_AVATARS[key].thinking}
+            <CyclingAgentAvatar
+              persona={CAMEL_TO_KEBAB[key]}
               size={AVATAR_SIZE}
               offset={i * 110}
               reducedMotion={reducedMotion}
-              innerStyle={bobStyle}
             />
           </div>
         );
@@ -383,33 +316,27 @@ export default function ThinkingIndicator({ persona }) {
     return shuffleArray(raw).map((p) => `${label} is ${lowerFirst(p)}…`);
   }, [phase, personaKey]);
 
-  // Pick phrase set + accent color per phase. Trail icon is rendered
-  // separately so it can keep cycling default↔thinking when locked to
-  // a single persona (Phase 2).
+  // Phrase set + accent color per phase. The trail icon is rendered
+  // separately below so each phase can pick the right avatar treatment.
   let phrases;
   let accentColor = null;
-  let trailDefault;
-  let trailThinking;
 
   if (phase === "team") {
     phrases = TEAM_PHRASES;
-    // Phase 1: trail icon rotates through the 4 personas (default pose)
-    // every TRAIL_INTERVAL. No internal default↔thinking cycle here —
-    // the rotation itself provides the motion.
-    const rotKey = ALL_PERSONAS[trailIdx];
-    trailDefault = PERSONA_AVATARS[rotKey].default;
-    trailThinking = null;
   } else if (phase === "handoff") {
     phrases = HANDOFF_PHRASES;
     accentColor = PERSONA_COLORS[personaKey];
-    trailDefault = PERSONA_AVATARS[personaKey].default;
-    trailThinking = PERSONA_AVATARS[personaKey].thinking;
   } else {
     phrases = singlePhrases;
     accentColor = PERSONA_COLORS[personaKey];
-    trailDefault = PERSONA_AVATARS[personaKey].default;
-    trailThinking = PERSONA_AVATARS[personaKey].thinking;
   }
+
+  // Phase 1 trail icon rotates through the 4 personas every TRAIL_INTERVAL.
+  // Phase 2 trail icon cycles default↔thinking on the chosen persona.
+  const trailPersonaKebab =
+    phase === "team"
+      ? CAMEL_TO_KEBAB[ALL_PERSONAS[trailIdx]]
+      : CAMEL_TO_KEBAB[personaKey];
 
   return (
     <div className="csc-bubble-in flex flex-col items-start gap-3">
@@ -428,36 +355,34 @@ export default function ThinkingIndicator({ persona }) {
           color={accentColor}
           reducedMotion={reducedMotion}
         />
-        {trailDefault ? (
-          phase === "team" ? (
-            // Phase 1: hard-rotate through personas; reset element each
-            // tick so the trailPulse animation replays on swap.
-            <img
-              key={`trail-team-${trailIdx}`}
-              src={trailDefault}
-              alt=""
-              aria-hidden="true"
-              draggable={false}
-              className="trail-icon"
-            />
-          ) : (
-            // Phase 2 / handoff: same persona, swapping default↔thinking
-            // on its own loop so it reads as alive next to the shimmer.
-            <span className="trail-icon-wrap" style={{ marginLeft: 8, display: "inline-flex", verticalAlign: "middle" }}>
-              <CyclingAvatar
-                defaultSrc={trailDefault}
-                thinkingSrc={trailThinking}
+        {trailPersonaKebab ? (
+          <span
+            className="trail-icon-wrap"
+            style={{
+              marginLeft: 8,
+              display: "inline-flex",
+              verticalAlign: "middle",
+              animation: reducedMotion
+                ? "none"
+                : "trailPulse 1s ease-in-out infinite",
+            }}
+          >
+            {phase === "team" ? (
+              // Hard-rotate: re-mount via key so the pulse replays on swap.
+              <AgentAvatar
+                key={`trail-team-${trailIdx}`}
+                persona={trailPersonaKebab}
+                size={18}
+              />
+            ) : (
+              <CyclingAgentAvatar
+                persona={trailPersonaKebab}
                 size={18}
                 offset={120}
                 reducedMotion={reducedMotion}
-                innerStyle={{
-                  animation: reducedMotion
-                    ? "none"
-                    : "trailPulse 1s ease-in-out infinite",
-                }}
               />
-            </span>
-          )
+            )}
+          </span>
         ) : null}
       </div>
     </div>

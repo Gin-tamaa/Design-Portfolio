@@ -14,6 +14,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import ChatBox, { ChevronDownIcon } from "./ChatBox";
 import ThinkingIndicator from "./ThinkingIndicator";
+import AgentAvatar from "./AgentAvatar";
 
 // Two-state 8-bit avatar atlas (Figma 162:1223): every persona has a
 // `default` portrait and a `thinking` variant. Default is what shows in
@@ -420,32 +421,37 @@ export default function CaseStudyChat({ project = "shopos", onClose }) {
 
   return (
     <div className="csc-thread relative flex h-full flex-col">
-      {/* Top bar — Figma 102:1497 back button at (40, 40); counter on the right
-          isn't in Figma but kept because it's UX-load-bearing for the cap.
-          Spans the full takeover width (only the message thread + composer
-          are capped to the 48rem rail). */}
-      <div className="csc-thread-inner flex items-center justify-between" style={{ paddingTop: 40, paddingBottom: 24 }}>
-        <button
-          type="button"
-          onClick={onClose}
-          className="inline-flex items-center gap-2 text-[14px] leading-[24px] text-[#0a0a0a] transition-opacity hover:opacity-70"
-          style={{ fontFamily: "Inter, sans-serif" }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M19 12H5M11 6l-6 6 6 6"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          Back to Case Study
-        </button>
-        <p className="text-[11px] font-medium uppercase tracking-[0.18em] text-[#525252]">
-          {asked}/{SESSION_CAP}
-        </p>
-      </div>
+      {/* Top bar — mirrors the global site Nav exactly: 64px tall,
+          max-w-1400 inner column, px-6 md:px-10 horizontal padding,
+          items-center, bottom border. Back-to-Case-Study replaces the
+          wordmark on the left; session counter on the right. */}
+      <header className="h-16 border-b border-[#E5E5E5]">
+        <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-6 md:px-10">
+          <button
+            type="button"
+            onClick={onClose}
+            className="inline-flex items-center gap-2 text-[14px] tracking-[0.02em] text-[#0a0a0a] transition-colors hover:text-[#525252]"
+            style={{ fontFamily: "Inter, sans-serif" }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M19 12H5M11 6l-6 6 6 6"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            Back to Case Study
+          </button>
+          <p
+            className="text-[14px] tracking-[0.02em] text-[#525252]"
+            style={{ fontFamily: "Inter, sans-serif" }}
+          >
+            {asked}/{SESSION_CAP}
+          </p>
+        </div>
+      </header>
 
       {/* Scroll area — the outer takeover (.csc-thread) is the inline-size
           query container; this just scrolls. */}
@@ -626,7 +632,7 @@ function EmptyState() {
           const p = PERSONAS[id];
           return (
             <div key={id} className="flex w-[108px] flex-col items-center gap-4">
-              <Avatar src={p.avatar} label={p.label} color={p.color} size={108} />
+              <AgentAvatar persona={id} size={108} />
               <p
                 className="text-[14px] leading-[24px] text-black"
                 style={{ fontFamily: "Inter, sans-serif", fontWeight: 300 }}
@@ -692,7 +698,7 @@ function AssistantMessage({ msg, spacing, streamingId }) {
   return (
     <div className={`${spacing} group flex flex-col items-start`}>
       <div className="csc-chip-in mb-2 flex items-center gap-2">
-        <Avatar src={p.avatar} label={p.label} color={p.color} size={20} />
+        <AgentAvatar persona={msg.persona || "creative-head"} size={20} />
         <span
           className="text-[12px] leading-[16px] text-[#525252]"
           style={{ fontFamily: "Inter, sans-serif" }}
