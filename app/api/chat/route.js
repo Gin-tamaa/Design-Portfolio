@@ -18,7 +18,12 @@
 import OpenAI from "openai";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
-import { AGENTS, PROJECTS } from "../../../content/bundle.js";
+import {
+  AGENTS,
+  PROJECTS,
+  SHOPOS_BRIEF,
+  SHOPOS_GUARDRAILS,
+} from "../../../content/bundle.js";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -164,12 +169,20 @@ export async function POST(request) {
 
   // Resolve content from the build-time bundle (no fs / no I/O).
   const shared = AGENTS._shared;
-  const brief = PROJECTS[project];
-  if (!shared || !brief || VOICES.some((v) => !AGENTS[v])) {
+  const brief = SHOPOS_BRIEF;          // deep brief — what to answer FROM
+  const guardrails = SHOPOS_GUARDRAILS; // hard rules — what NOT to claim
+  if (
+    !shared ||
+    !brief ||
+    !guardrails ||
+    !PROJECTS[project] ||              // existence-check the project (allowlist)
+    VOICES.some((v) => !AGENTS[v])
+  ) {
     // eslint-disable-next-line no-console
     console.error("[api/chat] content bundle missing keys", {
       hasShared: !!shared,
       hasBrief: !!brief,
+      hasGuardrails: !!guardrails,
       project,
     });
     return Response.json({ error: "content not available" }, { status: 500 });
@@ -179,14 +192,22 @@ export async function POST(request) {
     (name) => `=== ${name} ===\n${AGENTS[name]}`
   ).join("\n\n");
 
+  // Structure: shared rules + persona voices (classify happens here, untouched)
+  // → "Answer only from this brief:" + SHOPOS_BRIEF
+  // → "Hard rules you must follow:" + SHOPOS_GUARDRAILS
+  // Guardrails come AFTER the brief so they take precedence on any conflict,
+  // and we say so explicitly in the section header.
   const systemPrompt =
     shared.trim() +
     "\n\n" +
     "## Voices\n\n" +
     voicesBlock +
     "\n\n" +
-    "## Brief (THE ONLY SOURCE OF TRUTH)\n\n" +
+    "## Answer only from this brief\n\n" +
     brief.trim() +
+    "\n\n" +
+    "## Hard rules you must follow (these OVERRIDE the brief on any conflict)\n\n" +
+    guardrails.trim() +
     "\n\nReturn ONLY the JSON object specified in the Output section. No prose around it.";
 
   // OpenAI
