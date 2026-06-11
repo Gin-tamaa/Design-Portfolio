@@ -23,20 +23,20 @@ const PHRASES_IDLE = ["just hanging out", "scrolling along…", "i'm here"];
 const PHRASES_CLICK = ["oops!", "ow!", "yo!", "what's up?", "ok ok"];
 const PHRASES_DIZZY = ["whoa", "dizzy…", "easy!"];
 
-// === Pose atlas (Funny Side — sprite poses extracted from Figma 164:1278)
-// Each state shows a visually distinct action. No coloured circle behind
-// the character — the raw transparent PNG is what's drawn on the page.
+// === Pose atlas (Funny Side — sprite poses extracted from Figma 164:1278
+// + 164:1332). Each state shows a visually distinct action. No coloured
+// circle behind the character — the raw transparent PNG is what's drawn
+// on the page.
 //
-// WALK is special: it's the 5-frame walk cycle from Figma 164:1332 served
-// as a single horizontal sprite strip, animated through CSS steps() — see
-// .site-pet__sprite in globals.css. The path here is only for the
-// `<img>` fallback / preload; the running animation reads the same URL
-// from the CSS background-image rule.
+// WALK uses frame 1 of the Figma 164:1332 walk sheet (left leg striding
+// forward, boombox on shoulder) as a single static pose. We tried
+// cycling all 5 frames but at this scale the stepping read as a flicker,
+// not a stride, so we picked the most readable silhouette and held it.
 const POSES = {
-  idle:  "/images/agents-poses/funny-side-front.png",     // standing, hands in pockets
-  walk:  "/images/agents-poses/funny-side-walk-cycle.png", // 5-frame cycle strip
-  sit:   "/images/agents-poses/funny-side-pointing.png",  // seated, chin on fist
-  point: "/images/agents-poses/funny-side-action.png",    // finger pointed out
+  idle:  "/images/agents-poses/funny-side-front.png",       // standing, hands in pockets
+  walk:  "/images/agents-poses/funny-side-walk-static.png", // mid-stride with boombox
+  sit:   "/images/agents-poses/funny-side-pointing.png",    // seated, chin on fist
+  point: "/images/agents-poses/funny-side-action.png",      // finger pointed out
 };
 
 // === Tuning ================================================================
@@ -346,21 +346,15 @@ export default function SitePet() {
         style={{ "--pet-flip": flip }}
         aria-label="Friendly site mascot — click to pet"
       >
-        {/* Inner wrapper carries the bob/dizzy animations so they don't
-            overwrite the scaleX flip on the button. In WALK state we
-            swap from <img> to a div whose background-image is the
-            5-frame walk-cycle strip; CSS steps() drives the animation. */}
+        {/* Inner wrapper carries the bob/walk/dizzy animations so they
+            don't overwrite the scaleX flip on the button. */}
         <span className="site-pet__inner">
-          {state === STATE.WALK ? (
-            <span className="site-pet__sprite" aria-hidden="true" />
-          ) : (
-            <img
-              src={poseUrl}
-              alt=""
-              draggable={false}
-              className="site-pet__img"
-            />
-          )}
+          <img
+            src={poseUrl}
+            alt=""
+            draggable={false}
+            className="site-pet__img"
+          />
         </span>
       </button>
     </div>
