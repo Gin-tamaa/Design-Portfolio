@@ -4,11 +4,18 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+// ⚠️  Drop the Google Drive share link here when you have it. The Resume
+// nav item opens this URL in a new tab — never navigates in-page.
+const RESUME_URL = "https://drive.google.com/file/d/REPLACE_ME/view?usp=sharing";
+
+// `external: true` renders as <a target="_blank" rel="noopener noreferrer">
+// instead of a Next.js <Link>. Hash-anchored items keep using <Link> so the
+// router resolves the hash inside the destination page (/about#contact).
 const LINKS = [
-  { href: "/work", label: "Work" },
-  { href: "/about", label: "About" },
-  { href: "/#contact", label: "Contact" },
-  { href: "/resume", label: "Resume" },
+  { href: "/work",            label: "Work" },
+  { href: "/about",           label: "About" },
+  { href: "/about#contact",   label: "Contact" },
+  { href: RESUME_URL,         label: "Resume", external: true },
 ];
 
 // Lives in app/layout.jsx so every route has a path home + visible nav.
@@ -19,10 +26,50 @@ export default function Nav() {
   const pathname = usePathname() || "/";
 
   const isActive = (href) => {
-    // strip hash for comparison so /#contact never reads as active
+    // strip hash for comparison so /about#contact never reads as active
     if (href.includes("#")) return false;
+    if (href.startsWith("http")) return false; // external links never active
     if (href === "/") return pathname === "/";
     return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
+  // Single render path for both desktop + mobile nav items — adds the
+  // external-link attrs on external entries, uses next/link for the rest.
+  const renderLink = (link, extraClass, onClick) => {
+    const active = isActive(link.href);
+    const className = `${extraClass} ${
+      active
+        ? "font-semibold text-[#0a0a0a]"
+        : "font-normal text-[#0a0a0a] hover:text-[#525252]"
+    }`;
+
+    if (link.external) {
+      return (
+        <a
+          key={link.label}
+          href={link.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={onClick}
+          className={className}
+          style={{ fontFamily: "Inter, sans-serif" }}
+        >
+          {link.label}
+        </a>
+      );
+    }
+    return (
+      <Link
+        key={link.label}
+        href={link.href}
+        onClick={onClick}
+        aria-current={active ? "page" : undefined}
+        className={className}
+        style={{ fontFamily: "Inter, sans-serif" }}
+      >
+        {link.label}
+      </Link>
+    );
   };
 
   return (
@@ -42,24 +89,9 @@ export default function Nav() {
 
           {/* Desktop links */}
           <nav className="hidden items-center md:flex" style={{ gap: 28 }} aria-label="Primary">
-            {LINKS.map((link) => {
-              const active = isActive(link.href);
-              return (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  aria-current={active ? "page" : undefined}
-                  className={`text-[14px] tracking-[0.02em] transition-colors ${
-                    active
-                      ? "font-semibold text-[#0a0a0a]"
-                      : "font-normal text-[#0a0a0a] hover:text-[#525252]"
-                  }`}
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
+            {LINKS.map((link) =>
+              renderLink(link, "text-[14px] tracking-[0.02em] transition-colors")
+            )}
           </nav>
 
           {/* Hamburger — mobile only */}
@@ -99,25 +131,13 @@ export default function Nav() {
           className="fixed inset-x-0 top-16 z-30 border-b border-[#E5E5E5] bg-white md:hidden"
         >
           <nav className="flex flex-col py-2" aria-label="Primary mobile">
-            {LINKS.map((link) => {
-              const active = isActive(link.href);
-              return (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  aria-current={active ? "page" : undefined}
-                  className={`px-6 py-4 text-[16px] tracking-[0.01em] transition-colors ${
-                    active
-                      ? "font-semibold text-[#0a0a0a]"
-                      : "font-normal text-[#0a0a0a] hover:bg-black/[0.04]"
-                  }`}
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                >
-                  {link.label}
-                </Link>
-              );
-            })}
+            {LINKS.map((link) =>
+              renderLink(
+                link,
+                "px-6 py-4 text-[16px] tracking-[0.01em] transition-colors",
+                () => setOpen(false)
+              )
+            )}
           </nav>
         </div>
       ) : null}
