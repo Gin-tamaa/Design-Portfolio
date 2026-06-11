@@ -23,22 +23,21 @@ const PHRASES_IDLE = ["just hanging out", "scrolling along…", "i'm here"];
 const PHRASES_CLICK = ["oops!", "ow!", "yo!", "what's up?", "ok ok"];
 const PHRASES_DIZZY = ["whoa", "dizzy…", "easy!"];
 
-// === Pose atlas (Funny Side — sprite poses extracted from Figma 164:1278
-// + 164:1332). Each state shows a visually distinct action. No coloured
-// circle behind the character — the raw transparent PNG is what's drawn
-// on the page.
+// === Pose atlas (Funny Side — sprite poses extracted from Figma 164:1278,
+// 164:1332, 165:1219). Each state shows a visually distinct action.
+// No coloured circle behind the character — the raw transparent PNG is
+// what's drawn on the page.
 //
-// WALK is the 5-frame walk cycle from Figma 164:1332. The strip was
-// re-extracted with TORSO-CENTROID horizontal alignment (not bbox-
-// centre) — the character's body stays put across frames so only the
-// legs and the boombox-bearing arm move. CSS animates background-
-// position through steps(5) to advance the frame. See .site-pet__sprite
-// in globals.css.
+// State→image mapping for the static states is a plain image swap (the
+// state change is the animation). MUSIC is the one cycling state: an
+// 8-frame loop from Figma 165:1219 ("LISTENING TO MUSIC — LOOPABLE")
+// played on click via CSS background-position + steps(8). See
+// .site-pet__sprite--music in globals.css.
 const POSES = {
   idle:  "/images/agents-poses/funny-side-front.png",       // standing, hands in pockets
-  walk:  "/images/agents-poses/funny-side-walk-cycle.png",  // 5-frame strip
+  walk:  "/images/agents-poses/funny-side-walk-static.png", // mid-stride with boombox (single frame)
   sit:   "/images/agents-poses/funny-side-pointing.png",    // seated, chin on fist
-  point: "/images/agents-poses/funny-side-action.png",      // finger pointed out
+  point: "/images/agents-poses/funny-side-action.png",      // finger pointed out (unused; kept for future)
 };
 
 // === Tuning ================================================================
@@ -51,6 +50,7 @@ const WALK_SPEED_PX_PER_S = 70;
 const DIZZY_CLICK_COUNT = 5;
 const DIZZY_RESET_MS = 2500;
 const POINT_DURATION_MS = 700;
+const MUSIC_DURATION_MS = 4500;    // how long the click→music loop plays before resuming normal plan
 
 // Plan timer windows — how long each autonomous state lasts before the
 // pet picks a new one.
@@ -64,10 +64,11 @@ const PLAN = {
 };
 
 const STATE = {
-  WALK: "walk",
-  IDLE: "idle",
-  SIT:  "sit",
+  WALK:  "walk",
+  IDLE:  "idle",
+  SIT:   "sit",
   POINT: "point",
+  MUSIC: "music",   // click → 8-frame listening-to-music loop
   DIZZY: "dizzy",
 };
 
@@ -84,6 +85,7 @@ export default function SitePet() {
   const lastTimeRef = useRef(null);
   const planTimerRef = useRef(null);
   const pointResetTimerRef = useRef(null);
+  const musicResetTimerRef = useRef(null);
   const idleBubbleTimerRef = useRef(null);
   const bubbleTimerRef = useRef(null);
   const dizzyResetTimerRef = useRef(null);
@@ -218,6 +220,7 @@ export default function SitePet() {
       cancelAnimationFrame(rafRef.current);
       clearTimeout(planTimerRef.current);
       clearTimeout(pointResetTimerRef.current);
+      clearTimeout(musicResetTimerRef.current);
       clearTimeout(idleBubbleTimerRef.current);
       clearTimeout(bubbleTimerRef.current);
       clearTimeout(dizzyResetTimerRef.current);
@@ -227,17 +230,25 @@ export default function SitePet() {
   }, [mounted]);
 
   // === Click ================================================================
+  // Clicking the character makes them sit down with the boombox and play
+  // music — an 8-frame loopable animation from Figma 165:1219. The pet
+  // grooves for MUSIC_DURATION_MS then resumes its normal walk/idle plan.
+  // Clicking again during music just resets the timer (extends listening).
   const handleClick = () => {
     setBumping(true);
     setTimeout(() => setBumping(false), 320);
 
-    // Brief POINT pose on click, then return to the previous state.
-    const prev = stateRef.current === STATE.DIZZY ? STATE.IDLE : stateRef.current;
-    goToState(STATE.POINT);
-    clearTimeout(pointResetTimerRef.current);
-    pointResetTimerRef.current = setTimeout(() => {
-      if (stateRef.current === STATE.POINT) goToState(prev);
-    }, POINT_DURATION_MS);
+    goToState(STATE.MUSIC);
+
+    // Pause the autonomous plan while music plays.
+    clearTimeout(planTimerRef.current);
+    clearTimeout(musicResetTimerRef.current);
+    musicResetTimerRef.current = setTimeout(() => {
+      if (stateRef.current === STATE.MUSIC) {
+        goToState(STATE.IDLE);
+        schedulePlan(rand(PLAN.idleMin, PLAN.idleMax));
+      }
+    }, MUSIC_DURATION_MS);
 
     showBubble(pick(PHRASES_CLICK));
 
@@ -349,12 +360,15 @@ export default function SitePet() {
         aria-label="Friendly site mascot — click to pet"
       >
         {/* Inner wrapper carries the bob/dizzy animations so they don't
-            overwrite the scaleX flip on the button. WALK swaps to a
-            background-image sprite so we can step through 5 frames; all
-            other states render the static <img>. */}
+            overwrite the scaleX flip on the button. MUSIC swaps to a
+            background-image sprite to step through the 8-frame loop;
+            every other state is a plain image swap. */}
         <span className="site-pet__inner">
-          {state === STATE.WALK ? (
-            <span className="site-pet__sprite" aria-hidden="true" />
+          {state === STATE.MUSIC ? (
+            <span
+              className="site-pet__sprite site-pet__sprite--music"
+              aria-hidden="true"
+            />
           ) : (
             <img
               src={poseUrl}
