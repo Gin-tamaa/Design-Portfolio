@@ -274,13 +274,38 @@ body.shopos-hero.shopos-nav-solid header button {
   image-rendering: crisp-edges;
 }
 
+/* WALK state — 5-frame sprite cycle (Figma 164:1332).
+   The strip is 5 frames laid out horizontally, each frame the full
+   container size. background-size: 500% 100% scales the strip so one
+   frame fills the container; steps(5) advances position by one frame
+   per step, looping every 600ms (~8fps — a natural walking pace). */
+.site-pet__sprite {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-image: url("/images/agents-poses/funny-side-walk-cycle.png");
+  background-repeat: no-repeat;
+  background-size: 500% 100%;
+  background-position: 0% 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  animation: site-pet-walk-cycle 0.6s steps(5) infinite;
+}
+@keyframes site-pet-walk-cycle {
+  from { background-position: 0%   100%; }
+  to   { background-position: 100% 100%; }
+}
+
 @keyframes site-pet-bob {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-3px); }
 }
+/* Walk-bob is intentionally subtle now — the 5-frame sprite cycle does
+   the heavy lifting on the gait, so the parent only adds a 2px breathing
+   bob (no side-to-side rotation). */
 @keyframes site-pet-walk-bob {
-  0%, 100% { transform: translateY(0) rotate(-2deg); }
-  50% { transform: translateY(-5px) rotate(2deg); }
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
 }
 @keyframes site-pet-dragged {
   0%, 100% { transform: rotate(-3deg); }
