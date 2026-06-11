@@ -91,9 +91,33 @@ function Pose({ crop, url, alt = "" }) {
   );
 }
 
+// Tighten the Figma crop further so just the head fills the visible
+// circle. The Figma ratios show head + chest (designed for 18×18); at
+// real chat sizes (18–28px) that makes the head feel scrunched. Scale
+// the portrait ~1.85× from the same anchor so the chest pushes out of
+// the frame and the face dominates.
+const COMPACT_ZOOM = 1.85;
+function compactify(crop) {
+  // `cover` poses already crop tight to the head — leave them alone.
+  if (crop.cover) return crop;
+  return {
+    top: crop.top * COMPACT_ZOOM,
+    left: crop.left * COMPACT_ZOOM,
+    width: crop.width * COMPACT_ZOOM,
+    height: crop.height * COMPACT_ZOOM,
+  };
+}
+
 // Static avatar — bg circle + one pose. Used by the chat message header
 // and the empty state. `persona` is the kebab-case id the API returns.
-export default function AgentAvatar({ persona, state = "default", size = 24, className = "" }) {
+// `compact` zooms in on just the head, for small circles (≤ 28px).
+export default function AgentAvatar({
+  persona,
+  state = "default",
+  size = 24,
+  compact = false,
+  className = "",
+}) {
   const data = AGENT_AVATARS[persona];
   if (!data) {
     // Fallback: render a plain neutral circle if the persona isn't in the
@@ -107,12 +131,13 @@ export default function AgentAvatar({ persona, state = "default", size = 24, cla
     );
   }
   const pose = state === "thinking" && data.thinking ? data.thinking : data.default;
+  const crop = compact ? compactify(pose.crop) : pose.crop;
   return (
     <span
       className={`relative inline-block overflow-hidden rounded-full ${className}`}
       style={{ width: size, height: size, background: data.bg }}
     >
-      <Pose crop={pose.crop} url={pose.url} />
+      <Pose crop={crop} url={pose.url} />
     </span>
   );
 }
@@ -125,6 +150,7 @@ const FRAME_INTERVAL = 460;
 export function CyclingAgentAvatar({
   persona,
   size = 24,
+  compact = false,
   className = "",
   offset = 0,
   reducedMotion = false,
@@ -152,6 +178,7 @@ export function CyclingAgentAvatar({
       persona={persona}
       state={showThinking ? "thinking" : "default"}
       size={size}
+      compact={compact}
       className={className}
     />
   );

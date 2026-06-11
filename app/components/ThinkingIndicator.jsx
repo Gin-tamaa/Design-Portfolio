@@ -250,6 +250,7 @@ function AvatarRow({ phase, chosenPersona, reducedMotion }) {
             <CyclingAgentAvatar
               persona={CAMEL_TO_KEBAB[key]}
               size={AVATAR_SIZE}
+              compact
               offset={i * 110}
               reducedMotion={reducedMotion}
             />
@@ -373,11 +374,13 @@ export default function ThinkingIndicator({ persona }) {
                 key={`trail-team-${trailIdx}`}
                 persona={trailPersonaKebab}
                 size={18}
+                compact
               />
             ) : (
               <CyclingAgentAvatar
                 persona={trailPersonaKebab}
                 size={18}
+                compact
                 offset={120}
                 reducedMotion={reducedMotion}
               />
