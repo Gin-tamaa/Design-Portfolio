@@ -396,14 +396,26 @@ export default function ShopOSCaseStudy() {
         </dl>
       </Container>
 
-      {/* ===== 01 · CONTEXT ============================================== */}
+      {/* ===== 01 · CONTEXT ==============================================
+           Layout archetype: full-bleed visual with the eyebrow + headline
+           positioned ON the image at top-left (a sparse corner of the
+           TooManyTasks chip cluster). Prose stacks below. The chip-bloom
+           IntersectionObserver inside TooManyTasks is untouched. */}
       <section className="reveal py-32 md:py-44">
         <Container>
-          <Eyebrow>Context</Eyebrow>
-          <SectionHeader>
-            A founder running a store is running eight jobs at once.
-          </SectionHeader>
-          <Prose className="mt-12">
+          <div className="relative">
+            <TooManyTasks />
+            {/* pointer-events-none lets any future chip interactions pass
+                through; the heading is purely decorative. */}
+            <div className="pointer-events-none absolute left-6 top-6 max-w-[22rem] md:left-10 md:top-10 md:max-w-[28rem]">
+              <Eyebrow>Context</Eyebrow>
+              <SectionHeader className="mt-4">
+                A founder running a store is running eight jobs at once.
+              </SectionHeader>
+            </div>
+          </div>
+
+          <Prose className="mt-12 md:mt-16">
             <p>
               By 2026, a brand owner had AI that could write a caption or make
               a product shot. Useful, but it didn&rsquo;t run the store. They
@@ -419,49 +431,49 @@ export default function ShopOSCaseStudy() {
               store, covered.
             </p>
           </Prose>
-
-          {/* Context thumbnail — chips bloom in around the headline
-              when the frame settles in view, mirroring the AgentsFanOut
-              scroll trigger pattern. */}
-          <div className="mt-16 md:mt-20">
-            <TooManyTasks />
-          </div>
         </Container>
       </section>
 
-      {/* ===== 02 · APPROACH ============================================= */}
+      {/* ===== 02 · APPROACH =============================================
+           Layout archetype: two-up 50/50 split. Eyebrow + headline span
+           the row; below them, prose sits in the left column and the
+           process visual sits in the right column, vertically centred so
+           the two heights balance. Mobile stacks single-column. */}
       <section className="reveal py-32 md:py-44">
         <Container>
           <Eyebrow>Approach</Eyebrow>
           <SectionHeader>
             We didn&rsquo;t invent the team. We modeled it on our own.
           </SectionHeader>
-          <Prose className="mt-12">
-            <p>
-              The roles already existed in the building: a paid lead, a CRM
-              manager, a creative director. So I built an internal MVP of the
-              agents and ran it through our own team, each person testing the
-              agent for the role they actually do. Their feedback shaped what
-              each agent owned.
-            </p>
-            <p>
-              I leaned hardest on the people closest to the customer. Our CRM
-              and sales team talk to users far more than design does, so I
-              used them to pressure-test which agents mattered.
-            </p>
-            <p>
-              Then I validated cheap and fast. A vibe-coded MVP first, because
-              it was quickest to put in front of onboarded brands, with the
-              Figma-designed version built in parallel as their feedback came
-              in. Real reactions before real build.
-            </p>
-          </Prose>
 
-          <div className="mt-16 md:mt-20">
-            <Placeholder
-              name="Approach Process"
-              description="Internal MVP → team feedback → user MVP → feedback → live. The validation loop shown end to end."
-            />
+          <div className="mt-12 grid grid-cols-1 gap-12 md:mt-16 md:grid-cols-2 md:gap-14">
+            <Prose className="max-w-none">
+              <p>
+                The roles already existed in the building: a paid lead, a CRM
+                manager, a creative director. So I built an internal MVP of
+                the agents and ran it through our own team, each person
+                testing the agent for the role they actually do. Their
+                feedback shaped what each agent owned.
+              </p>
+              <p>
+                I leaned hardest on the people closest to the customer. Our
+                CRM and sales team talk to users far more than design does, so
+                I used them to pressure-test which agents mattered.
+              </p>
+              <p>
+                Then I validated cheap and fast. A vibe-coded MVP first,
+                because it was quickest to put in front of onboarded brands,
+                with the Figma-designed version built in parallel as their
+                feedback came in. Real reactions before real build.
+              </p>
+            </Prose>
+
+            <div className="md:self-center">
+              <Placeholder
+                name="Approach Process"
+                description="Internal MVP → team feedback → user MVP → feedback → live. The validation loop shown end to end."
+              />
+            </div>
           </div>
         </Container>
       </section>
@@ -538,8 +550,15 @@ export default function ShopOSCaseStudy() {
             <p>Three versions. I&rsquo;ll be honest about all three.</p>
           </Prose>
 
-          {/* ITERATION 01 */}
-          <div className="mt-20 md:mt-24">
+          {/* Stepped iterations — 01 flush left, 02 indented from the
+              left, 03 anchored to the right. The three blocks read as a
+              staircase of attempts rather than three identical stacks.
+              Each block keeps its own internal structure (number stamp +
+              h3 + text + Placeholder) — only the horizontal offset and
+              column width vary. Mobile collapses everything to full
+              width. */}
+          {/* ITERATION 01 — flush left, narrower column */}
+          <div className="mt-20 md:mt-24 md:max-w-[78%]">
             <div className="flex items-baseline gap-5">
               <span className="text-[14px] font-medium tabular-nums text-[#525252]">
                 01
@@ -558,8 +577,8 @@ export default function ShopOSCaseStudy() {
             </div>
           </div>
 
-          {/* ITERATION 02 */}
-          <div className="mt-24 md:mt-32">
+          {/* ITERATION 02 — indented from the left by ~12% */}
+          <div className="mt-24 md:mt-32 md:ml-[12%] md:max-w-[80%]">
             <div className="flex items-baseline gap-5">
               <span className="text-[14px] font-medium tabular-nums text-[#525252]">
                 02
@@ -581,8 +600,8 @@ export default function ShopOSCaseStudy() {
             </div>
           </div>
 
-          {/* ITERATION 03 */}
-          <div className="mt-24 md:mt-32">
+          {/* ITERATION 03 — anchored to the right edge */}
+          <div className="mt-24 md:mt-32 md:ml-auto md:max-w-[82%]">
             <div className="flex items-baseline gap-5">
               <span className="text-[14px] font-medium tabular-nums text-[#525252]">
                 03
@@ -619,7 +638,12 @@ export default function ShopOSCaseStudy() {
         </Container>
       </section>
 
-      {/* ===== 06 · GIVING THE TEAM WORK ================================= */}
+      {/* ===== 06 · GIVING THE TEAM WORK =================================
+           Layout archetype: true diptych — each "door" (Jobs/Kanban and
+           Chat/Cowork) lives in its own column with its OWN visual. The
+           two panels sit side by side so the comparison reads as one
+           composed unit, not text-then-image. A "Two views of one team"
+           closer line sits centred below the diptych. */}
       <section className="reveal py-32 md:py-44">
         <Container>
           <Eyebrow>Giving the team work</Eyebrow>
@@ -628,7 +652,8 @@ export default function ShopOSCaseStudy() {
           </SectionHeader>
 
           <div className="mt-16 grid grid-cols-1 gap-12 md:mt-20 md:grid-cols-2 md:gap-10">
-            <div>
+            {/* LEFT PANEL — Jobs / Kanban */}
+            <div className="flex flex-col">
               <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#0d8a8a]">
                 Jobs / Kanban
               </p>
@@ -637,11 +662,20 @@ export default function ShopOSCaseStudy() {
               </p>
               <p className="mt-3 text-[15px] leading-[1.7] text-[#525252]">
                 Work moves across <em>Needs Attention &rarr; In Progress
-                &rarr; Completed</em>. A single task, or one a few agents pick
-                up together.
+                &rarr; Completed</em>. A single task, or one a few agents
+                pick up together.
               </p>
+              <div className="mt-8 md:mt-10">
+                <Placeholder
+                  aspect="portrait"
+                  name="Kanban Board"
+                  description="Needs Attention → In Progress → Completed. Tasks flow across the columns; one or many agents pick them up."
+                />
+              </div>
             </div>
-            <div>
+
+            {/* RIGHT PANEL — Chat / Cowork */}
+            <div className="flex flex-col">
               <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#0d8a8a]">
                 Chat / Cowork
               </p>
@@ -652,56 +686,73 @@ export default function ShopOSCaseStudy() {
                 State the outcome; talk to one agent, or let a lead agent
                 recruit the team.
               </p>
+              <div className="mt-8 md:mt-10">
+                <Placeholder
+                  aspect="portrait"
+                  name="Cowork Chat"
+                  description="State the outcome; the lead agent recruits the team. Conversation, not a queue."
+                />
+              </div>
             </div>
           </div>
 
-          <Prose className="mt-12">
+          <Prose className="mt-16 md:mt-20">
             <p>Two views of one team.</p>
           </Prose>
-
-          <div className="mt-16 md:mt-20">
-            <Placeholder
-              aspect="wide"
-              name="Kanban + Chat Side by Side"
-              description="The two entry points to the same engine — Kanban board on one side, Cowork chat on the other."
-            />
-          </div>
         </Container>
       </section>
 
-      {/* ===== 07 · MISSION CONTROL (with 2-up gallery) ================== */}
+      {/* ===== 07 · MISSION CONTROL ======================================
+           Layout archetype: a large screen on the left (8 of 12 columns),
+           with the two callout paragraphs sitting BESIDE it on the right
+           (4 columns) instead of stacked below. The two callouts read as
+           a narrow sidebar — each separately framed by its own eyebrow
+           tag so they feel like annotated stat blocks, not body copy. */}
       <section className="reveal py-32 md:py-44">
         <Container>
           <Eyebrow>Mission Control</Eyebrow>
           <SectionHeader>
             What happened, what needs me, what my agents did, in 60 seconds.
           </SectionHeader>
-          <Prose className="mt-12">
-            <p>
-              A founder&rsquo;s morning used to be six tabs. Mission Control
-              replaces it with one check-in. It reads and surfaces; it never
-              generates.
-            </p>
-            <p>
-              Needs Attention is pinned at the top, capped at three items,
-              each naming the agent, the metric, and one action. Below it, a
-              chart sorts every product by where ad spend goes versus where
-              revenue comes from, so the gaps surface at a glance.
-            </p>
-          </Prose>
 
-          {/* 2-up gallery */}
-          <div className="mt-16 grid grid-cols-1 gap-6 md:mt-20 md:grid-cols-2">
-            <Placeholder
-              aspect="wide"
-              name="Needs Attention"
-              description="Pinned at top, capped at three — each item names the agent, the metric, and one action."
-            />
-            <Placeholder
-              aspect="wide"
-              name="SKU Scatter"
-              description="Every product plotted by ad spend × revenue — gaps surface at a glance."
-            />
+          <div className="mt-16 grid grid-cols-1 gap-10 md:mt-20 md:grid-cols-12 md:gap-12">
+            {/* Large screen */}
+            <div className="md:col-span-8">
+              <Placeholder
+                aspect="wide"
+                name="Mission Control"
+                description="The single morning check-in — Needs Attention pinned on top, the SKU scatter below."
+              />
+            </div>
+
+            {/* Callout sidebar — same prose, restructured as two labelled
+                annotations sitting next to the screen rather than under it. */}
+            <div className="md:col-span-4 md:self-center">
+              <div className="space-y-10">
+                <div>
+                  <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#0d8a8a]">
+                    The check-in
+                  </p>
+                  <p className="mt-3 text-[15px] leading-[1.7] text-[#525252]">
+                    A founder&rsquo;s morning used to be six tabs. Mission
+                    Control replaces it with one check-in. It reads and
+                    surfaces; it never generates.
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#0d8a8a]">
+                    What&rsquo;s on screen
+                  </p>
+                  <p className="mt-3 text-[15px] leading-[1.7] text-[#525252]">
+                    Needs Attention is pinned at the top, capped at three
+                    items, each naming the agent, the metric, and one action.
+                    Below it, a chart sorts every product by where ad spend
+                    goes versus where revenue comes from, so the gaps surface
+                    at a glance.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </Container>
       </section>
@@ -780,31 +831,45 @@ export default function ShopOSCaseStudy() {
               </p>
             </div>
 
-            {/* 4-up stat row — 1 real, 3 pending placeholders */}
-            <div className="mt-14 grid grid-cols-2 gap-y-12 gap-x-8 md:mt-20 md:grid-cols-4">
+            {/* Bento — the one live stat ("8") dominates a 6-col × 2-row
+                cell; the three pending stats fill the remaining 6 columns
+                in two rows. Font sizes are unchanged — the oversize
+                feeling comes purely from spatial dominance + breathing
+                room. No new colors or borders introduced; cells are
+                separated by grid gap alone. */}
+            <div className="mt-14 grid grid-cols-2 gap-y-12 gap-x-8 md:mt-20 md:grid-cols-12 md:grid-rows-2 md:gap-x-12 md:gap-y-14">
+              {/* LIVE — the only publishable number, given the biggest cell */}
+              <div className="md:col-span-6 md:row-span-2 md:flex md:flex-col md:justify-center md:py-6">
+                <div
+                  className="font-semibold leading-none tracking-tight"
+                  style={{ fontSize: "clamp(2.25rem, 1.8rem + 1.5vw, 3rem)" }}
+                >
+                  8
+                </div>
+                <p className="mt-6 max-w-[22ch] text-[11px] font-medium uppercase tracking-[0.16em] text-white/60 md:mt-8">
+                  Agents live with real enterprise clients
+                </p>
+              </div>
+
+              {/* PENDING — three smaller cells filling the remaining grid */}
               {[
-                {
-                  value: "8",
-                  label: "Agents live with real enterprise clients",
-                  pending: false,
-                },
                 {
                   value: "—",
                   label: "Most-used agents, by hours run",
-                  pending: true,
+                  span: "md:col-span-3",
                 },
                 {
                   value: "—×",
                   label: "Specialist hours collapsed to agent minutes",
-                  pending: true,
+                  span: "md:col-span-3",
                 },
                 {
                   value: "+—%",
                   label: "Metric the agents moved (client-confirmed)",
-                  pending: true,
+                  span: "md:col-span-6",
                 },
               ].map((m) => (
-                <div key={m.label}>
+                <div key={m.label} className={m.span}>
                   <div
                     className="font-semibold leading-none tracking-tight"
                     style={{ fontSize: "clamp(2.25rem, 1.8rem + 1.5vw, 3rem)" }}
@@ -814,11 +879,9 @@ export default function ShopOSCaseStudy() {
                   <p className="mt-5 max-w-[22ch] text-[11px] font-medium uppercase tracking-[0.16em] text-white/60">
                     {m.label}
                   </p>
-                  {m.pending ? (
-                    <p className="mt-3 text-[10px] uppercase tracking-[0.18em] text-white/35">
-                      ⬚ Pending real data
-                    </p>
-                  ) : null}
+                  <p className="mt-3 text-[10px] uppercase tracking-[0.18em] text-white/35">
+                    ⬚ Pending real data
+                  </p>
                 </div>
               ))}
             </div>
