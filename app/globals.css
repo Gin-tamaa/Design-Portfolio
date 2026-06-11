@@ -190,6 +190,152 @@ body.shopos-hero.shopos-nav-solid header button {
   .thinking-avatar { animation: none !important; }
 }
 
+/* ===== Site pet (homepage desktop mascot) =====
+   Fixed-position cursor follower. The component (app/components/SitePet.jsx)
+   writes --pet-x / --pet-y as inline styles every frame; the smooth
+   scaleX(var(--pet-flip)) drives the left/right facing direction. */
+.site-pet {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  width: var(--pet-size, 60px);
+  height: var(--pet-size, 60px);
+  pointer-events: none;
+  transform: translate3d(var(--pet-x, 0), var(--pet-y, 0), 0);
+  will-change: transform;
+  user-select: none;
+}
+.site-pet__hit {
+  pointer-events: auto;
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: grab;
+  transform: scaleX(var(--pet-flip, 1));
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.site-pet[data-dragging="true"] .site-pet__hit { cursor: grabbing; }
+
+.site-pet__avatar {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  overflow: hidden;
+  box-shadow:
+    0 4px 12px -2px rgba(0, 0, 0, 0.18),
+    0 1px 3px rgba(0, 0, 0, 0.08);
+  animation: site-pet-bob 2.8s ease-in-out infinite;
+}
+.site-pet[data-walking="true"] .site-pet__avatar {
+  animation: site-pet-walk-bob 0.5s ease-in-out infinite;
+}
+.site-pet[data-dragging="true"] .site-pet__avatar {
+  animation: site-pet-dragged 0.4s ease-in-out infinite;
+}
+.site-pet[data-bumping="true"] .site-pet__avatar {
+  animation: site-pet-bump 0.32s ease-out;
+}
+.site-pet[data-dizzy="true"] .site-pet__avatar {
+  animation: site-pet-dizzy 1.4s ease-in-out infinite;
+}
+.site-pet__avatar img {
+  position: absolute;
+  top: -12%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130%;
+  height: 130%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+@keyframes site-pet-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+@keyframes site-pet-walk-bob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-5px) rotate(2deg); }
+}
+@keyframes site-pet-dragged {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+@keyframes site-pet-bump {
+  0% { transform: translateY(0) rotate(0); }
+  25% { transform: translateY(-10px) rotate(-12deg); }
+  60% { transform: translateY(0) rotate(8deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
+@keyframes site-pet-dizzy {
+  0%, 100% { transform: rotate(-10deg) translateY(0); }
+  50% { transform: rotate(10deg) translateY(-2px); }
+}
+
+.site-pet__bubble {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+  white-space: nowrap;
+  padding: 5px 12px;
+  background: #ffffff;
+  border: 1px solid #E5E5E5;
+  border-radius: 14px;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  color: #0a0a0a;
+  pointer-events: none;
+  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.12);
+  animation: site-pet-bubble-in 0.24s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+@keyframes site-pet-bubble-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(4px) scale(0.92); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0)    scale(1);    }
+}
+
+.site-pet__emotes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.site-pet__emote {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  font-size: 14px;
+  color: #ec4899;
+  font-family: "Inter", sans-serif;
+  pointer-events: none;
+  animation: site-pet-emote-fly 0.95s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes site-pet-emote-fly {
+  0%   { opacity: 0; transform: translate(-50%, 0)     scale(0.4) rotate(var(--emote-angle, 0)); }
+  20%  { opacity: 1; transform: translate(-50%, -8px)  scale(1.1) rotate(var(--emote-angle, 0)); }
+  100% { opacity: 0; transform: translate(-50%, -38px) scale(0.6) rotate(var(--emote-angle, 0)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-pet__avatar,
+  .site-pet__bubble,
+  .site-pet__emote {
+    animation: none !important;
+  }
+}
+@media (pointer: coarse) {
+  .site-pet { display: none; }
+}
+
 /* ===== Case-study type scale =====
    Restrained editorial scale for the ShopOS (and future) case-study prose.
    Single source of truth — adjust sizes here, not at use sites.

@@ -18,6 +18,7 @@
 import { useEffect, useRef, useState } from "react";
 import Intro from "./components/Intro";
 import Carousel from "./components/Carousel";
+import SitePet from "./components/SitePet";
 
 export default function Home() {
   const [revealed, setRevealed] = useState(false);
@@ -201,6 +202,12 @@ export default function Home() {
           <Carousel />
         </div>
       </div>
+
+      {/* Friendly desktop pet — Funny Side mascot that follows the
+          cursor, talks, and reacts to clicks. Hidden on touch + reduced
+          motion via CSS. Stays at z-30 (under the intro overlay at z-50
+          so it doesn't peek through the first-paint cover). */}
+      <SitePet />
     </>
   );
 }
