@@ -127,6 +127,69 @@ body.shopos-hero.shopos-nav-solid header button {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ===== Thinking indicator (two-phase persona-flavored loader) =====
+   Shimmer = animated gradient masked through text, optionally tinted with
+   the chosen persona's accent via --shimmer-accent. Trail icon = small
+   ~18px circular avatar at the end of the phrase line, pulsing like a
+   living cursor. Bob = gentle vertical breathing on the big avatars. */
+@keyframes shimmerSweep {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.shimmer-thinking {
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.22) 0%,
+    var(--shimmer-accent, rgba(0, 0, 0, 0.85)) 50%,
+    rgba(0, 0, 0, 0.22) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: shimmerSweep 1.5s ease-in-out infinite;
+  font-weight: 500;
+}
+
+@keyframes trailPulse {
+  0%, 100% { transform: scale(0.92); opacity: 0.7; }
+  50%      { transform: scale(1);    opacity: 1;   }
+}
+.trail-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  object-fit: cover;
+  margin-left: 8px;
+  vertical-align: middle;
+  animation: trailPulse 1s ease-in-out infinite;
+}
+
+.thinking-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  object-fit: cover;
+  display: block;
+}
+@keyframes thinkingBob {
+  0%, 100% { transform: translateY(0);    opacity: 1;   }
+  50%      { transform: translateY(-2px); opacity: 0.85; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-thinking {
+    animation: none;
+    background: none;
+    color: rgba(0, 0, 0, 0.5);
+    -webkit-text-fill-color: rgba(0, 0, 0, 0.5);
+  }
+  .trail-icon { animation: none; }
+  .thinking-avatar { animation: none !important; }
+}
+
 /* ===== Case-study type scale =====
    Restrained editorial scale for the ShopOS (and future) case-study prose.
    Single source of truth — adjust sizes here, not at use sites.

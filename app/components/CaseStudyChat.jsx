@@ -13,6 +13,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import ChatBox, { ChevronDownIcon } from "./ChatBox";
+import ThinkingIndicator from "./ThinkingIndicator";
 
 const PERSONAS = {
   "creative-head": {
@@ -104,6 +105,10 @@ const SESSION_CAP = 20;
 const CONTACT_EMAIL = "kamblesumedh39@gmail.com";
 const STREAM_MS_PER_TICK = 16;
 const STREAM_CHARS_PER_TICK = 3;
+// Minimum time the persona-flavored thinking indicator is shown. Even when
+// the answer arrives faster, we hold the reveal until this floor passes,
+// so the team-assemble → handoff → persona beat is never skipped.
+const MIN_THINKING = 1200;
 
 /* ---- Avatar (image with initial-circle fallback) ------------------------- */
 
@@ -265,6 +270,29 @@ export default function CaseStudyChat({ project = "shopos", onClose }) {
     setPending(true);
     setActivePersona(null);
 
+    // Record when the thinking indicator started so we can enforce MIN_THINKING.
+    const thinkingStart = Date.now();
+    // prefers-reduced-motion bypasses the artificial delay entirely.
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Commits the assistant message + hides the thinking indicator. Used
+    // by both the happy path (after the floor) and the error paths.
+    const reveal = (data) => {
+      const persona = PERSONAS[data.persona] ? data.persona : "creative-head";
+      const fullText = data.answer || "";
+      const domain = data.domain || PERSONAS[persona].domain;
+      const id = `a-${Date.now()}`;
+      setMessages((m) => [
+        ...m,
+        { id, role: "assistant", persona, domain, text: "", full: fullText },
+      ]);
+      setPending(false);
+      setAsked((n) => n + 1);
+      startStream(id, fullText);
+    };
+
     const controller = new AbortController();
     abortRef.current = controller;
 
@@ -282,6 +310,7 @@ export default function CaseStudyChat({ project = "shopos", onClose }) {
             ...m,
             { id: `s-${Date.now()}`, role: "system", text: d.error || "Rate limit hit — try again later, or reach me directly." },
           ]);
+          setPending(false);
           return null;
         }
         if (!res.ok) {
@@ -290,27 +319,32 @@ export default function CaseStudyChat({ project = "shopos", onClose }) {
             ...m,
             { id: `s-${Date.now()}`, role: "system", text: d.error || "Something went wrong on my end." },
           ]);
+          setPending(false);
           return null;
         }
         return res.json();
       })
       .then((data) => {
-        if (!data) {
-          setPending(false);
+        if (!data) return;
+
+        // Flip the persona NOW so the thinking indicator can transition
+        // from team → handoff → single. The answer itself is held until
+        // the MIN_THINKING floor elapses, so the persona beat plays out.
+        const persona = PERSONAS[data.persona] ? data.persona : "creative-head";
+        setActivePersona(persona);
+
+        const elapsed = Date.now() - thinkingStart;
+        const remaining = Math.max(0, MIN_THINKING - elapsed);
+
+        if (reduced || remaining === 0) {
+          reveal(data);
           return;
         }
-        const persona = PERSONAS[data.persona] ? data.persona : "creative-head";
-        const fullText = data.answer || "";
-        const domain = data.domain || PERSONAS[persona].domain;
-        const id = `a-${Date.now()}`;
-        setActivePersona(persona);
-        setMessages((m) => [
-          ...m,
-          { id, role: "assistant", persona, domain, text: "", full: fullText },
-        ]);
-        setPending(false);
-        setAsked((n) => n + 1);
-        startStream(id, fullText);
+
+        const t = setTimeout(() => reveal(data), remaining);
+        // park the timer on the same abort controller so an unmount or
+        // a fresh send cancels it cleanly
+        controller.signal.addEventListener("abort", () => clearTimeout(t));
       })
       .catch((err) => {
         if (err.name === "AbortError") {
@@ -424,13 +458,12 @@ export default function CaseStudyChat({ project = "shopos", onClose }) {
             })}
 
             {pending ? (
-              // Loading bubble — left-aligned, compact pill with bouncing dots
+              // Persona-flavored two-phase thinking indicator. Replaces the
+              // old dots bubble. `activePersona` is null during Phase 1
+              // (team assembling) and flips to the routed persona when the
+              // classify result lands, which kicks off the handoff → Phase 2.
               <div className="mt-8 flex justify-start">
-                <div className="inline-flex h-8 w-16 items-center justify-center gap-1 rounded-full bg-[rgba(233,233,233,0.5)]">
-                  <Dot delay={0} />
-                  <Dot delay={150} />
-                  <Dot delay={300} />
-                </div>
+                <ThinkingIndicator persona={activePersona} />
               </div>
             ) : null}
             </div>
