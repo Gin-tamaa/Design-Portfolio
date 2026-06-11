@@ -191,18 +191,30 @@ body.shopos-hero.shopos-nav-solid header button {
 }
 
 /* ===== Site pet (homepage desktop mascot) =====
-   Fixed-position cursor follower. The component (app/components/SitePet.jsx)
-   writes --pet-x / --pet-y as inline styles every frame; the smooth
-   scaleX(var(--pet-flip)) drives the left/right facing direction. */
+   Autonomous bottom-of-viewport wanderer. The component
+   (app/components/SitePet.jsx) writes --pet-x as an inline style every
+   frame; bottom + height are fixed via CSS so the character always sits
+   on the floor. The raw transparent PNG is rendered directly — no
+   coloured circle behind it.
+
+   Layering (3 nested transforms — split so they don't overwrite each
+   other; CSS animations replace any other transform on the same element):
+   - .site-pet          → fixed positioning + horizontal translate (x).
+   - .site-pet__hit     → button hitbox + scaleX(var(--pet-flip)) for the
+                          left/right facing direction.
+   - .site-pet__inner   → bob / walk / dragged / bump / dizzy keyframe
+                          animations (state-driven via data-state).
+   - .site-pet__img     → the raw PNG, scaled to fit the height. No bg,
+                          no box-shadow, no border-radius. */
 .site-pet {
   position: fixed;
-  top: 0;
+  bottom: var(--pet-bottom, 16px);
   left: 0;
   z-index: 30;
-  width: var(--pet-size, 60px);
-  height: var(--pet-size, 60px);
+  width: var(--pet-width, 80px);
+  height: var(--pet-height, 110px);
   pointer-events: none;
-  transform: translate3d(var(--pet-x, 0), var(--pet-y, 0), 0);
+  transform: translate3d(var(--pet-x, 0), 0, 0);
   will-change: transform;
   user-select: none;
 }
@@ -221,39 +233,38 @@ body.shopos-hero.shopos-nav-solid header button {
 }
 .site-pet[data-dragging="true"] .site-pet__hit { cursor: grabbing; }
 
-.site-pet__avatar {
-  position: relative;
-  display: block;
+.site-pet__inner {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
   width: 100%;
   height: 100%;
-  border-radius: 9999px;
-  overflow: hidden;
-  box-shadow:
-    0 4px 12px -2px rgba(0, 0, 0, 0.18),
-    0 1px 3px rgba(0, 0, 0, 0.08);
+  transform-origin: center bottom;
   animation: site-pet-bob 2.8s ease-in-out infinite;
 }
-.site-pet[data-walking="true"] .site-pet__avatar {
+.site-pet[data-state="walk"] .site-pet__inner {
   animation: site-pet-walk-bob 0.5s ease-in-out infinite;
 }
-.site-pet[data-dragging="true"] .site-pet__avatar {
+.site-pet[data-dragging="true"] .site-pet__inner {
   animation: site-pet-dragged 0.4s ease-in-out infinite;
 }
-.site-pet[data-bumping="true"] .site-pet__avatar {
+.site-pet[data-bumping="true"] .site-pet__inner {
   animation: site-pet-bump 0.32s ease-out;
 }
-.site-pet[data-dizzy="true"] .site-pet__avatar {
+.site-pet[data-state="dizzy"] .site-pet__inner {
   animation: site-pet-dizzy 1.4s ease-in-out infinite;
 }
-.site-pet__avatar img {
-  position: absolute;
-  top: -12%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 130%;
-  height: 130%;
+.site-pet__img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
   object-fit: contain;
+  object-position: bottom center;
   pointer-events: none;
+  /* Pixel art — keep the source crisp instead of blurring it on upscale. */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 @keyframes site-pet-bob {
@@ -326,7 +337,7 @@ body.shopos-hero.shopos-nav-solid header button {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-pet__avatar,
+  .site-pet__inner,
   .site-pet__bubble,
   .site-pet__emote {
     animation: none !important;

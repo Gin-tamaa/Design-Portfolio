@@ -1,58 +1,97 @@
 "use client";
 
-// Desktop pet mascot — uses the Funny Side agent transparent PNG, follows
-// the cursor with lerp, idles with a soft bob, "walks" while chasing,
-// pops a speech bubble on click, sprays a few tiny emotes, gets dizzy
-// from too many rapid clicks, and is draggable. Hidden on touch devices
-// (no cursor to follow) and prefers-reduced-motion (per CSS overrides).
+// Desktop pet mascot — wanders along the bottom of the viewport doing its
+// own thing. Cycles between WALK / IDLE / SIT, swapping persona poses from
+// the Figma 164:1279 sprite set so each state shows a different character
+// action (walking with boombox, standing, seated chin-on-fist, pointing).
 //
-// CSS lives in globals.css under the `.site-pet*` namespace.
-// Mounted on the homepage only (app/page.jsx), so the case study /
-// nested routes aren't littered with a wandering character.
+// Behavior is autonomous: a plan timer flips state on a random interval
+// and walk direction reverses at viewport edges. The cursor is never read.
+//
+// Click → bump + brief POINT pose + emote burst. Five rapid clicks → DIZZY.
+// Drag → user can pick the pet up and drop it anywhere along the bottom;
+// it resumes its plan from wherever you let go.
+//
+// CSS lives in globals.css under the `.site-pet*` namespace. Hidden on
+// touch devices and prefers-reduced-motion via CSS overrides.
 
 import { useEffect, useRef, useState } from "react";
 
 // === Phrase data ===========================================================
 const PHRASES_HELLO = ["hi there!", "hey :)", "psst"];
-const PHRASES_IDLE = ["ready to work", "i'm here", "scrolling along..."];
+const PHRASES_IDLE = ["just hanging out", "scrolling along…", "i'm here"];
 const PHRASES_CLICK = ["oops!", "ow!", "yo!", "what's up?", "ok ok"];
 const PHRASES_DIZZY = ["whoa", "dizzy…", "easy!"];
 
-// === Agent atlas (Funny Side — bubblegum/boombox pose) =====================
-const AGENT_PNG = "/images/agents-chat-raw/funny-side.png";
-const AGENT_BG = "#ed8dc2";
+// === Pose atlas (Funny Side — sprite poses extracted from Figma 164:1278)
+// Each state shows a visually distinct action. No coloured circle behind
+// the character — the raw transparent PNG is what's drawn on the page.
+const POSES = {
+  idle:  "/images/agents-poses/funny-side-front.png",     // standing, hands in pockets
+  walk:  "/images/agents-poses/funny-side-walking.png",   // boombox on shoulder
+  sit:   "/images/agents-poses/funny-side-pointing.png",  // seated, chin on fist
+  point: "/images/agents-poses/funny-side-action.png",    // finger pointed out
+};
 
 // === Tuning ================================================================
-const TARGET_OFFSET_X = 38;   // where the pet sits relative to cursor
-const TARGET_OFFSET_Y = 38;
-const LERP = 0.085;           // smoothness of cursor follow
-const WALK_THRESHOLD = 0.6;   // velocity to flip into "walking" state
-const PET_SIZE = 60;          // px (display size of the avatar circle)
+const PET_HEIGHT = 110;            // px — visible height of the character
+const PET_WIDTH = 80;              // px — fixed wrapper width (wider than the
+                                   // widest pose so swaps don't shift the
+                                   // character horizontally)
+const BOTTOM_OFFSET = 16;          // distance above the viewport bottom
+const WALK_SPEED_PX_PER_S = 70;
 const DIZZY_CLICK_COUNT = 5;
 const DIZZY_RESET_MS = 2500;
+const POINT_DURATION_MS = 700;
+
+// Plan timer windows — how long each autonomous state lasts before the
+// pet picks a new one.
+const PLAN = {
+  walkMin: 3500,
+  walkMax: 7500,
+  idleMin: 1600,
+  idleMax: 3800,
+  sitMin:  4500,
+  sitMax:  8500,
+};
+
+const STATE = {
+  WALK: "walk",
+  IDLE: "idle",
+  SIT:  "sit",
+  POINT: "point",
+  DIZZY: "dizzy",
+};
+
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+const rand = (min, max) => min + Math.random() * (max - min);
 
 export default function SitePet() {
   const petRef = useRef(null);
-  const posRef = useRef({ x: 80, y: 80 });
-  const targetRef = useRef({ x: 80, y: 80 });
-  const flipRef = useRef(1);
+  const stateRef = useRef(STATE.WALK);
+  const xRef = useRef(0);
+  const dirRef = useRef(1); // 1 = right, -1 = left
   const draggingRef = useRef(false);
-  const clickCountRef = useRef(0);
-  const dizzyResetTimerRef = useRef(null);
   const rafRef = useRef(null);
+  const lastTimeRef = useRef(null);
+  const planTimerRef = useRef(null);
+  const pointResetTimerRef = useRef(null);
   const idleBubbleTimerRef = useRef(null);
+  const bubbleTimerRef = useRef(null);
+  const dizzyResetTimerRef = useRef(null);
+  const dizzyTimerRef = useRef(null);
+  const clickCountRef = useRef(0);
 
-  const [walking, setWalking] = useState(false);
+  const [state, setState] = useState(STATE.WALK);
+  const [flip, setFlip] = useState(1);
   const [dragging, setDragging] = useState(false);
   const [bumping, setBumping] = useState(false);
-  const [dizzy, setDizzy] = useState(false);
   const [bubble, setBubble] = useState(null);
   const [emotes, setEmotes] = useState([]);
-  const [flip, setFlip] = useState(1);
   const [mounted, setMounted] = useState(false);
 
-  // Mount gating — skip touch devices entirely (no cursor to chase) and
-  // wait a tick so we don't fight the homepage intro's first paint.
+  // Skip touch devices (no need for a desktop mascot there). Short delay
+  // so we don't fight the homepage intro on first paint.
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(pointer: coarse)").matches) return;
@@ -60,89 +99,108 @@ export default function SitePet() {
     return () => clearTimeout(t);
   }, []);
 
-  // Helper — show a bubble for ~2.5s, replacing whatever's there.
-  const bubbleTimerRef = useRef(null);
   const showBubble = (text) => {
     setBubble(text);
     if (bubbleTimerRef.current) clearTimeout(bubbleTimerRef.current);
     bubbleTimerRef.current = setTimeout(() => setBubble(null), 2500);
   };
 
-  // === Cursor tracking + lerp animation loop ===============================
+  const goToState = (next) => {
+    stateRef.current = next;
+    setState(next);
+  };
+
+  // === Behavior planner =====================================================
+  // The state machine decides what to do next on a self-firing timer.
+  // WALK alternates with IDLE / SIT; click and drag are interruptions.
+  const schedulePlan = (delay) => {
+    clearTimeout(planTimerRef.current);
+    planTimerRef.current = setTimeout(decidePlan, delay);
+  };
+
+  const decidePlan = () => {
+    if (draggingRef.current || stateRef.current === STATE.DIZZY) {
+      schedulePlan(800);
+      return;
+    }
+    const cur = stateRef.current;
+    if (cur === STATE.WALK) {
+      // After a walk, take a breather. 70/30 split between idle and sit.
+      if (Math.random() < 0.7) {
+        goToState(STATE.IDLE);
+        schedulePlan(rand(PLAN.idleMin, PLAN.idleMax));
+      } else {
+        goToState(STATE.SIT);
+        schedulePlan(rand(PLAN.sitMin, PLAN.sitMax));
+      }
+    } else {
+      // From any rest state, walk again. ~40% chance to flip direction.
+      if (Math.random() < 0.4) {
+        dirRef.current *= -1;
+        setFlip(dirRef.current);
+      }
+      goToState(STATE.WALK);
+      schedulePlan(rand(PLAN.walkMin, PLAN.walkMax));
+    }
+  };
+
+  // === Animation loop =======================================================
   useEffect(() => {
     if (!mounted) return;
     const el = petRef.current;
     if (!el) return;
 
-    // Initial position: tucked into the bottom-right so the pet doesn't
-    // appear on top of the hero on first paint.
-    posRef.current = {
-      x: window.innerWidth - PET_SIZE - 32,
-      y: window.innerHeight - PET_SIZE - 48,
-    };
-    targetRef.current = { ...posRef.current };
+    // Start tucked into the left side, facing right.
+    xRef.current = 32;
+    dirRef.current = 1;
+    el.style.setProperty("--pet-x", `${xRef.current}px`);
 
-    const clampTarget = (x, y) => {
-      const maxX = window.innerWidth - PET_SIZE - 8;
-      const maxY = window.innerHeight - PET_SIZE - 8;
-      return {
-        x: Math.max(8, Math.min(maxX, x)),
-        y: Math.max(8, Math.min(maxY, y)),
-      };
-    };
+    schedulePlan(rand(PLAN.walkMin, PLAN.walkMax));
 
-    const onPointerMove = (e) => {
-      if (draggingRef.current) return;
-      const t = clampTarget(
-        e.clientX + TARGET_OFFSET_X,
-        e.clientY + TARGET_OFFSET_Y
-      );
-      targetRef.current.x = t.x;
-      targetRef.current.y = t.y;
-    };
+    const maxX = () => window.innerWidth - PET_WIDTH - 16;
 
-    window.addEventListener("pointermove", onPointerMove);
+    const tick = (t) => {
+      if (lastTimeRef.current == null) lastTimeRef.current = t;
+      const dt = Math.min(0.05, (t - lastTimeRef.current) / 1000); // clamp to avoid huge jumps after tab blur
+      lastTimeRef.current = t;
 
-    const tick = () => {
-      const dx = targetRef.current.x - posRef.current.x;
-      const dy = targetRef.current.y - posRef.current.y;
-      const dist = Math.hypot(dx, dy);
-
-      if (!draggingRef.current && dist > 0.5) {
-        posRef.current.x += dx * LERP;
-        posRef.current.y += dy * LERP;
-      }
-
-      // Flip direction follows horizontal velocity, with a small deadzone.
-      if (Math.abs(dx) > 1.5) {
-        const newFlip = dx > 0 ? 1 : -1;
-        if (newFlip !== flipRef.current) {
-          flipRef.current = newFlip;
-          setFlip(newFlip);
+      if (!draggingRef.current && stateRef.current === STATE.WALK) {
+        const step = WALK_SPEED_PX_PER_S * dt * dirRef.current;
+        xRef.current += step;
+        // Bounce off the viewport edges.
+        if (xRef.current < 16) {
+          xRef.current = 16;
+          dirRef.current = 1;
+          setFlip(1);
+        } else if (xRef.current > maxX()) {
+          xRef.current = maxX();
+          dirRef.current = -1;
+          setFlip(-1);
         }
+        el.style.setProperty("--pet-x", `${xRef.current}px`);
       }
-
-      // Walking state: any noticeable per-frame velocity, not while dragging.
-      const velocity = Math.abs(dx) + Math.abs(dy);
-      const shouldWalk = velocity > WALK_THRESHOLD && !draggingRef.current;
-      setWalking((prev) => (prev !== shouldWalk ? shouldWalk : prev));
-
-      // Write the CSS variables directly — keeps the high-frequency
-      // position updates off the React render path.
-      el.style.setProperty("--pet-x", `${posRef.current.x}px`);
-      el.style.setProperty("--pet-y", `${posRef.current.y}px`);
 
       rafRef.current = requestAnimationFrame(tick);
     };
-
     rafRef.current = requestAnimationFrame(tick);
 
-    // Random idle bubble every 12–25s
+    // Re-clamp x when the viewport resizes so the pet can't get stuck
+    // beyond the right edge.
+    const onResize = () => {
+      const m = maxX();
+      if (xRef.current > m) {
+        xRef.current = m;
+        el.style.setProperty("--pet-x", `${xRef.current}px`);
+      }
+    };
+    window.addEventListener("resize", onResize);
+
+    // Random idle bubble every 12–25s.
     const scheduleIdleBubble = () => {
       const delay = 12000 + Math.random() * 13000;
       idleBubbleTimerRef.current = setTimeout(() => {
         const pool = Math.random() < 0.5 ? PHRASES_HELLO : PHRASES_IDLE;
-        showBubble(pool[Math.floor(Math.random() * pool.length)]);
+        showBubble(pick(pool));
         scheduleIdleBubble();
       }, delay);
     };
@@ -150,78 +208,82 @@ export default function SitePet() {
 
     return () => {
       cancelAnimationFrame(rafRef.current);
+      clearTimeout(planTimerRef.current);
+      clearTimeout(pointResetTimerRef.current);
       clearTimeout(idleBubbleTimerRef.current);
       clearTimeout(bubbleTimerRef.current);
       clearTimeout(dizzyResetTimerRef.current);
-      window.removeEventListener("pointermove", onPointerMove);
+      clearTimeout(dizzyTimerRef.current);
+      window.removeEventListener("resize", onResize);
     };
   }, [mounted]);
 
-  // === Click / pet =========================================================
+  // === Click ================================================================
   const handleClick = () => {
-    // Bump animation — short tilt + lift
     setBumping(true);
     setTimeout(() => setBumping(false), 320);
 
-    // Random click phrase
-    const phrase = PHRASES_CLICK[Math.floor(Math.random() * PHRASES_CLICK.length)];
-    showBubble(phrase);
+    // Brief POINT pose on click, then return to the previous state.
+    const prev = stateRef.current === STATE.DIZZY ? STATE.IDLE : stateRef.current;
+    goToState(STATE.POINT);
+    clearTimeout(pointResetTimerRef.current);
+    pointResetTimerRef.current = setTimeout(() => {
+      if (stateRef.current === STATE.POINT) goToState(prev);
+    }, POINT_DURATION_MS);
 
-    // Spawn 4 tiny emotes, fanning out from the top of the avatar
+    showBubble(pick(PHRASES_CLICK));
+
+    // Spawn 4 tiny emotes fanning out from the top.
     const newEmotes = Array.from({ length: 4 }, (_, i) => ({
       id: `em-${Date.now()}-${i}-${Math.random().toString(36).slice(2, 6)}`,
       char: ["·", "·", "♥", "✦"][i],
-      angle: -45 + i * 30, // -45 / -15 / 15 / 45deg
+      angle: -45 + i * 30,
     }));
-    setEmotes((prev) => [...prev, ...newEmotes]);
+    setEmotes((p) => [...p, ...newEmotes]);
     setTimeout(() => {
-      setEmotes((prev) =>
-        prev.filter((em) => !newEmotes.some((ne) => ne.id === em.id))
-      );
+      setEmotes((p) => p.filter((e) => !newEmotes.some((ne) => ne.id === e.id)));
     }, 1100);
 
-    // Dizzy after 5 rapid clicks within DIZZY_RESET_MS
+    // Dizzy after N rapid clicks.
     clickCountRef.current += 1;
     clearTimeout(dizzyResetTimerRef.current);
-    dizzyResetTimerRef.current = setTimeout(() => {
-      clickCountRef.current = 0;
-    }, DIZZY_RESET_MS);
+    dizzyResetTimerRef.current = setTimeout(() => { clickCountRef.current = 0; }, DIZZY_RESET_MS);
 
     if (clickCountRef.current >= DIZZY_CLICK_COUNT) {
-      setDizzy(true);
-      showBubble(PHRASES_DIZZY[Math.floor(Math.random() * PHRASES_DIZZY.length)]);
-      setTimeout(() => {
-        setDizzy(false);
+      goToState(STATE.DIZZY);
+      showBubble(pick(PHRASES_DIZZY));
+      clearTimeout(dizzyTimerRef.current);
+      dizzyTimerRef.current = setTimeout(() => {
+        goToState(STATE.WALK);
         clickCountRef.current = 0;
       }, 1800);
     }
   };
 
-  // === Drag ================================================================
+  // === Drag =================================================================
+  // Horizontal-only drag along the bottom strip. Vertical position is fixed
+  // by CSS (bottom: var(--pet-bottom)) so the pet always sits on the floor.
   const handlePointerDown = (e) => {
-    if (e.button !== 0) return; // primary button only
-
-    const start = { x: posRef.current.x, y: posRef.current.y };
-    const mouse = { x: e.clientX, y: e.clientY };
+    if (e.button !== 0) return;
+    const start = { x: xRef.current };
+    const mouse = { x: e.clientX };
     let didDrag = false;
+
+    const maxX = () => window.innerWidth - PET_WIDTH - 16;
 
     const onMove = (ev) => {
       const dx = ev.clientX - mouse.x;
-      const dy = ev.clientY - mouse.y;
-      if (!didDrag && Math.hypot(dx, dy) > 5) {
+      if (!didDrag && Math.abs(dx) > 5) {
         didDrag = true;
         draggingRef.current = true;
         setDragging(true);
       }
       if (didDrag) {
-        posRef.current.x = start.x + dx;
-        posRef.current.y = start.y + dy;
-        // Also push target so the pet doesn't snap back to cursor on release
-        targetRef.current.x = posRef.current.x;
-        targetRef.current.y = posRef.current.y;
+        const next = Math.max(16, Math.min(maxX(), start.x + dx));
+        xRef.current = next;
+        petRef.current?.style.setProperty("--pet-x", `${next}px`);
       }
     };
-
     const onUp = () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
@@ -237,15 +299,23 @@ export default function SitePet() {
 
   if (!mounted) return null;
 
+  // Walking direction also picks the source flip — when dirRef is -1 the
+  // image scales by -1 horizontally so the character faces the way it's
+  // moving. IDLE / SIT keep whichever direction was last walked.
+  const poseUrl = POSES[state] || POSES.idle;
+
   return (
     <div
       ref={petRef}
       className="site-pet"
-      data-walking={walking ? "true" : undefined}
+      data-state={state}
       data-dragging={dragging ? "true" : undefined}
       data-bumping={bumping ? "true" : undefined}
-      data-dizzy={dizzy ? "true" : undefined}
-      style={{ "--pet-size": `${PET_SIZE}px` }}
+      style={{
+        "--pet-height": `${PET_HEIGHT}px`,
+        "--pet-width": `${PET_WIDTH}px`,
+        "--pet-bottom": `${BOTTOM_OFFSET}px`,
+      }}
       aria-hidden="true"
     >
       {bubble ? <div className="site-pet__bubble">{bubble}</div> : null}
@@ -270,11 +340,15 @@ export default function SitePet() {
         style={{ "--pet-flip": flip }}
         aria-label="Friendly site mascot — click to pet"
       >
-        <span
-          className="site-pet__avatar"
-          style={{ background: AGENT_BG }}
-        >
-          <img src={AGENT_PNG} alt="" draggable={false} />
+        {/* Inner wrapper carries the bob/walk/dizzy animations so they
+            don't overwrite the scaleX flip on the button. */}
+        <span className="site-pet__inner">
+          <img
+            src={poseUrl}
+            alt=""
+            draggable={false}
+            className="site-pet__img"
+          />
         </span>
       </button>
     </div>
