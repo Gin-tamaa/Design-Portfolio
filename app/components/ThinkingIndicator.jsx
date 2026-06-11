@@ -1,28 +1,33 @@
 "use client";
 
-// Two-phase, persona-flavored thinking state for the chat.
+// Two-phase thinking indicator, restructured to Figma 164:1245.
 //
-// Phase 1 ("team")     — row of 4 avatars + cycling team-assembly phrases.
-//                         Trailing icon cycles through all 4 faces.
-// Phase 1→2 ("handoff") — 3 non-chosen avatars fade away, the chosen one
-//                         lifts to lead position. One handoff phrase plays.
-// Phase 2 ("single")   — only the chosen persona, gentle bob + opacity
-//                         loop, phrases shuffled from THINKING_PHRASES[p].
+// Single inline row: a small cluster of overlapping persona avatars (each
+// with a white ring) followed by the cycling phrase text. There is no
+// separate trail icon — the cluster IS the visual.
 //
-// All timing comes from the constants at the top so it's tunable in one
-// spot. The component handles its own visual phase transitions (driven
-// by PHASE1_FLOOR + HANDOFF_DURATION). The PARENT owns the global
-// MIN_THINKING + reveal decision — this component only renders.
+// Phase 1 ("team")     — all 4 avatars overlapping, cycling team-assemble
+//                         phrases. Each face quietly swaps default↔thinking
+//                         via CyclingAgentAvatar (staggered offsets).
+// Phase 1→2 ("handoff") — the 3 non-chosen avatars fade + collapse their
+//                         width to 0; the chosen one lifts into lead
+//                         position. Phrases swap to a brief HANDOFF line.
+// Phase 2 ("single")   — only the chosen avatar remains, with persona-
+//                         flavored phrases ("Creative Head is sketching
+//                         the idea…") + shimmer tint matching its color.
 //
-// Reduced motion: ignore intervals, render a single static phase that
-// matches whichever lane the persona resolved to (or team if it hasn't
-// resolved yet).
+// All timing constants live up top. The PARENT owns the global
+// MIN_THINKING + reveal decision (CaseStudyChat.send) — this component
+// renders state, nothing else.
+//
+// Reduced motion: ignore cycle intervals and crossfades, render one
+// static phase.
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import AgentAvatar, { CyclingAgentAvatar } from "./AgentAvatar";
 
 /* ============================================================================
-   Data — phrases, persona maps, timing
+   Data
 ============================================================================ */
 
 const TEAM_PHRASES = [
@@ -92,17 +97,6 @@ const PERSONA_COLORS = {
   funnySide: "#E0A93B",
 };
 
-// Avatar atlas lives in AgentAvatar.jsx now (colored bg in CSS + raw
-// high-res portrait PNG composited on top, so it doesn't pixelate).
-// We just need the camel→kebab mapping to feed AgentAvatar the
-// kebab-case persona id it expects.
-const CAMEL_TO_KEBAB = {
-  creativeHead: "creative-head",
-  vibeCoder: "vibe-coder",
-  aiTinkerer: "ai-tinkerer",
-  funnySide: "funny-side",
-};
-
 const PERSONA_LABELS = {
   creativeHead: "Creative Head",
   vibeCoder: "Vibe Coder",
@@ -112,25 +106,32 @@ const PERSONA_LABELS = {
 
 const ALL_PERSONAS = ["creativeHead", "vibeCoder", "aiTinkerer", "funnySide"];
 
-// API returns kebab-case persona ids ("creative-head"); the data above
-// keys by camelCase. Map between them once.
+// API returns kebab-case persona ids; data above is keyed camelCase.
 const KEBAB_TO_CAMEL = {
   "creative-head": "creativeHead",
   "vibe-coder": "vibeCoder",
   "ai-tinkerer": "aiTinkerer",
   "funny-side": "funnySide",
 };
+const CAMEL_TO_KEBAB = {
+  creativeHead: "creative-head",
+  vibeCoder: "vibe-coder",
+  aiTinkerer: "ai-tinkerer",
+  funnySide: "funny-side",
+};
 
-// Timing — tune at will.
+// Timing
 const PHASE1_FLOOR = 800;     // ms — min team-assemble visible
-const PHRASE_INTERVAL = 1700; // ms — phrase cycle interval
+const PHRASE_INTERVAL = 1700; // ms — phrase cycle
 const CROSSFADE = 250;        // ms — phrase fade transition
-const TRAIL_INTERVAL = 600;   // ms — trail icon swap interval (Phase 1)
-const HANDOFF_DURATION = 500; // ms — 4→1 avatar transition
-const FRAME_INTERVAL = 460;   // ms — default↔thinking swap on each avatar
+const HANDOFF_DURATION = 500; // ms — 4→1 avatar collapse
+
+// Layout (Figma 164:1245)
+const AVATAR_SIZE = 18;       // px — matches Figma frame size
+const AVATAR_OVERLAP = 4;     // px — mr-[-4px] overlap between siblings
 
 /* ============================================================================
-   Small helpers
+   Helpers
 ============================================================================ */
 
 function shuffleArray(arr) {
@@ -160,14 +161,14 @@ function useReducedMotion() {
 }
 
 /* ============================================================================
-   CyclingText — phrase cycles every PHRASE_INTERVAL with CROSSFADE
+   CyclingText — phrase cycles every PHRASE_INTERVAL with CROSSFADE,
+   masked through the shimmer gradient (optionally tinted by persona).
 ============================================================================ */
 
 function CyclingText({ phrases, color, reducedMotion }) {
   const [idx, setIdx] = useState(0);
   const [fading, setFading] = useState(false);
 
-  // Reset to first phrase when the phrases array changes (phase change).
   useEffect(() => {
     setIdx(0);
     setFading(false);
@@ -182,8 +183,6 @@ function CyclingText({ phrases, color, reducedMotion }) {
         setIdx((i) => (i + 1) % phrases.length);
         setFading(false);
       }, CROSSFADE);
-      // (cleanup via outer interval clearing — these inner timeouts are
-      // tiny and self-completing)
       void t;
     }, PHRASE_INTERVAL);
     return () => clearInterval(interval);
@@ -203,58 +202,52 @@ function CyclingText({ phrases, color, reducedMotion }) {
 }
 
 /* ============================================================================
-   AvatarRow — Phase 1 row of 4 → Phase 2 single lead. Each face cycles
-   default ↔ thinking via the shared CyclingAgentAvatar, staggered per
-   index so the row doesn't twitch in lockstep.
+   AvatarCluster — Figma 164:1245 structure. Always 4 avatars in DOM so
+   the chosen one keeps its identity through the handoff. Non-chosen ones
+   shrink to width:0 + opacity:0 in handoff/single phase; flex layout
+   collapses the row down to a single visible avatar without snapping.
 ============================================================================ */
 
-const AVATAR_SIZE = 24; // smaller than the previous 36 — matches the
-                        // assistant message header avatar size, per user
-                        // feedback that 36 felt oversized.
-
-function AvatarRow({ phase, chosenPersona, reducedMotion }) {
+function AvatarCluster({ phase, chosenPersonaKey, reducedMotion }) {
   return (
-    <div className="flex items-center gap-3">
+    <div className="inline-flex items-center">
       {ALL_PERSONAS.map((key, i) => {
-        const isChosen = key === chosenPersona;
-        const isCollapsed = phase !== "team" && !isChosen;
-        const isLead = phase !== "team" && isChosen;
+        const isChosen = key === chosenPersonaKey;
+        // Collapse non-chosen the moment we leave Phase 1.
+        const collapsed = phase !== "team" && !isChosen;
 
-        // Outer wrapper handles entrance / handoff / lead-scale + the
-        // gentle idle bob. The avatar itself is the new composited
-        // (CSS bg + raw portrait) AgentAvatar, so transforms here
-        // don't fight with image rendering.
-        const outerStyle = {
-          opacity: isCollapsed ? 0 : 1,
-          transform: isCollapsed
-            ? "translateY(-6px)"
-            : isLead
-            ? "scale(1.2)"
-            : "scale(1)",
+        // mr-[-4px] overlap on all but the last avatar — Figma uses gap-4
+        // (4px) but with mr-[-4px] siblings, which is the overlap step.
+        const baseMargin = i < ALL_PERSONAS.length - 1 ? -AVATAR_OVERLAP : 0;
+
+        const wrapStyle = {
+          width: collapsed ? 0 : AVATAR_SIZE,
+          marginRight: collapsed ? 0 : baseMargin,
+          opacity: collapsed ? 0 : 1,
+          transform: collapsed ? "scale(0.5)" : "scale(1)",
           transition: reducedMotion
             ? "none"
-            : `opacity ${HANDOFF_DURATION}ms ease, transform ${HANDOFF_DURATION}ms cubic-bezier(0.22, 0.61, 0.36, 1)`,
-          transitionDelay:
-            phase === "team" && !reducedMotion ? `${i * 80}ms` : "0ms",
-          pointerEvents: isCollapsed ? "none" : "auto",
-          // bob the wrapper, not the inner avatar — keeps the bg+portrait
-          // composite stable while only the row position shifts.
-          animation: reducedMotion
-            ? "none"
-            : "thinkingBob 1.8s ease-in-out infinite",
-          animationDelay: `${i * 120}ms`,
+            : `width ${HANDOFF_DURATION}ms cubic-bezier(0.22, 0.61, 0.36, 1),` +
+              ` margin ${HANDOFF_DURATION}ms cubic-bezier(0.22, 0.61, 0.36, 1),` +
+              ` opacity ${HANDOFF_DURATION}ms ease,` +
+              ` transform ${HANDOFF_DURATION}ms cubic-bezier(0.22, 0.61, 0.36, 1)`,
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          overflow: "hidden",
+          flex: "0 0 auto",
         };
 
         return (
-          <div key={key} style={outerStyle}>
+          <span key={key} style={wrapStyle}>
             <CyclingAgentAvatar
               persona={CAMEL_TO_KEBAB[key]}
               size={AVATAR_SIZE}
-              compact
+              ring="white"
               offset={i * 110}
               reducedMotion={reducedMotion}
             />
-          </div>
+          </span>
         );
       })}
     </div>
@@ -262,22 +255,20 @@ function AvatarRow({ phase, chosenPersona, reducedMotion }) {
 }
 
 /* ============================================================================
-   ThinkingIndicator — phase machine + render
+   ThinkingIndicator — phase state machine + render
 ============================================================================ */
 
 export default function ThinkingIndicator({ persona }) {
   const reducedMotion = useReducedMotion();
   const personaKey = persona ? KEBAB_TO_CAMEL[persona] || "creativeHead" : null;
 
-  // "team" → "handoff" → "single"
   const [phase, setPhase] = useState("team");
 
-  // Lock in the start time so PHASE1_FLOOR is from-send, not from re-render.
+  // Lock the start time so PHASE1_FLOOR is measured from send, not render.
   const startRef = useRef(null);
   if (startRef.current === null) startRef.current = Date.now();
 
-  // Drive team → handoff → single once persona is known AND PHASE1_FLOOR has
-  // elapsed. Both timeouts cleaned up on unmount or re-trigger.
+  // team → handoff → single once persona is known AND PHASE1_FLOOR elapsed.
   useEffect(() => {
     if (!personaKey) return;
     if (phase !== "team") return;
@@ -297,19 +288,7 @@ export default function ThinkingIndicator({ persona }) {
     };
   }, [personaKey, phase]);
 
-  // Trail icon cycling — Phase 1 only, swaps every TRAIL_INTERVAL.
-  const [trailIdx, setTrailIdx] = useState(0);
-  useEffect(() => {
-    if (phase !== "team") return;
-    if (reducedMotion) return;
-    const interval = setInterval(() => {
-      setTrailIdx((i) => (i + 1) % ALL_PERSONAS.length);
-    }, TRAIL_INTERVAL);
-    return () => clearInterval(interval);
-  }, [phase, reducedMotion]);
-
-  // Shuffle Phase 2 phrases ONCE per persona entry so the order varies
-  // between questions; useMemo cache key matches the trigger.
+  // Shuffle Phase 2 phrases ONCE so order varies between questions.
   const singlePhrases = useMemo(() => {
     if (phase !== "single" || !personaKey) return null;
     const raw = THINKING_PHRASES[personaKey] || THINKING_PHRASES.creativeHead;
@@ -317,11 +296,8 @@ export default function ThinkingIndicator({ persona }) {
     return shuffleArray(raw).map((p) => `${label} is ${lowerFirst(p)}…`);
   }, [phase, personaKey]);
 
-  // Phrase set + accent color per phase. The trail icon is rendered
-  // separately below so each phase can pick the right avatar treatment.
   let phrases;
   let accentColor = null;
-
   if (phase === "team") {
     phrases = TEAM_PHRASES;
   } else if (phase === "handoff") {
@@ -332,62 +308,26 @@ export default function ThinkingIndicator({ persona }) {
     accentColor = PERSONA_COLORS[personaKey];
   }
 
-  // Phase 1 trail icon rotates through the 4 personas every TRAIL_INTERVAL.
-  // Phase 2 trail icon cycles default↔thinking on the chosen persona.
-  const trailPersonaKebab =
-    phase === "team"
-      ? CAMEL_TO_KEBAB[ALL_PERSONAS[trailIdx]]
-      : CAMEL_TO_KEBAB[personaKey];
-
   return (
-    <div className="csc-bubble-in flex flex-col items-start gap-3">
-      <AvatarRow
+    <div
+      className="csc-bubble-in inline-flex items-center"
+      style={{ gap: "8px", fontFamily: "Inter, sans-serif" }}
+    >
+      <AvatarCluster
         phase={phase}
-        chosenPersona={personaKey}
+        chosenPersonaKey={personaKey}
         reducedMotion={reducedMotion}
       />
-
-      <div
-        className="flex items-center text-[15px] leading-[24px]"
-        style={{ fontFamily: "Inter, sans-serif" }}
+      <span
+        className="text-[14px] leading-[20px] font-medium"
+        style={{ color: "#262626" }}
       >
         <CyclingText
           phrases={phrases}
           color={accentColor}
           reducedMotion={reducedMotion}
         />
-        {trailPersonaKebab ? (
-          <span
-            className="trail-icon-wrap"
-            style={{
-              marginLeft: 8,
-              display: "inline-flex",
-              verticalAlign: "middle",
-              animation: reducedMotion
-                ? "none"
-                : "trailPulse 1s ease-in-out infinite",
-            }}
-          >
-            {phase === "team" ? (
-              // Hard-rotate: re-mount via key so the pulse replays on swap.
-              <AgentAvatar
-                key={`trail-team-${trailIdx}`}
-                persona={trailPersonaKebab}
-                size={18}
-                compact
-              />
-            ) : (
-              <CyclingAgentAvatar
-                persona={trailPersonaKebab}
-                size={18}
-                compact
-                offset={120}
-                reducedMotion={reducedMotion}
-              />
-            )}
-          </span>
-        ) : null}
-      </div>
+      </span>
     </div>
   );
 }

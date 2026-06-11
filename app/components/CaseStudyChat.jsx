@@ -421,17 +421,20 @@ export default function CaseStudyChat({ project = "shopos", onClose }) {
 
   return (
     <div className="csc-thread relative flex h-full flex-col">
-      {/* Top bar — mirrors the global site Nav exactly: 64px tall,
-          max-w-1400 inner column, px-6 md:px-10 horizontal padding,
-          items-center, bottom border. Back-to-Case-Study replaces the
-          wordmark on the left; session counter on the right. */}
-      <header className="h-16 border-b border-[#E5E5E5]">
+      {/* Top bar — mirrors the global site Nav layout (h-16, max-w-1400,
+          px-6 md:px-10, items-center, bottom border). Uses <div> instead
+          of <header> so the case-study nav-inversion rules in globals.css
+          (`body.shopos-hero header button { color: #fff }`) don't paint
+          the button white-on-white when the takeover is open. */}
+      <div className="h-16 border-b border-[#E5E5E5]">
         <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-6 md:px-10">
           <button
             type="button"
             onClick={onClose}
-            className="inline-flex items-center gap-2 text-[14px] tracking-[0.02em] text-[#0a0a0a] transition-colors hover:text-[#525252]"
-            style={{ fontFamily: "Inter, sans-serif" }}
+            // Explicit !text-[#0a0a0a] beats the global nav-inversion
+            // selector specificity if the body class is still applied.
+            className="inline-flex items-center gap-2 !text-[#0a0a0a] text-[14px] tracking-[0.02em] transition-colors hover:!text-[#525252]"
+            style={{ fontFamily: "Inter, sans-serif", color: "#0a0a0a" }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path
@@ -446,12 +449,12 @@ export default function CaseStudyChat({ project = "shopos", onClose }) {
           </button>
           <p
             className="text-[14px] tracking-[0.02em] text-[#525252]"
-            style={{ fontFamily: "Inter, sans-serif" }}
+            style={{ fontFamily: "Inter, sans-serif", color: "#525252" }}
           >
             {asked}/{SESSION_CAP}
           </p>
         </div>
-      </header>
+      </div>
 
       {/* Scroll area — the outer takeover (.csc-thread) is the inline-size
           query container; this just scrolls. */}
@@ -698,7 +701,7 @@ function AssistantMessage({ msg, spacing, streamingId }) {
   return (
     <div className={`${spacing} group flex flex-col items-start`}>
       <div className="csc-chip-in mb-2 flex items-center gap-2">
-        <AgentAvatar persona={msg.persona || "creative-head"} size={20} compact />
+        <AgentAvatar persona={msg.persona || "creative-head"} size={20} />
         <span
           className="text-[12px] leading-[16px] text-[#525252]"
           style={{ fontFamily: "Inter, sans-serif" }}
