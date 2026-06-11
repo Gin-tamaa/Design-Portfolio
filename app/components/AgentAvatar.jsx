@@ -63,54 +63,15 @@ export const AGENT_AVATARS = {
   },
 };
 
-// Internal — render a single static pose at a given size.
-function Pose({ crop, url, alt = "" }) {
-  const style = crop.cover
-    ? {
-        position: "absolute",
-        inset: 0,
-        width: "100%",
-        height: "100%",
-        objectFit: "cover",
-      }
-    : {
-        position: "absolute",
-        top: `${crop.top}%`,
-        left: `${crop.left}%`,
-        width: `${crop.width}%`,
-        height: `${crop.height}%`,
-      };
-  return (
-    <img
-      src={url}
-      alt={alt}
-      aria-hidden={alt ? undefined : "true"}
-      draggable={false}
-      style={style}
-    />
-  );
-}
-
-// Tighten the Figma crop further so just the head fills the visible
-// circle. The Figma ratios show head + chest (designed for 18×18); at
-// real chat sizes (18–28px) that makes the head feel scrunched. Scale
-// the portrait ~1.85× from the same anchor so the chest pushes out of
-// the frame and the face dominates.
-const COMPACT_ZOOM = 1.85;
-function compactify(crop) {
-  // `cover` poses already crop tight to the head — leave them alone.
-  if (crop.cover) return crop;
-  return {
-    top: crop.top * COMPACT_ZOOM,
-    left: crop.left * COMPACT_ZOOM,
-    width: crop.width * COMPACT_ZOOM,
-    height: crop.height * COMPACT_ZOOM,
-  };
-}
-
-// Static avatar — bg circle + one pose. Used by the chat message header
-// and the empty state. `persona` is the kebab-case id the API returns.
-// `compact` zooms in on just the head, for small circles (≤ 28px).
+// Static avatar — bg circle + portrait inside. Predictable framing for
+// every persona: image fills the circle with object-fit: cover, anchored
+// to center-top so the head sits at the top of the circle and the lower
+// body crops out naturally. No per-persona crop ratios.
+//
+// `compact` mode pushes the image up + scales it so the head fills more
+// of the small circle (used at 18–24px in the chat header / thinking).
+//
+// `persona` is the kebab-case id the API returns.
 export default function AgentAvatar({
   persona,
   state = "default",
@@ -120,8 +81,7 @@ export default function AgentAvatar({
 }) {
   const data = AGENT_AVATARS[persona];
   if (!data) {
-    // Fallback: render a plain neutral circle if the persona isn't in the
-    // atlas. Keeps the layout intact instead of bursting.
+    // Fallback: plain neutral circle if the persona isn't in the atlas.
     return (
       <span
         className={`block rounded-full bg-[#E5E5E5] ${className}`}
@@ -131,13 +91,40 @@ export default function AgentAvatar({
     );
   }
   const pose = state === "thinking" && data.thinking ? data.thinking : data.default;
-  const crop = compact ? compactify(pose.crop) : pose.crop;
+
+  // Compact: enlarge the image and pull it up so the head dominates the
+  // small visible circle. Default: image fills circle exactly.
+  const imgStyle = compact
+    ? {
+        position: "absolute",
+        top: "-15%",
+        left: "-40%",
+        width: "180%",
+        height: "180%",
+        objectFit: "cover",
+        objectPosition: "center top",
+      }
+    : {
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        objectPosition: "center top",
+      };
+
   return (
     <span
       className={`relative inline-block overflow-hidden rounded-full ${className}`}
       style={{ width: size, height: size, background: data.bg }}
     >
-      <Pose crop={crop} url={pose.url} />
+      <img
+        src={pose.url}
+        alt=""
+        aria-hidden="true"
+        draggable={false}
+        style={imgStyle}
+      />
     </span>
   );
 }
