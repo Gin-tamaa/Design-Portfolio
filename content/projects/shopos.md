@@ -85,6 +85,8 @@ The real process, in order:
 5. Built a **vibe-coded MVP first** (fastest to put in front of onboarded brands), with the **Figma-designed version in parallel** as feedback came in. Real reactions before real build. This saved company cost and dev time — validate cheap before building.
 6. Shipped v1, tested with clients, kept iterating from feedback.
 
+**End-user research (the part beyond the internal team):** The validation wasn't only internal. We took the MVP to the actual brands who would use it — real onboarded clients, the people who'd run their store on this — and watched how they reacted before committing to the full build. So there were two layers of validation: our own internal specialists testing the agent for the role they do, AND the real end users (the brand owners and operators) reacting to the working MVP. The internal test made sure each agent did its job credibly; the end-user test made sure the product actually fit how a brand runs day to day. One thing end users surfaced: they wanted to see what each agent had actually done — visible job history per agent — which fed how the agents display their work up front. (If asked for specific named clients or quotes: those are confidential / being finalized — see guardrails, don't invent.)
+
 **Honest candor (good to say spoken, fine to say here):** AI moves fast, so they didn't have time to formally validate every single agent against its real-life human counterpart before shipping — the first MVP was built on general understanding and optimized post-launch. AI is new for everyone; there's no historical data on how users react, so the work is necessarily iterative: see where it fits, ship, watch, improve. Some agents are live; some are still being set up.
 
 ## WHAT'S LIVE
