@@ -15,33 +15,43 @@ import Link from "next/link";
 import ChatBox, { ChevronDownIcon } from "./ChatBox";
 import ThinkingIndicator from "./ThinkingIndicator";
 
+// Two-state 8-bit avatar atlas (Figma 162:1223): every persona has a
+// `default` portrait and a `thinking` variant. Default is what shows in
+// the chat message header and empty state; the ThinkingIndicator cycles
+// between default ↔ thinking so the agent looks alive while it thinks.
+// Source PNGs are 18×18 pixel art — render with image-rendering:pixelated
+// so they scale up clean at 24/108px without smoothing the pixels away.
 const PERSONAS = {
   "creative-head": {
     label: "Creative Head",
     short: "Creative head",
     color: "#7C5CFF",
-    avatar: "/images/creative-head-chat.png",
+    avatar: "/images/agents-chat/creative-head.png",
+    avatarThinking: "/images/agents-chat/creative-head-thinking.png",
     domain: "design",
   },
   "vibe-coder": {
     label: "Vibe Coder",
     short: "Vibe Coder",
     color: "#3D6BE5",
-    avatar: "/images/vibe-coder-chat.png",
+    avatar: "/images/agents-chat/vibe-coder.png",
+    avatarThinking: "/images/agents-chat/vibe-coder-thinking.png",
     domain: "build",
   },
   "ai-tinkerer": {
     label: "AI Tinkerer",
     short: "AI Tinkerer",
     color: "#0E9FB8",
-    avatar: "/images/ai-tinkerer-chat.png",
+    avatar: "/images/agents-chat/ai-tinkerer.png",
+    avatarThinking: "/images/agents-chat/ai-tinkerer-thinking.png",
     domain: "agents",
   },
   "funny-side": {
     label: "Funny Side",
     short: "Funny Side",
     color: "#E0A93B",
-    avatar: "/images/funny-side-chat.png",
+    avatar: "/images/agents-chat/funny-side.png",
+    avatarThinking: "/images/agents-chat/funny-side-thinking.png",
     domain: "everything else",
   },
 };
@@ -137,7 +147,14 @@ function Avatar({ src, label, color, size = 96 }) {
       alt={label}
       onError={() => setFailed(true)}
       className="rounded-full object-cover select-none"
-      style={{ width: size, height: size, background: color }}
+      style={{
+        width: size,
+        height: size,
+        background: color,
+        // Source PNGs are 18×18 pixel art — keep pixels crisp when
+        // upscaled (e.g. 108px empty-state avatars are a 6× zoom).
+        imageRendering: "pixelated",
+      }}
       draggable={false}
     />
   );
