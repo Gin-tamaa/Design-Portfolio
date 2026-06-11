@@ -28,13 +28,15 @@ const PHRASES_DIZZY = ["whoa", "dizzy…", "easy!"];
 // circle behind the character — the raw transparent PNG is what's drawn
 // on the page.
 //
-// WALK uses frame 1 of the Figma 164:1332 walk sheet (left leg striding
-// forward, boombox on shoulder) as a single static pose. We tried
-// cycling all 5 frames but at this scale the stepping read as a flicker,
-// not a stride, so we picked the most readable silhouette and held it.
+// WALK is the 5-frame walk cycle from Figma 164:1332. The strip was
+// re-extracted with TORSO-CENTROID horizontal alignment (not bbox-
+// centre) — the character's body stays put across frames so only the
+// legs and the boombox-bearing arm move. CSS animates background-
+// position through steps(5) to advance the frame. See .site-pet__sprite
+// in globals.css.
 const POSES = {
   idle:  "/images/agents-poses/funny-side-front.png",       // standing, hands in pockets
-  walk:  "/images/agents-poses/funny-side-walk-static.png", // mid-stride with boombox
+  walk:  "/images/agents-poses/funny-side-walk-cycle.png",  // 5-frame strip
   sit:   "/images/agents-poses/funny-side-pointing.png",    // seated, chin on fist
   point: "/images/agents-poses/funny-side-action.png",      // finger pointed out
 };
@@ -346,15 +348,21 @@ export default function SitePet() {
         style={{ "--pet-flip": flip }}
         aria-label="Friendly site mascot — click to pet"
       >
-        {/* Inner wrapper carries the bob/walk/dizzy animations so they
-            don't overwrite the scaleX flip on the button. */}
+        {/* Inner wrapper carries the bob/dizzy animations so they don't
+            overwrite the scaleX flip on the button. WALK swaps to a
+            background-image sprite so we can step through 5 frames; all
+            other states render the static <img>. */}
         <span className="site-pet__inner">
-          <img
-            src={poseUrl}
-            alt=""
-            draggable={false}
-            className="site-pet__img"
-          />
+          {state === STATE.WALK ? (
+            <span className="site-pet__sprite" aria-hidden="true" />
+          ) : (
+            <img
+              src={poseUrl}
+              alt=""
+              draggable={false}
+              className="site-pet__img"
+            />
+          )}
         </span>
       </button>
     </div>

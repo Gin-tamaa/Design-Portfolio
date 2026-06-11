@@ -274,6 +274,33 @@ body.shopos-hero.shopos-nav-solid header button {
   image-rendering: crisp-edges;
 }
 
+/* WALK state — 5-frame torso-aligned walk cycle from Figma 164:1332.
+   Strip layout: 5 frames laid out horizontally, each frame the same
+   size, character's torso pinned to the same x in every frame so only
+   legs + boombox arm animate (the body itself doesn't jerk between
+   frames — that was what made the earlier version read as a glitch).
+
+   background-size: 500% 100% scales the strip so ONE frame fills the
+   container. background-position 0% → 100% with steps(5) walks through
+   frames 1 → 5; one full cycle takes 800ms (~6 fps — a slower, more
+   deliberate gait than the earlier 8fps version). */
+.site-pet__sprite {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-image: url("/images/agents-poses/funny-side-walk-cycle.png");
+  background-repeat: no-repeat;
+  background-size: 500% 100%;
+  background-position: 0% 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  animation: site-pet-walk-cycle 0.8s steps(5) infinite;
+}
+@keyframes site-pet-walk-cycle {
+  from { background-position: 0%   100%; }
+  to   { background-position: 100% 100%; }
+}
+
 
 @keyframes site-pet-bob {
   0%, 100% { transform: translateY(0); }
