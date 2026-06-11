@@ -262,8 +262,6 @@ function CyclingAvatar({
       style={{
         width: size,
         height: size,
-        // Source is 18×18 pixel art — keep edges crisp on upscale.
-        imageRendering: "pixelated",
         ...innerStyle,
       }}
     />
@@ -441,7 +439,6 @@ export default function ThinkingIndicator({ persona }) {
               aria-hidden="true"
               draggable={false}
               className="trail-icon"
-              style={{ imageRendering: "pixelated" }}
             />
           ) : (
             // Phase 2 / handoff: same persona, swapping default↔thinking

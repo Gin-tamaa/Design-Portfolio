@@ -151,9 +151,6 @@ function Avatar({ src, label, color, size = 96 }) {
         width: size,
         height: size,
         background: color,
-        // Source PNGs are 18×18 pixel art — keep pixels crisp when
-        // upscaled (e.g. 108px empty-state avatars are a 6× zoom).
-        imageRendering: "pixelated",
       }}
       draggable={false}
     />

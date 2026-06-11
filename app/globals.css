@@ -165,8 +165,6 @@ body.shopos-hero.shopos-nav-solid header button {
   margin-left: 8px;
   vertical-align: middle;
   animation: trailPulse 1s ease-in-out infinite;
-  /* 18×18 pixel-art source — keep edges crisp instead of smoothing. */
-  image-rendering: pixelated;
 }
 
 .thinking-avatar {
@@ -175,7 +173,6 @@ body.shopos-hero.shopos-nav-solid header button {
   border-radius: 9999px;
   object-fit: cover;
   display: block;
-  image-rendering: pixelated;
 }
 @keyframes thinkingBob {
   0%, 100% { transform: translateY(0);    opacity: 1;   }
