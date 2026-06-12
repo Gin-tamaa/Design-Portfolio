@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 // ⚠️  Drop the Google Drive share link here when you have it. The Resume
 // nav item opens this URL in a new tab — never navigates in-page.
-const RESUME_URL = "https://drive.google.com/file/d/REPLACE_ME/view?usp=sharing";
+const RESUME_URL = "https://drive.google.com/file/d/1YDaJC0uXaVJeEifMTljxjJ_GUZcG4RHg/view";
 
 // `external: true` renders as <a target="_blank" rel="noopener noreferrer">
 // instead of a Next.js <Link>. Hash-anchored items keep using <Link> so the
