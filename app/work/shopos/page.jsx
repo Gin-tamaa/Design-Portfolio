@@ -335,7 +335,14 @@ export default function ShopOSCaseStudy() {
         />
       </section>
 
-      {/* ===== TOP — back link + lede ===================================== */}
+      {/* ===== TOP, back link + kicker + H1 + lede =====================
+           New entry per the storyteller doc:
+           - kicker line of project metadata
+           - the storyteller H1 ("From wearing eight hats to directing
+             eight agents")
+           - storyteller lede paragraph
+           Type scale untouched: cs-eyebrow / cs-thesis / cs-lede are the
+           same classes used previously. */}
       <Container className="reveal pt-16 md:pt-20">
         <Link
           href="/work"
@@ -353,13 +360,17 @@ export default function ShopOSCaseStudy() {
           Work
         </Link>
 
-        <p className="cs-thesis mt-10 max-w-[var(--cs-prose-col)]">
-          An AI team that runs your store.
+        <p className="cs-eyebrow mt-10">
+          ShopOS &middot; &ldquo;Agents&rdquo; &middot; Research &middot;
+          Product Design &middot; Frontend &middot; Mar 2026 &ndash; Present
         </p>
+        <h1 className="cs-thesis mt-4 max-w-[var(--cs-prose-col)]">
+          From wearing eight hats to directing eight agents
+        </h1>
         <p className="cs-lede mt-6 max-w-[var(--cs-prose-col)]">
-          I led research, design, and the frontend for an AI-agent operating
-          system, where a brand owner directs a department of named AI agents
-          instead of hiring one specialist per function.
+          How a solo store owner went from doing every job themselves to
+          briefing a department of named AI agents, and watching them hand
+          work to each other in one thread.
         </p>
       </Container>
 
@@ -371,21 +382,74 @@ export default function ShopOSCaseStudy() {
         <AgentsFanOut />
       </Container>
 
-      {/* ===== Metadata strip ============================================
-           Clean 5-column rail, Google-case-study style: small uppercase
-           eyebrow + larger single-line value, no dividers, generous gaps.
-           Values wrap naturally when long (Tools tends to spill to 2 lines
-           on narrower viewports). */}
+      {/* ===== TL;DR =====================================================
+           Storyteller markdown opens with a Challenge / Approach /
+           Solution / Impact summary table. Rendered here as a labelled
+           definition grid (eyebrow label left, prose right) so it reads
+           as a structured abstract, not a body section. */}
       <Container className="reveal pt-20 md:pt-28">
+        <p className="cs-eyebrow">TL;DR</p>
+        <dl className="mt-8 grid grid-cols-1 gap-y-8 md:grid-cols-[160px_1fr] md:gap-x-10">
+          <dt className="cs-eyebrow md:pt-1">Challenge</dt>
+          <dd className="cs-body max-w-[var(--cs-prose-col)]">
+            A brand owner had AI that could write a caption or fake a
+            product shot, but nothing that could <em>own</em> a function
+            and run it. They were still personally on SEO, paid, email,
+            reviews, and the numbers, all at once.
+          </dd>
+
+          <dt className="cs-eyebrow md:pt-1">Approach</dt>
+          <dd className="cs-body max-w-[var(--cs-prose-col)]">
+            Don&rsquo;t build a smarter chatbot. Model the team that
+            already existed in our building (a paid lead, a CRM manager, a
+            creative director) and make agent-to-agent handoff legible to
+            the human watching.
+          </dd>
+
+          <dt className="cs-eyebrow md:pt-1">Solution</dt>
+          <dd className="cs-body max-w-[var(--cs-prose-col)]">
+            One AI team of named agents the founder briefs like a
+            department: a task board for people who think in tasks, chat
+            for people who think in goals, and Mission Control as the
+            60-second morning read.
+          </dd>
+
+          <dt className="cs-eyebrow md:pt-1">Impact</dt>
+          <dd className="cs-body max-w-[var(--cs-prose-col)]">
+            Eight agents live with real enterprise clients, running real
+            store work today. In a 15-day GEO pilot the agents took a
+            brand from cited by zero AI engines to cited by all four. I
+            designed the system end to end and built the frontend to
+            near-production fidelity.
+          </dd>
+        </dl>
+      </Container>
+
+      {/* ===== My role + Timeline / Team / Tools =========================
+           My role is the Owned / Co-created / Guided split (the
+           storyteller doc explicitly lists what was personally owned
+           versus co-created versus guided). The thinner Timeline / Team
+           / Tools triplet sits in a 3-up rail below it. */}
+      <Container className="reveal pt-16 md:pt-20">
+        <div className="max-w-[var(--cs-prose-col)]">
+          <p className="cs-eyebrow">My role</p>
+          <p className="cs-body mt-3">
+            <em>Owned:</em> the research loop, end-to-end product design,
+            and the shipped frontend (onboarding, agent setup, Kanban,
+            Mission Control, Cowork, the multi-agent thread).{" "}
+            <em>Co-created:</em> the agent roster and what each agent
+            owns, with the founding team and our CRM/sales people.{" "}
+            <em>Guided:</em> production handoff with engineers.
+          </p>
+        </div>
+
         <dl
-          className="grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-5 md:gap-x-10"
+          className="mt-10 grid grid-cols-1 gap-x-8 gap-y-10 md:mt-12 md:grid-cols-3 md:gap-x-10"
           style={{ fontFamily: "Inter, sans-serif" }}
         >
           {[
-            { k: "My Role", v: "Research, Product Design, Frontend" },
-            { k: "Team", v: "Founding team · engineers" },
-            { k: "Company", v: "ShopOS" },
-            { k: "Duration", v: "Mar 2026 – Present" },
+            { k: "Timeline", v: "Mar 2026 – Present" },
+            { k: "Team", v: "Founding team + engineers" },
             { k: "Tools", v: "Figma, Cursor, Claude Code" },
           ].map(({ k, v }) => (
             <div key={k}>
@@ -396,64 +460,104 @@ export default function ShopOSCaseStudy() {
         </dl>
       </Container>
 
-      {/* ===== 01 · CONTEXT ============================================== */}
+      {/* ===== 01 · A founder running a store... =========================
+           TooManyTasks lives here per its current page position. The
+           italic task list paragraph is the verbal counterpart to the
+           chip cluster; keeping them adjacent so they reinforce each
+           other. */}
       <section className="reveal py-32 md:py-44">
         <Container>
-          <Eyebrow>Context</Eyebrow>
           <SectionHeader>
-            A founder running a store is running eight jobs at once.
+            A founder running a store is running eight jobs at once
           </SectionHeader>
           <Prose className="mt-12">
             <p>
-              By 2026, a brand owner had AI that could write a caption or make
-              a product shot. Useful, but it didn&rsquo;t run the store. They
-              were still the one on SEO, on paid, on email, watching the
-              numbers, answering reviews. One person wearing every hat, with
-              no way to watch it all at once.
+              By 2026, a brand owner had AI that could write a caption or
+              generate a product shot. Useful, but it didn&rsquo;t run the
+              store. They were still the one on SEO, on paid, on email,
+              watching the numbers, answering reviews. One person wearing
+              every hat, with no way to watch it all at once.
             </p>
             <p>
-              Then agents changed what was possible. Not another tool to open,
-              but something that could own a function and run it relentlessly,
-              around the clock, without being checked ten times a day. The
-              opening wasn&rsquo;t a better image generator. It was the whole
-              store, covered.
+              <em>
+                Write a launch email &middot; Generate a product shot
+                &middot; Run a paid campaign &middot; Pull yesterday&rsquo;s
+                ROAS &middot; Write a product caption &middot; Check store
+                analytics &middot; Reply to customers &middot; Draft a
+                video script &middot; SEO audit &middot; Post to social
+                &middot; Restock alerts &middot; Send newsletter. Twelve
+                jobs, one person.
+              </em>
+            </p>
+            <p>
+              Then agents changed what was possible. Not another tool to
+              open, but something that could own a function and run it
+              relentlessly, around the clock, without being checked ten
+              times a day. The opening wasn&rsquo;t a better image
+              generator. It was the whole store, covered.
             </p>
           </Prose>
 
-          {/* Context thumbnail — chips bloom in around the headline
-              when the frame settles in view, mirroring the AgentsFanOut
-              scroll trigger pattern. */}
+          {/* Existing TooManyTasks thumbnail, kept in its current
+              section, untouched. */}
           <div className="mt-16 md:mt-20">
             <TooManyTasks />
           </div>
         </Container>
       </section>
 
-      {/* ===== 02 · APPROACH ============================================= */}
+      {/* ===== 02 · This wasn't a chat problem. It was an org problem. ===
+           No visual slot in the storyteller doc; this is the project's
+           central reframe and stands as text alone. */}
       <section className="reveal py-32 md:py-44">
         <Container>
-          <Eyebrow>Approach</Eyebrow>
+          <SectionHeader>
+            This wasn&rsquo;t a chat problem. It was an org problem.
+          </SectionHeader>
+          <Prose className="mt-12">
+            <p>
+              Plenty of products do single-agent chat. Nobody had a clean
+              pattern for one agent recruiting specialists into a single
+              conversation, reasoning out loud, handing work to itself,
+              and reporting back without losing the human watching from
+              outside.
+            </p>
+            <p>
+              That reframe is the whole project. The design challenge
+              wasn&rsquo;t the prompt box; it was{" "}
+              <strong>Legible Orchestration</strong>: making a team of
+              autonomous agents <em>watchable</em>, so a founder can trust
+              work they never personally checked. An AI team that fails
+              silently isn&rsquo;t a team. Trust was the product.
+            </p>
+          </Prose>
+        </Container>
+      </section>
+
+      {/* ===== 03 · We didn't invent the team... ========================= */}
+      <section className="reveal py-32 md:py-44">
+        <Container>
           <SectionHeader>
             We didn&rsquo;t invent the team. We modeled it on our own.
           </SectionHeader>
           <Prose className="mt-12">
             <p>
-              The roles already existed in the building: a paid lead, a CRM
-              manager, a creative director. So I built an internal MVP of the
-              agents and ran it through our own team, each person testing the
-              agent for the role they actually do. Their feedback shaped what
-              each agent owned.
+              The roles already existed in the building: a paid lead, a
+              CRM manager, a creative director. So I built an internal MVP
+              and ran it through our own team, each person testing the
+              agent for the role they actually do. Their feedback shaped
+              what each agent owned.
             </p>
             <p>
-              I leaned hardest on the people closest to the customer. Our CRM
-              and sales team talk to users far more than design does, so I
-              used them to pressure-test which agents mattered.
+              I leaned hardest on the people closest to the customer. Our
+              CRM and sales team talk to users far more than design does,
+              so I used them to pressure-test which agents mattered.
             </p>
             <p>
-              Then I validated cheap and fast. A vibe-coded MVP first, because
-              it was quickest to put in front of onboarded brands, with the
-              Figma-designed version built in parallel as their feedback came
-              in. Real reactions before real build.
+              Then I validated cheap and fast: a vibe-coded MVP first,
+              because it was quickest to put in front of onboarded brands,
+              with the Figma-designed version built in parallel as
+              feedback came in. Real reactions before real build.
             </p>
           </Prose>
 
@@ -466,71 +570,39 @@ export default function ShopOSCaseStudy() {
         </Container>
       </section>
 
-      {/* ===== 03 · THE SOLUTION ========================================= */}
+      {/* ===== 04 · One AI team, eight functions... ====================== */}
       <section className="reveal py-32 md:py-44">
         <Container>
-          <Eyebrow>The solution</Eyebrow>
           <SectionHeader>
-            One AI team, eight functions, one place to direct them.
+            One AI team, eight functions, one place to direct them
           </SectionHeader>
           <Prose className="mt-12">
             <p>
-              Connect your tools once, and a roster of named agents spins up
-              to cover the store. Gavin runs paid. Monica owns creative.
-              Jian-Yang reads the market, Russ watches the numbers, Richard
-              minds the store, with more on GEO, social, email, and brand
-              intelligence.
+              Connect your tools once, and a roster of named agents spins
+              up to cover the store. Gavin runs paid. Monica owns
+              creative. Jian-Yang reads the market, Russ watches the
+              numbers, Richard minds the store, with more on GEO, social,
+              email, and brand intelligence.
             </p>
             <p>
-              You don&rsquo;t prompt a model. You brief a team, all at once in
-              one chat, or one agent at a time.
+              You don&rsquo;t prompt a model. You brief a team, all at
+              once in one chat, or one agent at a time.
             </p>
           </Prose>
 
           <div className="mt-16 md:mt-20">
             <Placeholder
               name="Agent Roster / Mission Control"
-              description="The home surface — the named roster and Mission Control side by side, where the team gets briefed."
+              description="The named roster and Mission Control side by side, where the team gets briefed."
             />
           </div>
         </Container>
       </section>
 
-      {/* ===== 04 · THE HARD PART ======================================== */}
+      {/* ===== 05 · How do you make an agent feel like a teammate, not a
+           tool? Three iterations, each its own labelled block. */}
       <section className="reveal py-32 md:py-44">
         <Container>
-          <Eyebrow>The hard part</Eyebrow>
-          <SectionHeader>
-            The novel problem wasn&rsquo;t the chat. It was the org.
-          </SectionHeader>
-          <Prose className="mt-12">
-            <p>
-              Plenty of products do single-agent chat. Nobody had a clean
-              pattern for one agent recruiting specialists into a single
-              conversation, reasoning out loud and reporting back without
-              losing the user.
-            </p>
-            <p>
-              It gets concrete. When Gavin spots a fatiguing ad, he briefs
-              Monica, who generates replacements, while Jian-Yang feeds both.
-              The team hands work to itself. My job was to make that legible
-              to a human watching from outside.
-            </p>
-          </Prose>
-
-          <div className="mt-16 md:mt-20">
-            <Placeholder
-              name="Orchestration Thread"
-              description="A single thread where a lead agent recruits specialists, narrates its reasoning, and assembles the team in front of you — the page's central interaction pattern previewed."
-            />
-          </div>
-        </Container>
-      </section>
-
-      {/* ===== 05 · DESIGNING THE AGENTS ================================= */}
-      <section className="reveal py-32 md:py-44">
-        <Container>
-          <Eyebrow>Designing the agents</Eyebrow>
           <SectionHeader>
             How do you make an agent feel like a teammate, not a tool?
           </SectionHeader>
@@ -547,13 +619,13 @@ export default function ShopOSCaseStudy() {
               <h3 className="cs-thesis">Cards</h3>
             </div>
             <p className="mt-6 max-w-3xl text-[17px] leading-[1.72] text-[#525252] md:text-[18px]">
-              Each agent a tidy card. Clean, but it read like a feature list.
-              Yours to <em>read</em>, not to <em>shape</em>.
+              Each agent a tidy card. Clean, but it read like a feature
+              list. Yours to <em>read</em>, not to <em>shape</em>.
             </p>
             <div className="mt-12 md:mt-16">
               <Placeholder
                 name="Card Stack"
-                description="The original card-stack — each function a tidy card. Scannable, but it read as a feature list."
+                description="Each function a tidy card. Scannable, but it read as a feature list."
               />
             </div>
           </div>
@@ -565,18 +637,19 @@ export default function ShopOSCaseStudy() {
                 02
               </span>
               <h3 className="cs-thesis">
-                Name plus <code className="px-1 text-[0.85em]">soul.md</code>
+                Name + <code className="px-1 text-[0.85em]">soul.md</code>
               </h3>
             </div>
             <p className="mt-6 max-w-3xl text-[17px] leading-[1.72] text-[#525252] md:text-[18px]">
-              Every agent gets a name and a short persona file. Russ opens his
-              with <em>&ldquo;Every statement includes a number.&rdquo;</em>{" "}
+              Every agent gets a name and a short persona file. Russ opens
+              his with{" "}
+              <em>&ldquo;Every statement includes a number.&rdquo;</em>{" "}
               The catalog became <em>your</em> team.
             </p>
             <div className="mt-12 md:mt-16">
               <Placeholder
                 name="soul.md Editor"
-                description="The agent's soul.md editor — name, persona, what it always carries. The screen that turns 'a stock agent' into 'your Russ who only talks in numbers.'"
+                description="Name, persona, what it always carries. The screen that turns 'a stock agent' into 'your Russ who only talks in numbers.'"
               />
             </div>
           </div>
@@ -590,63 +663,63 @@ export default function ShopOSCaseStudy() {
               <h3 className="cs-thesis">The org view</h3>
             </div>
             <p className="mt-6 max-w-3xl text-[17px] leading-[1.72] text-[#525252] md:text-[18px]">
-              People couldn&rsquo;t tell who reported to whom, so I added a
-              bracketed org-chart view.
+              People couldn&rsquo;t tell who reported to whom, so I added
+              a bracketed org-chart view: lead agents up top, specialists
+              grouped beneath, work flowing through the brackets.
             </p>
             <div className="mt-12 md:mt-16">
               <Placeholder
                 name="Org View"
-                description="The bracketed org view — lead agents at the top, specialists grouped beneath, work flowing through the brackets."
+                description="Lead agents at the top, specialists grouped beneath, work flowing through the brackets."
               />
             </div>
-          </div>
-
-          {/* HONEST TRADEOFF — kept callout */}
-          <div className="mt-20 max-w-3xl border-l-2 border-[#0a0a0a] pl-6 md:mt-24">
-            <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#525252]">
-              The honest tradeoff
-            </p>
-            <p className="mt-4 text-[18px] leading-[1.7] text-[#0a0a0a]/90 md:text-[19px]">
-              I&rsquo;m not sold on how I drew the org view. It reads more
-              like a flowchart than a living team, and I pushed back on it
-              internally. I kept it because the comprehension win was real
-              and measured: people understood the model instantly with it,
-              and stumbled without it. I chose what taught users fastest over
-              what I found most elegant. I&rsquo;d keep the hierarchy and
-              redraw how it&rsquo;s shown.
-            </p>
           </div>
         </Container>
       </section>
 
-      {/* ===== 06 · GIVING THE TEAM WORK ================================= */}
+      {/* ===== 06 · The tradeoff I'd redo ================================
+           Promoted from an inline callout to its own H2 section per the
+           storyteller doc. Text-only, no visual slot. */}
       <section className="reveal py-32 md:py-44">
         <Container>
-          <Eyebrow>Giving the team work</Eyebrow>
+          <SectionHeader>The tradeoff I&rsquo;d redo</SectionHeader>
+          <Prose className="mt-12">
+            <p>
+              I&rsquo;m not sold on how I drew the org view. It reads more
+              like a flowchart than a living team, and I pushed back on it
+              internally. I kept it because the comprehension win was real
+              and measured: people understood the model instantly with it,
+              and stumbled without it. I chose what taught users fastest
+              over what I found most elegant. I&rsquo;d keep the hierarchy
+              and redraw how it&rsquo;s shown.
+            </p>
+          </Prose>
+        </Container>
+      </section>
+
+      {/* ===== 07 · Two doors into one team... =========================== */}
+      <section className="reveal py-32 md:py-44">
+        <Container>
           <SectionHeader>
-            Two doors in, depending on how you think.
+            Two doors into one team, depending on how you think
           </SectionHeader>
 
           <div className="mt-16 grid grid-cols-1 gap-12 md:mt-20 md:grid-cols-2 md:gap-10">
             <div>
               <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#0d8a8a]">
-                Jobs / Kanban
-              </p>
-              <p className="mt-3 text-[19px] font-medium leading-snug text-[#0a0a0a] md:text-[20px]">
-                For task thinkers.
+                Jobs / Kanban, for task thinkers
               </p>
               <p className="mt-3 text-[15px] leading-[1.7] text-[#525252]">
-                Work moves across <em>Needs Attention &rarr; In Progress
-                &rarr; Completed</em>. A single task, or one a few agents pick
-                up together.
+                Work moves across{" "}
+                <em>
+                  Needs Attention &rarr; In Progress &rarr; Completed
+                </em>
+                . One task, or one a few agents pick up together.
               </p>
             </div>
             <div>
               <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#0d8a8a]">
-                Chat / Cowork
-              </p>
-              <p className="mt-3 text-[19px] font-medium leading-snug text-[#0a0a0a] md:text-[20px]">
-                For goal thinkers.
+                Chat / Cowork, for goal thinkers
               </p>
               <p className="mt-3 text-[15px] leading-[1.7] text-[#525252]">
                 State the outcome; talk to one agent, or let a lead agent
@@ -656,207 +729,261 @@ export default function ShopOSCaseStudy() {
           </div>
 
           <Prose className="mt-12">
-            <p>Two views of one team.</p>
+            <p>Two views of one engine.</p>
           </Prose>
 
           <div className="mt-16 md:mt-20">
             <Placeholder
               aspect="wide"
               name="Kanban + Chat Side by Side"
-              description="The two entry points to the same engine — Kanban board on one side, Cowork chat on the other."
+              description="The two entry points to the same engine."
             />
           </div>
         </Container>
       </section>
 
-      {/* ===== 07 · MISSION CONTROL (with 2-up gallery) ================== */}
+      {/* ===== 08 · A founder's morning, in 60 seconds instead of six tabs */}
       <section className="reveal py-32 md:py-44">
         <Container>
-          <Eyebrow>Mission Control</Eyebrow>
           <SectionHeader>
-            What happened, what needs me, what my agents did, in 60 seconds.
+            A founder&rsquo;s morning, in 60 seconds instead of six tabs
           </SectionHeader>
           <Prose className="mt-12">
             <p>
-              A founder&rsquo;s morning used to be six tabs. Mission Control
-              replaces it with one check-in. It reads and surfaces; it never
-              generates.
-            </p>
-            <p>
-              Needs Attention is pinned at the top, capped at three items,
-              each naming the agent, the metric, and one action. Below it, a
-              chart sorts every product by where ad spend goes versus where
-              revenue comes from, so the gaps surface at a glance.
+              Mission Control replaces the morning tab-crawl with one
+              check-in. It reads and surfaces; it never generates. Needs
+              Attention is pinned at the top, capped at three items, each
+              naming the agent, the metric, and one action. Below it, a
+              chart sorts every product by where ad spend goes versus
+              where revenue comes from, so the gaps surface at a glance.
             </p>
           </Prose>
 
-          {/* 2-up gallery */}
           <div className="mt-16 grid grid-cols-1 gap-6 md:mt-20 md:grid-cols-2">
             <Placeholder
               aspect="wide"
               name="Needs Attention"
-              description="Pinned at top, capped at three — each item names the agent, the metric, and one action."
+              description="Pinned at top, capped at three; each item names the agent, the metric, and one action."
             />
             <Placeholder
               aspect="wide"
               name="SKU Scatter"
-              description="Every product plotted by ad spend × revenue — gaps surface at a glance."
+              description="Every product plotted by ad spend × revenue; gaps surface at a glance."
             />
           </div>
         </Container>
       </section>
 
-      {/* ===== 08 · THE ORCHESTRATION THREAD (UI) ======================== */}
+      {/* ===== 09 · Making "thinking for 8 seconds" feel like progress... */}
       <section className="reveal py-32 md:py-44">
         <Container>
-          <Eyebrow>The orchestration thread</Eyebrow>
           <SectionHeader>
             Making &ldquo;thinking for 8 seconds&rdquo; feel like progress,
-            not a spinner.
+            not a spinner
           </SectionHeader>
           <Prose className="mt-12">
             <p>
-              You watch Gavin pull Monica into the thread. Reasoning states
-              show the work. Multi-step Arcs expose the plan as it runs. Long
-              jobs notify you when done.
-            </p>
-            <p>
-              Every state, empty, loading, error, success, is designed. An AI
-              team that fails silently isn&rsquo;t trustworthy. Trust was the
-              whole product.
+              You watch Gavin pull Monica into the thread. Reasoning
+              states show the work. Multi-step Arcs expose the plan as it
+              runs. Long jobs notify you when they&rsquo;re done. Every
+              state is designed: empty, loading, error, success. An AI
+              team that fails silently isn&rsquo;t trustworthy. This is
+              Legible Orchestration made concrete: the handoff happens in
+              front of you, not behind a spinner.
             </p>
           </Prose>
 
           <div className="mt-16 md:mt-20">
             <Placeholder
               name="Arc Execution"
-              description="A multi-step Arc in flight — the plan, the current step, what's pending, who's working on what."
+              description="A multi-step Arc in flight: the plan, the current step, what's pending, who's working on what."
             />
           </div>
         </Container>
       </section>
 
-      {/* ===== 09 · WHAT SHIPPED ========================================= */}
+      {/* ===== 10 · What shipped ========================================= */}
       <section className="reveal py-32 md:py-44">
         <Container>
-          <Eyebrow>What shipped</Eyebrow>
-          <SectionHeader>Live with real enterprise clients.</SectionHeader>
+          <SectionHeader>What shipped</SectionHeader>
           <Prose className="mt-12">
             <p>
-              Eight agents running real store work today. I designed the
-              system end to end and built the frontend: onboarding, agent
-              setup, the Kanban board, Mission Control, Cowork, and the
-              multi-agent conversation, every state built to near-production
-              fidelity.
+              Eight agents running real store work today, live with real
+              enterprise clients. I designed the system end to end and
+              built the frontend: onboarding, agent setup, the Kanban
+              board, Mission Control, Cowork, and the multi-agent
+              conversation, every state built to near-production fidelity.
             </p>
           </Prose>
 
           <div className="mt-16 md:mt-20">
             <Placeholder
               name="Shipped Surfaces"
-              description="The shipped surfaces montage — onboarding, agent setup, Kanban, Mission Control, Cowork, multi-agent conversation."
+              description="Onboarding, agent setup, Kanban, Mission Control, Cowork, multi-agent conversation."
             />
           </div>
         </Container>
       </section>
 
-      {/* ===== 10 · BY THE NUMBERS (dark card, 3 stubbed + 1 real + quote)
-           One real stat is shown ("8 / real enterprise clients"); the other
-           three metrics + the client quote are styled placeholders until the
-           PM has real numbers and a confirmed quote to publish. */}
+      {/* ===== 11 · What we're measuring, live and honest about it =======
+           Dark proof card. Structured per the storyteller doc:
+           1) Real, today: the 8-agents stat + the 0 → 4 GEO pilot result
+              with its full paragraph (GEO numbers preserved verbatim).
+           2) Still being instrumented: two Goal / Signal / Metric bets.
+           3) Pending-quote line. */}
       <section className="reveal pb-32 pt-12 md:pb-44 md:pt-16">
         <Container>
           <div className="rounded-3xl bg-[#0a0a0a] px-8 py-16 text-white md:px-14 md:py-20">
-            <div className="flex flex-wrap items-baseline justify-between gap-6">
-              <div>
-                <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-white/55">
-                  By the numbers
-                </p>
-                <h2 className="cs-section cs-on-dark mt-4">Proof</h2>
-              </div>
-              <p className="max-w-sm text-[14px] leading-[1.55] text-white/55">
-                Three slots + a client quote are stubbed until real data is
-                in hand — only the live-clients count is publishable today.
-              </p>
-            </div>
+            <h2 className="cs-section cs-on-dark">
+              What we&rsquo;re measuring, live and honest about it
+            </h2>
+            <p className="mt-8 max-w-[var(--cs-prose-col)] text-[17px] leading-[1.7] text-white/75">
+              The product is live and the agents are already moving real
+              numbers. Here is the proof that exists today, then the bets
+              still being instrumented. No dressed-up data.
+            </p>
 
-            {/* 4-up stat row — 1 real, 3 pending placeholders */}
-            <div className="mt-14 grid grid-cols-2 gap-y-12 gap-x-8 md:mt-20 md:grid-cols-4">
-              {[
-                {
-                  value: "8",
-                  label: "Agents live with real enterprise clients",
-                  pending: false,
-                },
-                {
-                  value: "—",
-                  label: "Most-used agents, by hours run",
-                  pending: true,
-                },
-                {
-                  value: "—×",
-                  label: "Specialist hours collapsed to agent minutes",
-                  pending: true,
-                },
-                {
-                  value: "+—%",
-                  label: "Metric the agents moved (client-confirmed)",
-                  pending: true,
-                },
-              ].map((m) => (
-                <div key={m.label}>
-                  <div
-                    className="font-semibold leading-none tracking-tight"
-                    style={{ fontSize: "clamp(2.25rem, 1.8rem + 1.5vw, 3rem)" }}
-                  >
-                    {m.value}
-                  </div>
-                  <p className="mt-5 max-w-[22ch] text-[11px] font-medium uppercase tracking-[0.16em] text-white/60">
-                    {m.label}
-                  </p>
-                  {m.pending ? (
-                    <p className="mt-3 text-[10px] uppercase tracking-[0.18em] text-white/35">
-                      ⬚ Pending real data
-                    </p>
-                  ) : null}
-                </div>
-              ))}
-            </div>
+            {/* Real, today */}
+            <p className="mt-14 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55">
+              Real, today
+            </p>
 
-            {/* Client quote — styled placeholder until a real, confirmed line
-                from a brand lands. Kept on-card so the proof block reads as
-                one composed unit. */}
-            <div className="mt-16 border-t border-white/10 pt-12 md:mt-20 md:pt-14">
-              <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-white/45">
-                Client quote
-              </p>
-              <blockquote
-                className="mt-6 max-w-3xl text-[22px] font-medium italic leading-[1.35] text-white/85 md:text-[28px]"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                &ldquo;[ One real line from a brand using ShopOS —
-                anonymized is fine. The kind of quote that proves the team
-                feels like a team. ]&rdquo;
-              </blockquote>
-              <div className="mt-8 flex items-center gap-4">
+            <div className="mt-10 grid grid-cols-1 gap-y-12 md:grid-cols-12 md:gap-x-12">
+              {/* 8 agents stat */}
+              <div className="md:col-span-4">
                 <div
-                  aria-hidden="true"
-                  className="h-10 w-10 flex-shrink-0 rounded-full bg-white/15"
-                />
-                <div>
-                  <div className="text-[14px] font-semibold text-white/90">
-                    [Name]
-                  </div>
-                  <div className="text-[12px] text-white/55">
-                    [Role · Brand]
-                  </div>
+                  className="font-semibold leading-none tracking-tight"
+                  style={{ fontSize: "clamp(2.25rem, 1.8rem + 1.5vw, 3rem)" }}
+                >
+                  8
                 </div>
+                <p className="mt-5 max-w-[24ch] text-[11px] font-medium uppercase tracking-[0.16em] text-white/60">
+                  Agents live with real enterprise clients, running real
+                  store work
+                </p>
               </div>
-              <p className="mt-8 text-[10px] uppercase tracking-[0.18em] text-white/35">
-                ⬚ Quote + attribution pending real client confirmation
+
+              {/* 0 → 4 GEO pilot */}
+              <div className="md:col-span-8">
+                <div
+                  className="font-semibold leading-none tracking-tight"
+                  style={{ fontSize: "clamp(2.25rem, 1.8rem + 1.5vw, 3rem)" }}
+                >
+                  0 &rarr; 4
+                </div>
+                <p className="mt-5 text-[14px] leading-[1.7] text-white/75">
+                  In a 15-day GEO pilot for a denim DTC brand, the GEO
+                  agent took the brand from cited by <em>zero</em> AI
+                  engines to cited by <em>all four</em> (ChatGPT, Claude,
+                  Perplexity, Gemini). In plain terms: the brand went from
+                  invisible when a customer asks an AI, to present
+                  everywhere they might ask. Perplexity citations rose 7%
+                  to 13%, technical health 59% to 65%, with 20 articles
+                  published as an owned content hub. One brand, fifteen
+                  days, early and directional. But real, and run end to
+                  end by an agent.
+                </p>
+              </div>
+            </div>
+
+            {/* Still being instrumented */}
+            <p className="mt-16 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55">
+              Still being instrumented
+            </p>
+
+            <div className="mt-10 grid grid-cols-1 gap-y-12 md:grid-cols-2 md:gap-x-12">
+              {/* Bet 1: specialist hours */}
+              <div>
+                <dl className="space-y-3 text-[14px] leading-[1.7]">
+                  <div className="flex gap-2">
+                    <dt className="font-semibold text-white/85">Goal:</dt>
+                    <dd className="text-white/70">
+                      specialist hours collapse into agent minutes.
+                    </dd>
+                  </div>
+                  <div className="flex gap-2">
+                    <dt className="font-semibold text-white/85">Signal:</dt>
+                    <dd className="text-white/70">
+                      founders stop opening the six tabs and brief the
+                      team instead.
+                    </dd>
+                  </div>
+                  <div className="flex gap-2">
+                    <dt className="font-semibold text-white/85">Metric:</dt>
+                    <dd className="text-white/70">
+                      hours run per agent, and the multiplier of
+                      specialist-hours saved.
+                    </dd>
+                  </div>
+                </dl>
+                <p className="mt-5 text-[10px] uppercase tracking-[0.18em] text-white/35">
+                  ⬚ Instrumented, pending real data
+                </p>
+              </div>
+
+              {/* Bet 2: team feels like a team */}
+              <div>
+                <dl className="space-y-3 text-[14px] leading-[1.7]">
+                  <div className="flex gap-2">
+                    <dt className="font-semibold text-white/85">Goal:</dt>
+                    <dd className="text-white/70">
+                      the team feels like a team, not a feature list.
+                    </dd>
+                  </div>
+                  <div className="flex gap-2">
+                    <dt className="font-semibold text-white/85">Signal:</dt>
+                    <dd className="text-white/70">
+                      clients refer to agents by name, unprompted.
+                    </dd>
+                  </div>
+                  <div className="flex gap-2">
+                    <dt className="font-semibold text-white/85">Metric:</dt>
+                    <dd className="text-white/70">
+                      client-confirmed lift on the function the agents own.
+                    </dd>
+                  </div>
+                </dl>
+                <p className="mt-5 text-[10px] uppercase tracking-[0.18em] text-white/35">
+                  ⬚ Instrumented, pending real data
+                </p>
+              </div>
+            </div>
+
+            {/* Pending quote line */}
+            <div className="mt-16 border-t border-white/10 pt-10 md:mt-20 md:pt-12">
+              <p className="text-[14px] italic leading-[1.7] text-white/55">
+                Client quote pending real confirmation: the kind of line
+                that proves the team feels like a team.
               </p>
             </div>
           </div>
+        </Container>
+      </section>
+
+      {/* ===== Closing paragraph + CTA ===================================
+           The storyteller doc closes with a one-paragraph payoff and a
+           "Say hello" CTA pointing at /about#contact. */}
+      <section className="reveal py-20 md:py-28">
+        <Container>
+          <Prose>
+            <p>
+              The roster shipped exactly as designed, and it runs real
+              stores today. The durable idea underneath it isn&rsquo;t
+              eight agents. It&rsquo;s that an autonomous team only earns
+              trust when a human can watch it think. That&rsquo;s the
+              pattern ShopOS now builds everything else on.
+            </p>
+            <p>
+              Curious how the orchestration thread actually behaves?{" "}
+              <Link
+                href="/about#contact"
+                className="underline decoration-[#0a0a0a]/40 underline-offset-[5px] transition-colors hover:decoration-[#0a0a0a]"
+              >
+                Say hello
+              </Link>{" "}
+              and I&rsquo;ll walk you through it.
+            </p>
+          </Prose>
         </Container>
       </section>
 
