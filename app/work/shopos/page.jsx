@@ -136,6 +136,26 @@ function Lead({ children, className = "" }) {
   );
 }
 
+// Frosted-glass pill used inside the Figma 184:2156 gradient card.
+// The look is a slight dark tint + backdrop blur over the gradient
+// behind it, so the pill reads as glass rather than a flat overlay.
+// -webkit-backdrop-filter is included because Safari needs the prefix.
+function GlassPill({ children }) {
+  return (
+    <span
+      className="inline-flex items-center justify-center rounded-full px-5 py-3 text-[14px] font-medium leading-none text-white md:text-[15px]"
+      style={{
+        background: "rgba(0, 0, 0, 0.18)",
+        backdropFilter: "blur(20px) saturate(160%)",
+        WebkitBackdropFilter: "blur(20px) saturate(160%)",
+        boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.18)",
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
 function PlusMinus({ type, text }) {
   const isPlus = type === "+";
   const sigil = isPlus ? "+" : "−";
@@ -599,21 +619,26 @@ export default function ShopOSCaseStudy() {
       </section>
 
       {/* ===== 04 · Divider, Figma 184:2156 ==============================
-           Eyebrow ("The buyer isn't the user") sits above; below, a
-           5/7 split: text on the left, a gradient card on the right
-           with four step pills. The card carries the four-step walk
-           that the previous prose paragraph described, now as a
-           glance-readable artefact. Mobile stacks single-column. */}
+           5/7 grid: text on the left, gradient card with four step
+           rows on the right. The eyebrow now lives INSIDE the left
+           column directly above the headline (16px gap) so eyebrow +
+           h2 read as a unit. Each step row is a fixed 400px wide and
+           centered in the card so all rows line up on the left edge.
+           Pills use a frosted-glass treatment (backdrop blur over the
+           gradient), not just an opacity tint. */}
       <section className="reveal py-32 md:py-44">
         <Container>
-          <p className="cs-eyebrow">The buyer isn&rsquo;t the user</p>
-
-          <div className="mt-12 grid grid-cols-1 gap-12 md:mt-16 md:grid-cols-12 md:items-center md:gap-16">
-            {/* LEFT, headline + body */}
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:items-center md:gap-16">
+            {/* LEFT, eyebrow + headline (tight) + body. h2 is inlined
+                here instead of using <SectionHeader> so we can control
+                the spacing precisely (the helper hardcodes mt-6). */}
             <div className="md:col-span-5">
-              <SectionHeader>
-                The product, the way you move through it
-              </SectionHeader>
+              <div className="flex flex-col gap-4">
+                <p className="cs-eyebrow">The buyer isn&rsquo;t the user</p>
+                <h2 className="cs-section max-w-[32ch]">
+                  The product, the way you move through it
+                </h2>
+              </div>
               <p className="cs-body mt-6 max-w-[var(--cs-prose-col)]">
                 Built for founders, but the founder rarely sits in it
                 all day. A founder buys a super team for the org; the
@@ -622,33 +647,30 @@ export default function ShopOSCaseStudy() {
               </p>
             </div>
 
-            {/* RIGHT, gradient card with four step pills.
-                Gradient values come from Figma node 186:2041:
-                linear-gradient(138.6deg, #026DDB 0%, #4EEEC2 100%).
-                Pills use a 10% black overlay over the gradient, which
-                gives them their tinted glass look without needing
-                backdrop-filter. */}
+            {/* RIGHT, gradient card. Gradient angle/stops are from
+                Figma node 186:2041 verbatim. Inner ul uses items-center
+                so the fixed-width rows centre horizontally in the card;
+                justify-between distributes the four rows vertically. */}
             <div
               className="md:col-span-7 overflow-hidden rounded-3xl"
               style={{
                 background:
-                  "linear-gradient(138.6deg, #026DDB 0%, #4EEEC2 100%)",
+                  "linear-gradient(137.67deg, #026DDB 0%, #4EEEC2 100%)",
               }}
             >
-              <ul className="flex h-full flex-col items-center justify-between gap-8 px-8 py-16 md:gap-10 md:px-10 md:py-24">
+              <ul className="flex min-h-[420px] flex-col items-center justify-between gap-8 px-8 py-14 md:min-h-[520px] md:gap-10 md:px-10 md:py-20">
                 {[
                   ["Step 1", "Meet the team"],
                   ["Step 2", "Shape and brief an agent"],
                   ["Step 3", "Watch the work"],
                   ["Step 4", "Review what needs you"],
                 ].map(([n, label]) => (
-                  <li key={n} className="flex flex-wrap items-center gap-2">
-                    <span className="inline-flex items-center justify-center rounded-full bg-black/10 px-5 py-3 text-[14px] font-medium leading-none text-white md:text-[15px]">
-                      {n}
-                    </span>
-                    <span className="inline-flex items-center justify-center rounded-full bg-black/10 px-5 py-3 text-[14px] font-medium leading-none text-white md:text-[15px]">
-                      {label}
-                    </span>
+                  <li
+                    key={n}
+                    className="flex w-full max-w-[400px] items-center gap-2"
+                  >
+                    <GlassPill>{n}</GlassPill>
+                    <GlassPill>{label}</GlassPill>
                   </li>
                 ))}
               </ul>
