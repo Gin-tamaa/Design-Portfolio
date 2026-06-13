@@ -361,16 +361,17 @@ export default function ShopOSCaseStudy() {
         </Link>
 
         <p className="cs-eyebrow mt-10">
-          ShopOS &middot; &ldquo;Agents&rdquo; &middot; Research &middot;
-          Product Design &middot; Frontend &middot; Mar 2026 &ndash; Present
+          ShopOS &middot; &ldquo;Mission Control&rdquo; &middot; Research
+          &middot; Product Design &middot; Frontend &middot; Mar 2026
+          &ndash; Present
         </p>
         <h1 className="cs-thesis mt-4 max-w-[var(--cs-prose-col)]">
           From wearing eight hats to directing eight agents
         </h1>
         <p className="cs-lede mt-6 max-w-[var(--cs-prose-col)]">
           How a solo store owner went from doing every job themselves to
-          briefing a department of named AI agents, and watching them hand
-          work to each other in one thread.
+          opening one screen, briefing a department of named AI agents,
+          and watching them hand work to each other in real time.
         </p>
       </Container>
 
@@ -402,21 +403,20 @@ export default function ShopOSCaseStudy() {
           <dd className="cs-body max-w-[var(--cs-prose-col)]">
             Don&rsquo;t build a smarter chatbot. Model the team that
             already existed in our building (a paid lead, a CRM manager, a
-            creative director) and make agent-to-agent handoff legible to
-            the human watching.
+            creative director), then design one surface where a founder
+            can see that team, brief it, and watch it work.
           </dd>
 
           <dt className="cs-eyebrow md:pt-1">Solution</dt>
           <dd className="cs-body max-w-[var(--cs-prose-col)]">
-            One AI team of named agents the founder briefs like a
-            department: a task board for people who think in tasks, chat
-            for people who think in goals, and Mission Control as the
-            60-second morning read.
+            Mission Control: a single screen that opens on your team,
+            lets you shape and brief any agent, surfaces only what needs
+            you, and shows the work happening live.
           </dd>
 
           <dt className="cs-eyebrow md:pt-1">Impact</dt>
           <dd className="cs-body max-w-[var(--cs-prose-col)]">
-            Eight agents live with real enterprise clients, running real
+            Eight agents live with 10+ enterprise brands, running real
             store work today. In a 15-day GEO pilot the agents took a
             brand from cited by zero AI engines to cited by all four. I
             designed the system end to end and built the frontend to
@@ -482,11 +482,11 @@ export default function ShopOSCaseStudy() {
               <em>
                 Write a launch email &middot; Generate a product shot
                 &middot; Run a paid campaign &middot; Pull yesterday&rsquo;s
-                ROAS &middot; Write a product caption &middot; Check store
-                analytics &middot; Reply to customers &middot; Draft a
-                video script &middot; SEO audit &middot; Post to social
-                &middot; Restock alerts &middot; Send newsletter. Twelve
-                jobs, one person.
+                ROAS &middot; Write a caption &middot; Check analytics
+                &middot; Reply to customers &middot; Draft a video script
+                &middot; SEO audit &middot; Post to social &middot;
+                Restock alerts &middot; Send newsletter. Twelve jobs, one
+                person.
               </em>
             </p>
             <p>
@@ -528,7 +528,8 @@ export default function ShopOSCaseStudy() {
               <strong>Legible Orchestration</strong>: making a team of
               autonomous agents <em>watchable</em>, so a founder can trust
               work they never personally checked. An AI team that fails
-              silently isn&rsquo;t a team. Trust was the product.
+              silently isn&rsquo;t a team. Trust was the product, and the
+              rest of this is how one screen earns it.
             </p>
           </Prose>
         </Container>
@@ -551,13 +552,11 @@ export default function ShopOSCaseStudy() {
             <p>
               I leaned hardest on the people closest to the customer. Our
               CRM and sales team talk to users far more than design does,
-              so I used them to pressure-test which agents mattered.
-            </p>
-            <p>
-              Then I validated cheap and fast: a vibe-coded MVP first,
-              because it was quickest to put in front of onboarded brands,
-              with the Figma-designed version built in parallel as
-              feedback came in. Real reactions before real build.
+              so I used them to pressure-test which agents mattered. Then
+              I validated cheap and fast: a vibe-coded MVP first, because
+              it was quickest to put in front of onboarded brands, with
+              the Figma-designed version built in parallel as feedback
+              came in. Real reactions before real build.
             </p>
           </Prose>
 
@@ -570,91 +569,104 @@ export default function ShopOSCaseStudy() {
         </Container>
       </section>
 
-      {/* ===== 04 · One AI team, eight functions... ====================== */}
+      {/* ===== 04 · Divider: The product, the way a founder moves through
+           it. Acts as a pivot from the "why" sections above to the "how
+           the product is used" walkthrough below. Headline only, no
+           visual slot. */}
       <section className="reveal py-32 md:py-44">
         <Container>
           <SectionHeader>
-            One AI team, eight functions, one place to direct them
+            The product, the way a founder moves through it
           </SectionHeader>
           <Prose className="mt-12">
             <p>
-              Connect your tools once, and a roster of named agents spins
-              up to cover the store. Gavin runs paid. Monica owns
-              creative. Jian-Yang reads the market, Russ watches the
-              numbers, Richard minds the store, with more on GEO, social,
-              email, and brand intelligence.
-            </p>
-            <p>
-              You don&rsquo;t prompt a model. You brief a team, all at
-              once in one chat, or one agent at a time.
+              Everything above is the <em>why</em>. What follows is
+              Mission Control itself, in the order a founder actually
+              meets it: open on the team, shape and brief an agent, watch
+              the work happen, then read what needs you. Each screen
+              below carries the one decision that earned it.
             </p>
           </Prose>
-
-          <div className="mt-16 md:mt-20">
-            <Placeholder
-              name="Agent Roster / Mission Control"
-              description="The named roster and Mission Control side by side, where the team gets briefed."
-            />
-          </div>
         </Container>
       </section>
 
-      {/* ===== 05 · How do you make an agent feel like a teammate, not a
-           tool? Three iterations, each its own labelled block. */}
+      {/* ===== 05 · First, you meet your team ============================
+           Three iterations of how to show a team. Each iteration has a
+           short critique quote pulled from the storyteller doc. */}
       <section className="reveal py-32 md:py-44">
         <Container>
-          <SectionHeader>
-            How do you make an agent feel like a teammate, not a tool?
-          </SectionHeader>
+          <SectionHeader>First, you meet your team</SectionHeader>
           <Prose className="mt-12">
-            <p>Three versions. I&rsquo;ll be honest about all three.</p>
+            <p>
+              Mission Control opens on the agents, not an empty prompt
+              box. How to <em>show</em> a team took three iterations, each
+              one killing a confusion the last had created.
+            </p>
           </Prose>
 
-          {/* ITERATION 01 */}
+          {/* ITERATION 01: v1 Kanban MVP */}
           <div className="mt-20 md:mt-24">
             <div className="flex items-baseline gap-5">
               <span className="text-[14px] font-medium tabular-nums text-[#525252]">
                 01
               </span>
-              <h3 className="cs-thesis">Cards</h3>
+              <h3 className="cs-thesis">The Kanban MVP</h3>
             </div>
             <p className="mt-6 max-w-3xl text-[17px] leading-[1.72] text-[#525252] md:text-[18px]">
-              Each agent a tidy card. Clean, but it read like a feature
-              list. Yours to <em>read</em>, not to <em>shape</em>.
+              The first wireframe put the agents down the left and their
+              tasks in Kanban columns to the right. We ran it past our own
+              team, our clients, and a red team, and the verdict was
+              blunt: it didn&rsquo;t read as agents at all. You
+              couldn&rsquo;t tell an agent from a task, couldn&rsquo;t
+              tell what any one agent owned, and there was nowhere to
+              connect your tools, connectors were buried in settings with
+              nothing pointing you to them. A lean MVP that earned its
+              keep by proving what not to build.
             </p>
+            <blockquote className="mt-6 max-w-3xl border-l-2 border-[#0a0a0a]/30 pl-5 text-[17px] italic leading-[1.6] text-[#0a0a0a]/80 md:text-[18px]">
+              &ldquo;This doesn&rsquo;t look like an agent experience.
+              It&rsquo;s confusing.&rdquo;
+            </blockquote>
             <div className="mt-12 md:mt-16">
               <Placeholder
-                name="Card Stack"
-                description="Each function a tidy card. Scannable, but it read as a feature list."
+                name="v1 Kanban MVP"
+                description="Agents crammed down the left, tasks on the right, no clear line between who does the work and what the work is."
               />
             </div>
           </div>
 
-          {/* ITERATION 02 */}
+          {/* ITERATION 02: Cards, with onboarding */}
           <div className="mt-24 md:mt-32">
             <div className="flex items-baseline gap-5">
               <span className="text-[14px] font-medium tabular-nums text-[#525252]">
                 02
               </span>
-              <h3 className="cs-thesis">
-                Name + <code className="px-1 text-[0.85em]">soul.md</code>
-              </h3>
+              <h3 className="cs-thesis">Cards, with a real onboarding</h3>
             </div>
             <p className="mt-6 max-w-3xl text-[17px] leading-[1.72] text-[#525252] md:text-[18px]">
-              Every agent gets a name and a short persona file. Russ opens
-              his with{" "}
-              <em>&ldquo;Every statement includes a number.&rdquo;</em>{" "}
-              The catalog became <em>your</em> team.
+              So I rebuilt around agents you could actually read. Each
+              agent became a card you open to see who it is, what it can
+              do, and the jobs it runs. It also fixed the worst gap from
+              v1: an onboarding that takes your connectors upfront, so
+              the team unlocks the moment you connect, instead of leaving
+              you to hunt through settings. Feedback flipped positive
+              fast. But it surfaced a new gap: people liked the agents
+              and still couldn&rsquo;t tell which one specialized in
+              what, or how they related.
             </p>
+            <blockquote className="mt-6 max-w-3xl border-l-2 border-[#0a0a0a]/30 pl-5 text-[17px] italic leading-[1.6] text-[#0a0a0a]/80 md:text-[18px]">
+              &ldquo;These are cool. But we don&rsquo;t know what the
+              agents <em>are</em>, or where each one fits.&rdquo;
+            </blockquote>
             <div className="mt-12 md:mt-16">
               <Placeholder
-                name="soul.md Editor"
-                description="Name, persona, what it always carries. The screen that turns 'a stock agent' into 'your Russ who only talks in numbers.'"
+                name="Cards view"
+                description="Each agent legible on its own card; connectors unlocked through onboarding, not buried in settings."
               />
             </div>
           </div>
 
-          {/* ITERATION 03 */}
+          {/* ITERATION 03: The org view */}
           <div className="mt-24 md:mt-32">
             <div className="flex items-baseline gap-5">
               <span className="text-[14px] font-medium tabular-nums text-[#525252]">
@@ -663,14 +675,26 @@ export default function ShopOSCaseStudy() {
               <h3 className="cs-thesis">The org view</h3>
             </div>
             <p className="mt-6 max-w-3xl text-[17px] leading-[1.72] text-[#525252] md:text-[18px]">
-              People couldn&rsquo;t tell who reported to whom, so I added
-              a bracketed org-chart view: lead agents up top, specialists
-              grouped beneath, work flowing through the brackets.
+              That last piece of feedback, <em>who specializes in what</em>,
+              is exactly what the org view answers. The orchestrator sits
+              at the top, the five lifecycle stages run across (Discover,
+              Acquire, Convert, Retain, Grow), and each specialist groups
+              under the stage it owns. Specialization became readable
+              before you opened a single thread.
+            </p>
+            <p className="mt-4 max-w-3xl text-[17px] leading-[1.72] text-[#525252] md:text-[18px]">
+              The move I&rsquo;m proudest of is small. In every earlier
+              version the orchestrator was just another named agent. In
+              the org view I put the <em>brand&rsquo;s own name</em> at
+              the top. Now the brand sees itself as the orchestrator, the
+              one who decides which agents run. The hierarchy stopped
+              saying &ldquo;the software has a manager&rdquo; and started
+              saying &ldquo;you run this team.&rdquo;
             </p>
             <div className="mt-12 md:mt-16">
               <Placeholder
-                name="Org View"
-                description="Lead agents at the top, specialists grouped beneath, work flowing through the brackets."
+                name="Org view"
+                description="The brand at the top as orchestrator, branching into Discover / Acquire / Convert / Retain / Grow, specialists grouped beneath each stage."
               />
             </div>
           </div>
@@ -678,26 +702,70 @@ export default function ShopOSCaseStudy() {
       </section>
 
       {/* ===== 06 · The tradeoff I'd redo ================================
-           Promoted from an inline callout to its own H2 section per the
-           storyteller doc. Text-only, no visual slot. */}
+           Text-only, no visual slot. Updated copy now mentions the
+           lifecycle funnel metaphor specifically. */}
       <section className="reveal py-32 md:py-44">
         <Container>
           <SectionHeader>The tradeoff I&rsquo;d redo</SectionHeader>
           <Prose className="mt-12">
             <p>
-              I&rsquo;m not sold on how I drew the org view. It reads more
-              like a flowchart than a living team, and I pushed back on it
-              internally. I kept it because the comprehension win was real
-              and measured: people understood the model instantly with it,
-              and stumbled without it. I chose what taught users fastest
-              over what I found most elegant. I&rsquo;d keep the hierarchy
-              and redraw how it&rsquo;s shown.
+              I went back and forth on the org view. A lifecycle funnel is
+              a strong, almost heavy metaphor for something that should
+              feel alive, and I worried it read too literal, more chart
+              than team. I kept it because the comprehension win was real
+              and measured: people understood the
+              orchestrate-the-specialists model instantly with it and
+              stumbled without it. I chose what taught users fastest over
+              what I found most elegant. I&rsquo;d keep the hierarchy and
+              keep refining how it&rsquo;s drawn.
             </p>
           </Prose>
         </Container>
       </section>
 
-      {/* ===== 07 · Two doors into one team... =========================== */}
+      {/* ===== 07 · Then you open an agent, and make it yours ============
+           New section per the storyteller doc. soul.md graduates from a
+           teammate-iteration bullet to its own product moment, sitting
+           between meeting the team and assigning work. */}
+      <section className="reveal py-32 md:py-44">
+        <Container>
+          <SectionHeader>
+            Then you open an agent, and make it yours
+          </SectionHeader>
+          <Prose className="mt-12">
+            <p>
+              Click any agent and it expands: who it is, the jobs it
+              runs, its connectors, and the thing that turns a stock
+              agent into staff, its{" "}
+              <code className="px-1 text-[0.92em]">soul.md</code>. A
+              short persona file you name and edit, sitting right inside
+              the agent&rsquo;s own panel. Russ, who runs the numbers,
+              opens his with{" "}
+              <em>&ldquo;Every statement includes a number.&rdquo;</em>{" "}
+              One line, and he talks back to you differently forever.
+            </p>
+            <p>
+              This is the difference between a tool and a teammate. The
+              org view shows you the team.{" "}
+              <code className="px-1 text-[0.92em]">soul.md</code> lets
+              you write who each member is. From this same panel you can
+              do the two things that matter next: talk to the agent, or
+              hand it a job.
+            </p>
+          </Prose>
+
+          <div className="mt-16 md:mt-20">
+            <Placeholder
+              name="Agent expanded view"
+              description="Name, character, the jobs it does, connectors, and the editable soul.md, with Chat and Assign right there."
+            />
+          </div>
+        </Container>
+      </section>
+
+      {/* ===== 08 · Two doors into one team... ===========================
+           Order swapped per the new storyteller doc: Chat / Cowork
+           leads (goal thinkers first), Jobs / Kanban follows. */}
       <section className="reveal py-32 md:py-44">
         <Container>
           <SectionHeader>
@@ -705,6 +773,18 @@ export default function ShopOSCaseStudy() {
           </SectionHeader>
 
           <div className="mt-16 grid grid-cols-1 gap-12 md:mt-20 md:grid-cols-2 md:gap-10">
+            {/* Chat / Cowork, now leading */}
+            <div>
+              <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#0d8a8a]">
+                Chat / Cowork, for goal thinkers
+              </p>
+              <p className="mt-3 text-[15px] leading-[1.7] text-[#525252]">
+                State the outcome in plain language. Talk to one agent,
+                or let the orchestrator recruit the team into a single
+                thread.
+              </p>
+            </div>
+            {/* Jobs / Kanban, now second */}
             <div>
               <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#0d8a8a]">
                 Jobs / Kanban, for task thinkers
@@ -714,48 +794,90 @@ export default function ShopOSCaseStudy() {
                 <em>
                   Needs Attention &rarr; In Progress &rarr; Completed
                 </em>
-                . One task, or one a few agents pick up together.
-              </p>
-            </div>
-            <div>
-              <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#0d8a8a]">
-                Chat / Cowork, for goal thinkers
-              </p>
-              <p className="mt-3 text-[15px] leading-[1.7] text-[#525252]">
-                State the outcome; talk to one agent, or let a lead agent
-                recruit the team.
+                , tracked in the Tasks tab for the bigger pieces of
+                work. One task, or one a few agents pick up together.
               </p>
             </div>
           </div>
 
           <Prose className="mt-12">
-            <p>Two views of one engine.</p>
+            <p>
+              Same engine, two views. You brief the way your head already
+              works.
+            </p>
           </Prose>
 
           <div className="mt-16 md:mt-20">
             <Placeholder
               aspect="wide"
-              name="Kanban + Chat Side by Side"
-              description="The two entry points to the same engine."
+              name="Cowork + Kanban side by side"
+              description="The two entry points to the same orchestration engine."
             />
           </div>
         </Container>
       </section>
 
-      {/* ===== 08 · A founder's morning, in 60 seconds instead of six tabs */}
+      {/* ===== 09 · Then you watch the team think ========================
+           Order in the new doc: this comes BEFORE "What needs you" (the
+           swap from previous version). Picks up the Activity Hub as a
+           second surface alongside the Arc thread. */}
+      <section className="reveal py-32 md:py-44">
+        <Container>
+          <SectionHeader>Then you watch the team think</SectionHeader>
+          <Prose className="mt-12">
+            <p>
+              This is where Legible Orchestration stops being a thesis
+              and becomes pixels. Assign a goal and you don&rsquo;t get a
+              spinner, you get a window. You watch Gavin pull Monica into
+              the thread when creative fatigues. Reasoning states
+              (&ldquo;thinking for 8s&rdquo;) show the work happening.
+              Multi-step Arcs expose the plan as it runs, not just the
+              result. Long jobs notify you when they finish so you never
+              sit and wait.
+            </p>
+            <p>
+              Below it, the Activity Hub is the team&rsquo;s feed: what
+              each agent is doing right now, in plain language, the
+              moment they do it. Every state is designed, empty, loading,
+              error, success, because an AI team that fails silently
+              can&rsquo;t be trusted. The handoff happens in front of
+              you, not behind a loading bar.
+            </p>
+          </Prose>
+
+          <div className="mt-16 md:mt-20">
+            <Placeholder
+              name="Orchestration thread + Activity Hub"
+              description="An Arc in flight (the plan, the current step, who's working) above the live feed of every agent's current move."
+            />
+          </div>
+        </Container>
+      </section>
+
+      {/* ===== 10 · What needs you, in 60 seconds instead of six tabs ====
+           Renamed from "A founder's morning". Same two visuals (Needs
+           Attention pinned + SKU scatter), updated copy that frames
+           Mission Control as the command center on top of the agents. */}
       <section className="reveal py-32 md:py-44">
         <Container>
           <SectionHeader>
-            A founder&rsquo;s morning, in 60 seconds instead of six tabs
+            What needs you, in 60 seconds instead of six tabs
           </SectionHeader>
           <Prose className="mt-12">
             <p>
-              Mission Control replaces the morning tab-crawl with one
-              check-in. It reads and surfaces; it never generates. Needs
-              Attention is pinned at the top, capped at three items, each
-              naming the agent, the metric, and one action. Below it, a
-              chart sorts every product by where ad spend goes versus
-              where revenue comes from, so the gaps surface at a glance.
+              Scroll Mission Control and it does the one job a tab-crawl
+              never could: it tells you what needs a human. Needs
+              Attention is pinned near the top, capped at three items,
+              each naming the agent, the metric, and one action, never a
+              vague &ldquo;performance is down.&rdquo; Below it, a chart
+              plots every product by where ad spend goes versus where
+              revenue comes from, so the gaps surface at a glance.
+            </p>
+            <p>
+              Mission Control reads, surfaces, and alerts. It never
+              generates, that happens inside the agents. It&rsquo;s the
+              command center that points you to the two things that
+              actually matter today.
             </p>
           </Prose>
 
@@ -763,63 +885,36 @@ export default function ShopOSCaseStudy() {
             <Placeholder
               aspect="wide"
               name="Needs Attention"
-              description="Pinned at top, capped at three; each item names the agent, the metric, and one action."
+              description="Pinned, capped at three, each item names the agent, the metric, and one action."
             />
             <Placeholder
               aspect="wide"
-              name="SKU Scatter"
-              description="Every product plotted by ad spend × revenue; gaps surface at a glance."
+              name="SKU scatter"
+              description="Every product plotted by ad spend × revenue; the gaps surface at a glance."
             />
           </div>
         </Container>
       </section>
 
-      {/* ===== 09 · Making "thinking for 8 seconds" feel like progress... */}
-      <section className="reveal py-32 md:py-44">
-        <Container>
-          <SectionHeader>
-            Making &ldquo;thinking for 8 seconds&rdquo; feel like progress,
-            not a spinner
-          </SectionHeader>
-          <Prose className="mt-12">
-            <p>
-              You watch Gavin pull Monica into the thread. Reasoning
-              states show the work. Multi-step Arcs expose the plan as it
-              runs. Long jobs notify you when they&rsquo;re done. Every
-              state is designed: empty, loading, error, success. An AI
-              team that fails silently isn&rsquo;t trustworthy. This is
-              Legible Orchestration made concrete: the handoff happens in
-              front of you, not behind a spinner.
-            </p>
-          </Prose>
-
-          <div className="mt-16 md:mt-20">
-            <Placeholder
-              name="Arc Execution"
-              description="A multi-step Arc in flight: the plan, the current step, what's pending, who's working on what."
-            />
-          </div>
-        </Container>
-      </section>
-
-      {/* ===== 10 · What shipped ========================================= */}
+      {/* ===== 11 · What shipped ========================================= */}
       <section className="reveal py-32 md:py-44">
         <Container>
           <SectionHeader>What shipped</SectionHeader>
           <Prose className="mt-12">
             <p>
-              Eight agents running real store work today, live with real
-              enterprise clients. I designed the system end to end and
-              built the frontend: onboarding, agent setup, the Kanban
-              board, Mission Control, Cowork, and the multi-agent
-              conversation, every state built to near-production fidelity.
+              Eight agents running real store work today, live with 10+
+              enterprise brands. I designed the system end to end and
+              built the frontend: onboarding, agent setup, the org view,
+              the agent panels, Cowork, the Kanban board, and the Needs
+              Attention and Activity Hub surfaces, every state built to
+              near-production fidelity.
             </p>
           </Prose>
 
           <div className="mt-16 md:mt-20">
             <Placeholder
-              name="Shipped Surfaces"
-              description="Onboarding, agent setup, Kanban, Mission Control, Cowork, multi-agent conversation."
+              name="Shipped surfaces"
+              description="Onboarding, agent setup, org view, agent panel, Cowork thread, Kanban, Mission Control."
             />
           </div>
         </Container>
@@ -858,7 +953,7 @@ export default function ShopOSCaseStudy() {
                   8
                 </div>
                 <p className="mt-5 max-w-[24ch] text-[11px] font-medium uppercase tracking-[0.16em] text-white/60">
-                  Agents live with real enterprise clients, running real
+                  Agents live with 10+ enterprise brands, running real
                   store work
                 </p>
               </div>
@@ -875,13 +970,13 @@ export default function ShopOSCaseStudy() {
                   In a 15-day GEO pilot for a denim DTC brand, the GEO
                   agent took the brand from cited by <em>zero</em> AI
                   engines to cited by <em>all four</em> (ChatGPT, Claude,
-                  Perplexity, Gemini). In plain terms: the brand went from
-                  invisible when a customer asks an AI, to present
-                  everywhere they might ask. Perplexity citations rose 7%
-                  to 13%, technical health 59% to 65%, with 20 articles
-                  published as an owned content hub. One brand, fifteen
-                  days, early and directional. But real, and run end to
-                  end by an agent.
+                  Perplexity, Gemini). In plain terms: from invisible
+                  when a customer asks an AI, to present everywhere they
+                  might ask. Perplexity citations rose 7% to 13%,
+                  technical health 59% to 65%, with 20 articles published
+                  as an owned content hub. One brand, fifteen days, early
+                  and directional. But real, and run end to end by an
+                  agent.
                 </p>
               </div>
             </div>
@@ -969,9 +1064,11 @@ export default function ShopOSCaseStudy() {
             <p>
               The roster shipped exactly as designed, and it runs real
               stores today. The durable idea underneath it isn&rsquo;t
-              eight agents. It&rsquo;s that an autonomous team only earns
-              trust when a human can watch it think. That&rsquo;s the
-              pattern ShopOS now builds everything else on.
+              eight agents or one dashboard. It&rsquo;s that an
+              autonomous team only earns trust when a human can watch it
+              think, and that a single surface can carry the whole arc
+              from meeting your team to seeing what needs you. That&rsquo;s
+              the pattern ShopOS now builds everything else on.
             </p>
             <p>
               Curious how the orchestration thread actually behaves?{" "}
