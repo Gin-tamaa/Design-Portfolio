@@ -369,9 +369,9 @@ export default function ShopOSCaseStudy() {
           From wearing eight hats to directing eight agents
         </h1>
         <p className="cs-lede mt-6 max-w-[var(--cs-prose-col)]">
-          How a solo store owner went from doing every job themselves to
-          opening one screen, briefing a department of named AI agents,
-          and watching them hand work to each other in real time.
+          How an under-resourced brand went from doing every job by hand
+          to directing a department of named AI agents that hand work to
+          each other in real time.
         </p>
       </Container>
 
@@ -576,15 +576,20 @@ export default function ShopOSCaseStudy() {
       <section className="reveal py-32 md:py-44">
         <Container>
           <SectionHeader>
-            The product, the way a founder moves through it
+            The product, the way you move through it
           </SectionHeader>
           <Prose className="mt-12">
             <p>
-              Everything above is the <em>why</em>. What follows is
-              Mission Control itself, in the order a founder actually
-              meets it: open on the team, shape and brief an agent, watch
-              the work happen, then read what needs you. Each screen
-              below carries the one decision that earned it.
+              Everything above is the <em>why</em>. One clarification
+              before the <em>how</em>: this is built for founders, but
+              the founder is rarely the one sitting in it all day. A
+              founder buys a super team to drop into their org; the
+              people who actually run it are the brand&rsquo;s own
+              marketing, CRM, and ops operators, each working the agents
+              they own. What follows is that surface, in the order you
+              move through it: open on the team, shape and brief an
+              agent, watch the work happen, then read what needs you.
+              Each screen carries the one decision that earned it.
             </p>
           </Prose>
         </Container>
@@ -836,8 +841,8 @@ export default function ShopOSCaseStudy() {
               sit and wait.
             </p>
             <p>
-              Below it, the Activity Hub is the team&rsquo;s feed: what
-              each agent is doing right now, in plain language, the
+              Below it, the Activity Hub is the team&rsquo;s live feed:
+              what each agent is doing right now, in plain language, the
               moment they do it. Every state is designed, empty, loading,
               error, success, because an AI team that fails silently
               can&rsquo;t be trusted. The handoff happens in front of
