@@ -460,15 +460,18 @@ body.shopos-hero.shopos-nav-solid header button {
 .cs-scope .cs-thesis.cs-on-dark  { color: #ffffff; }
 
 /* ===== Liquid-glass pill (Figma 184:2156 product-flow card) =====
-   Used inside the gradient card on /work/shopos. Models the Figma
-   "Glass" panel values: light at -45deg 80%, refraction 80, frost 4.
-   - The SVG filter #liquid-glass-pill (inlined in the page) does the
-     refraction via feTurbulence + feDisplacementMap. Applied through
-     backdrop-filter so the gradient behind the pill is what bends.
-   - box-shadow layers carry the inset light highlight (top-left)
-     plus a faint edge brighten so the pill reads as a glass surface.
-   - Fallback for browsers without backdrop-filter: url(): the frost
-     + saturate + tinted bg + highlights alone still look like glass. */
+   Tuned to the Figma Glass panel values:
+     Light:      -45deg, 80%   → inset top-left highlight, 0.8 alpha
+     Refraction: 80            → SVG feDisplacementMap scale ~70
+     Frost:      4             → blur(4px) on the refraction layer
+     Depth:      20            → outer drop-shadow under the pill
+     Dispersion: 50            → (gradient backdrop doesn't show it
+                                  visibly; deferred)
+     Splay:      0
+   Layering (three layers, bottom up):
+     ::after  = backdrop snapshot, distorted by SVG filter (refraction)
+     ::before = white-tint + box-shadow highlights (the "surface")
+     label    = text on top */
 .glass-pill {
   position: relative;
   display: inline-flex;
@@ -476,31 +479,56 @@ body.shopos-hero.shopos-nav-solid header button {
   justify-content: center;
   padding: 12px 20px;
   border-radius: 9999px;
+  isolation: isolate;
+  /* Depth: outer shadow under the floating glass */
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.22));
+  -webkit-filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.22));
+}
+.glass-pill__label {
+  position: relative;
+  z-index: 2;
   color: #ffffff;
   font-weight: 500;
   font-size: 14px;
   line-height: 1;
   letter-spacing: 0.01em;
   white-space: nowrap;
-  isolation: isolate;
-  background: rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(8px) saturate(180%);
-  -webkit-backdrop-filter: blur(8px) saturate(180%);
-  box-shadow:
-    inset 1.5px 1.5px 0 -0.5px rgba(255, 255, 255, 0.75),
-    inset -1px -1px 0 0 rgba(255, 255, 255, 0.18),
-    inset 0 0 6px 1px rgba(255, 255, 255, 0.22),
-    0 6px 22px -10px rgba(0, 0, 0, 0.25);
 }
-@supports (backdrop-filter: url(#liquid-glass-pill)) or
-          (-webkit-backdrop-filter: url(#liquid-glass-pill)) {
-  .glass-pill {
-    backdrop-filter: url(#liquid-glass-pill) blur(4px) saturate(180%);
-    -webkit-backdrop-filter: url(#liquid-glass-pill) blur(4px) saturate(180%);
-  }
+.glass-pill::before {
+  /* Surface: subtle white tint + the Light -45 / 80 highlight,
+     plus a faint edge brighten on the opposite side */
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow:
+    inset 2px 2px 0 -1px rgba(255, 255, 255, 0.8),
+    inset 0 0 4px 1px rgba(255, 255, 255, 0.3),
+    inset -1px -1px 0 -0.5px rgba(255, 255, 255, 0.16);
+  pointer-events: none;
+}
+.glass-pill::after {
+  /* Refraction: backdrop-filter blur(0) snapshots the gradient
+     behind the pill, then filter: url(#liquid-glass-pill) bends
+     the snapshot via feDisplacementMap. blur(4px) afterwards gives
+     us Frost 4 on top of the refraction. */
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  filter: url(#liquid-glass-pill) blur(0.5px);
+  -webkit-filter: url(#liquid-glass-pill) blur(0.5px);
+  pointer-events: none;
+  overflow: hidden;
 }
 @media (min-width: 768px) {
-  .glass-pill { font-size: 15px; padding: 14px 22px; }
+  .glass-pill { padding: 14px 22px; }
+  .glass-pill__label { font-size: 15px; }
 }
 
 /* Reduced motion: collapse animations */

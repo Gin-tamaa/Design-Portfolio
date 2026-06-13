@@ -137,13 +137,17 @@ function Lead({ children, className = "" }) {
 }
 
 // Liquid-glass pill used inside the Figma 184:2156 gradient card. All
-// styling lives in globals.css under .glass-pill (frost + saturate +
-// inset white highlight + a refraction layer via the
-// #liquid-glass-pill SVG filter that's inlined just inside the
-// section). The SVG filter is what actually bends the gradient
-// behind the pill, instead of flat opacity.
+// styling lives in globals.css under .glass-pill — pseudo-elements
+// stack the layers (refraction ::after under highlight ::before under
+// label). The macOS-reference technique applies the SVG filter via
+// filter: url() on a ::after that snapshots the backdrop via
+// backdrop-filter: blur(0), so the gradient actually bends.
 function GlassPill({ children }) {
-  return <span className="glass-pill">{children}</span>;
+  return (
+    <span className="glass-pill">
+      <span className="glass-pill__label">{children}</span>
+    </span>
+  );
 }
 
 function PlusMinus({ type, text }) {
@@ -633,6 +637,9 @@ export default function ShopOSCaseStudy() {
           }}
         >
           <defs>
+            {/* Figma Glass: Refraction 80 → feDisplacementMap scale 70.
+                feTurbulence baseFrequency is intentionally low so the
+                refraction reads as smooth waves rather than grain. */}
             <filter
               id="liquid-glass-pill"
               x="-20%"
@@ -642,16 +649,16 @@ export default function ShopOSCaseStudy() {
             >
               <feTurbulence
                 type="fractalNoise"
-                baseFrequency="0.008 0.012"
+                baseFrequency="0.01 0.01"
                 numOctaves="2"
                 seed="92"
                 result="noise"
               />
-              <feGaussianBlur in="noise" stdDeviation="0.7" result="softNoise" />
+              <feGaussianBlur in="noise" stdDeviation="0.5" result="softNoise" />
               <feDisplacementMap
                 in="SourceGraphic"
                 in2="softNoise"
-                scale="36"
+                scale="70"
                 xChannelSelector="R"
                 yChannelSelector="G"
               />
