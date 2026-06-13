@@ -459,6 +459,50 @@ body.shopos-hero.shopos-nav-solid header button {
 .cs-scope .cs-section.cs-on-dark { color: #ffffff; }
 .cs-scope .cs-thesis.cs-on-dark  { color: #ffffff; }
 
+/* ===== Liquid-glass pill (Figma 184:2156 product-flow card) =====
+   Used inside the gradient card on /work/shopos. Models the Figma
+   "Glass" panel values: light at -45deg 80%, refraction 80, frost 4.
+   - The SVG filter #liquid-glass-pill (inlined in the page) does the
+     refraction via feTurbulence + feDisplacementMap. Applied through
+     backdrop-filter so the gradient behind the pill is what bends.
+   - box-shadow layers carry the inset light highlight (top-left)
+     plus a faint edge brighten so the pill reads as a glass surface.
+   - Fallback for browsers without backdrop-filter: url(): the frost
+     + saturate + tinted bg + highlights alone still look like glass. */
+.glass-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 9999px;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  isolation: isolate;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px) saturate(180%);
+  -webkit-backdrop-filter: blur(8px) saturate(180%);
+  box-shadow:
+    inset 1.5px 1.5px 0 -0.5px rgba(255, 255, 255, 0.75),
+    inset -1px -1px 0 0 rgba(255, 255, 255, 0.18),
+    inset 0 0 6px 1px rgba(255, 255, 255, 0.22),
+    0 6px 22px -10px rgba(0, 0, 0, 0.25);
+}
+@supports (backdrop-filter: url(#liquid-glass-pill)) or
+          (-webkit-backdrop-filter: url(#liquid-glass-pill)) {
+  .glass-pill {
+    backdrop-filter: url(#liquid-glass-pill) blur(4px) saturate(180%);
+    -webkit-backdrop-filter: url(#liquid-glass-pill) blur(4px) saturate(180%);
+  }
+}
+@media (min-width: 768px) {
+  .glass-pill { font-size: 15px; padding: 14px 22px; }
+}
+
 /* Reduced motion: collapse animations */
 @media (prefers-reduced-motion: reduce) {
   .csc-bubble-in,

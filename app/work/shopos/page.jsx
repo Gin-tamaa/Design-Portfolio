@@ -136,24 +136,14 @@ function Lead({ children, className = "" }) {
   );
 }
 
-// Frosted-glass pill used inside the Figma 184:2156 gradient card.
-// The look is a slight dark tint + backdrop blur over the gradient
-// behind it, so the pill reads as glass rather than a flat overlay.
-// -webkit-backdrop-filter is included because Safari needs the prefix.
+// Liquid-glass pill used inside the Figma 184:2156 gradient card. All
+// styling lives in globals.css under .glass-pill (frost + saturate +
+// inset white highlight + a refraction layer via the
+// #liquid-glass-pill SVG filter that's inlined just inside the
+// section). The SVG filter is what actually bends the gradient
+// behind the pill, instead of flat opacity.
 function GlassPill({ children }) {
-  return (
-    <span
-      className="inline-flex items-center justify-center rounded-full px-5 py-3 text-[14px] font-medium leading-none text-white md:text-[15px]"
-      style={{
-        background: "rgba(0, 0, 0, 0.18)",
-        backdropFilter: "blur(20px) saturate(160%)",
-        WebkitBackdropFilter: "blur(20px) saturate(160%)",
-        boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.18)",
-      }}
-    >
-      {children}
-    </span>
-  );
+  return <span className="glass-pill">{children}</span>;
 }
 
 function PlusMinus({ type, text }) {
@@ -620,13 +610,54 @@ export default function ShopOSCaseStudy() {
 
       {/* ===== 04 · Divider, Figma 184:2156 ==============================
            5/7 grid: text on the left, gradient card with four step
-           rows on the right. The eyebrow now lives INSIDE the left
-           column directly above the headline (16px gap) so eyebrow +
-           h2 read as a unit. Each step row is a fixed 400px wide and
-           centered in the card so all rows line up on the left edge.
-           Pills use a frosted-glass treatment (backdrop blur over the
-           gradient), not just an opacity tint. */}
+           rows on the right. The eyebrow lives in the left column
+           above the headline (16px gap). Step rows are fixed
+           max-w-[400px], centered. Pills use a real liquid-glass
+           treatment (.glass-pill in globals.css) backed by an SVG
+           displacement filter inlined below for refraction. */}
       <section className="reveal py-32 md:py-44">
+        {/* Inline SVG filter for the liquid-glass refraction. zero-size
+            + absolute + pointer-events: none so it doesn't take any
+            layout. fractalNoise + feDisplacementMap produces the gentle
+            bending of the gradient that the .glass-pill applies via
+            backdrop-filter: url(#liquid-glass-pill). */}
+        <svg
+          aria-hidden="true"
+          width="0"
+          height="0"
+          style={{
+            position: "absolute",
+            width: 0,
+            height: 0,
+            pointerEvents: "none",
+          }}
+        >
+          <defs>
+            <filter
+              id="liquid-glass-pill"
+              x="-20%"
+              y="-20%"
+              width="140%"
+              height="140%"
+            >
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.008 0.012"
+                numOctaves="2"
+                seed="92"
+                result="noise"
+              />
+              <feGaussianBlur in="noise" stdDeviation="0.7" result="softNoise" />
+              <feDisplacementMap
+                in="SourceGraphic"
+                in2="softNoise"
+                scale="36"
+                xChannelSelector="R"
+                yChannelSelector="G"
+              />
+            </filter>
+          </defs>
+        </svg>
         <Container>
           <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:items-center md:gap-16">
             {/* LEFT, eyebrow + headline (tight) + body. h2 is inlined
