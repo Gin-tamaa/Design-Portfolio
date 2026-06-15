@@ -19,6 +19,7 @@ import VideoBlock from "./VideoBlock";
 import ChatLauncher from "../../components/ChatLauncher";
 import AgentsFanOut from "./AgentsFanOut";
 import TooManyTasks from "./TooManyTasks";
+import CardsVersionSwitcher from "./CardsVersionSwitcher";
 
 const SKY_SRC = "/images/shopos-hero-sky.png";
 const AGENTS_SRC = "/images/agents-hero.png";
@@ -764,28 +765,20 @@ export default function ShopOSCaseStudy() {
             </div>
           </div>
 
-          {/* ITERATION 02: Cards + onboarding -> closer */}
+          {/* ITERATION 02: Cards. Same treatment as the Kanban MVP
+              iteration — the bullet content is baked into the Figma
+              frames, so the standalone bullet list is omitted. The
+              CardsVersionSwitcher renders an interactive 2-frame
+              switcher (Kanban view <-> Cards-grid view) that
+              auto-cycles every 5s and lets the user click the
+              right-side callouts or the bottom dots to lock onto
+              a frame. */}
           <div className="mt-20 md:mt-24">
             <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
               Version <span className="tabular-nums">02</span> - Cards
             </h3>
-            <ul className="mt-6 space-y-3 max-w-[var(--cs-prose-col)]">
-              <Bullet>
-                Each agent a card: who it is, what it can do, the jobs it
-                runs
-              </Bullet>
-              <Bullet>
-                Onboarding pulls connectors upfront, the team unlocks the
-                moment you connect
-              </Bullet>
-              <Bullet>
-                Feedback turned positive, new gap surfaced: &ldquo;we
-                still don&rsquo;t know what the agents <em>are</em>, or
-                where each fits&rdquo;
-              </Bullet>
-            </ul>
             <div className="mt-10 md:mt-12">
-              <ImageSlot caption="Cards view: each agent legible on its own card; connectors unlocked in onboarding." />
+              <CardsVersionSwitcher />
             </div>
           </div>
 
