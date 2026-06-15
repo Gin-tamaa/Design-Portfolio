@@ -1,50 +1,54 @@
 "use client";
 
-// Version 02 - Cards iteration: a 2-frame switcher that flips between
-// the Kanban-task-board view (frame 1) and the Meet-the-Agents cards
-// view (frame 2). The bullet content is baked into the frames, so the
-// standalone bullet list above is intentionally absent.
+// Version 02 - Cards iteration: a 2-frame switcher between the
+// Meet-the-Agents cards-grid view (frame index 0, default) and the
+// Kanban-task-board view (frame index 1). The bullet content is baked
+// into the frames, so the standalone bullet list above is omitted.
 //
 // State mapping:
-//   active = 0 -> Frame 1 (Kanban view). On the right rail the
-//                 BOTTOM callout reads as white/active (it describes
-//                 the Kanban tab), and the TOP callout sits in the
-//                 glass/inactive state.
-//   active = 1 -> Frame 2 (Cards-grid view). The TOP callout reads
-//                 as white/active (it describes the cards grid), and
-//                 the BOTTOM callout is the glass/inactive one.
+//   active = 0 -> Cards-grid view (default, LEFT dot active).
+//                 On the right rail the TOP callout ("Each agent a
+//                 card...") reads as white/active; the BOTTOM
+//                 callout ("Kanban Task Board lies separately") sits
+//                 in the glass/clickable state.
+//   active = 1 -> Kanban view (RIGHT dot active). The BOTTOM
+//                 callout reads as white/active, the TOP callout
+//                 sits in the glass/clickable state.
 //
-// So the hotspots have fixed destinations: clicking the TOP callout
-// always goes to Frame 2; clicking the BOTTOM callout always goes to
-// Frame 1. Whichever hotspot is currently sitting on top of a
-// glass-style card is the only one with a hover lift; the other is
-// already the active surface and gets cursor-default.
+// Hotspots have fixed destinations: clicking the TOP callout always
+// navigates to active=0 (the cards-grid view, where it's the active
+// surface); clicking the BOTTOM callout always navigates to active=1
+// (the kanban view, where it's the active surface). Whichever
+// hotspot is currently sitting on top of a glass-style card is the
+// only one with a hover lift; the other is already the active
+// surface and gets cursor-default.
 //
 // Auto-cycle:
-//   The view auto-cycles between frames every 5s until the user
-//   touches any switcher (a callout hotspot OR a carousel dot).
-//   After that, the cycle is permanently cancelled for this session.
+//   The view auto-cycles every 5s until the user touches any
+//   switcher (callout hotspot OR carousel dot). After that, the
+//   cycle is permanently cancelled for this session.
 
 import { useEffect, useRef, useState } from "react";
 
 const FRAMES = [
   {
-    src: "/images/shopos/cards-v2-frame-1.png",
-    alt: "v2 Cards iteration, frame 1: Kanban Task Board view; the right-side 'Kanban Task Board lies separately' callout reads as active.",
+    // index 0 = default, LEFT dot. TOP callout active.
+    src: "/images/shopos/cards-v2-frame-2.png",
+    alt: "v2 Cards iteration, default frame: Meet the Agents cards grid view; the right-side 'Each agent a card' callout reads as active.",
   },
   {
-    src: "/images/shopos/cards-v2-frame-2.png",
-    alt: "v2 Cards iteration, frame 2: Meet the Agents cards grid view; the right-side 'Each agent a card' callout reads as active.",
+    // index 1, RIGHT dot. BOTTOM callout active.
+    src: "/images/shopos/cards-v2-frame-1.png",
+    alt: "v2 Cards iteration, second frame: Kanban Task Board view; the right-side 'Kanban Task Board lies separately' callout reads as active.",
   },
 ];
 
 const AUTO_SWITCH_MS = 5000;
 
 export default function CardsVersionSwitcher() {
-  // Default to Frame 2 (Meet the Agents / cards grid) per design spec.
-  const [active, setActive] = useState(1);
-  // userInteracted flips true on any click. Once true, the auto-cycle
-  // is permanently cancelled for the rest of the session.
+  // Default = Cards-grid (index 0). Left dot active on first paint.
+  const [active, setActive] = useState(0);
+  // Flips true on any click; permanently cancels the auto-cycle.
   const [userInteracted, setUserInteracted] = useState(false);
   const intervalRef = useRef(null);
 
@@ -61,14 +65,15 @@ export default function CardsVersionSwitcher() {
     setUserInteracted(true);
   };
 
-  // Which side is currently the clickable / glass-style one.
-  const topIsClickable = active !== 1;     // top callout sits in glass state when frame 1 is showing
-  const bottomIsClickable = active !== 0;  // bottom callout sits in glass state when frame 2 is showing
+  // The clickable / glass-style callout is whichever one is NOT the
+  // currently-active surface.
+  const topIsClickable = active !== 0;     // top is active when cards-grid showing
+  const bottomIsClickable = active !== 1;  // bottom is active when kanban showing
 
   return (
     <div className="relative aspect-video w-full overflow-hidden rounded-2xl">
       {/* Both frames stay mounted; the inactive one fades to 0 so the
-          swap is a soft 500ms crossfade rather than a hard cut. */}
+          swap is a soft 500ms crossfade. */}
       {FRAMES.map((f, i) => (
         <img
           key={f.src}
@@ -85,11 +90,11 @@ export default function CardsVersionSwitcher() {
       ))}
 
       {/* "Select the cards to switch in between them" instruction.
-          The source PNGs no longer carry this text (Figma nodes
-          198:10256 + 198:10484 are the clean exports), so the React
-          version is the only copy. Sized 14px (2px above the
-          rendered scale of the original baked 32px-on-3840 spec).
-          pointer-events-none so it doesn't intercept clicks. */}
+          Source PNGs are the clean Figma exports without the baked
+          instruction text, so this React copy is the only one.
+          14px Inter (~2px above the original baked 32px-on-3840 spec
+          when scaled to typical display widths).
+          pointer-events-none so it doesn't intercept hotspot clicks. */}
       <p
         aria-hidden="true"
         className="pointer-events-none absolute right-[2.5%] top-[3.5%] text-right text-[14px] font-normal leading-tight text-[#606060]"
@@ -98,16 +103,15 @@ export default function CardsVersionSwitcher() {
         Select the cards to switch in between them
       </p>
 
-      {/* Top right-side callout hotspot. Always navigates to Frame 2
-          (where the top callout reads as the active white card). When
-          the user is already on Frame 2 this hotspot is the active
-          one, so no hover lift; on Frame 1 it's the glass/clickable
-          one and we soft-light it on hover so it reads as tappable. */}
+      {/* TOP right-side callout hotspot. Always navigates to active=0
+          (Cards-grid, the frame where the top callout is white/active).
+          Hover lift only fires when the user is on the OTHER frame
+          (i.e. when this callout is currently the glass/clickable one). */}
       <button
         type="button"
-        onClick={() => select(1)}
+        onClick={() => select(0)}
         aria-label="Show the Meet the Agents cards grid view"
-        aria-pressed={active === 1}
+        aria-pressed={active === 0}
         className={`absolute right-[2.5%] top-[33%] h-[19%] w-[20%] rounded-2xl outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white/70 ${
           topIsClickable
             ? "cursor-pointer hover:bg-white/10"
@@ -115,12 +119,13 @@ export default function CardsVersionSwitcher() {
         }`}
       />
 
-      {/* Bottom right-side callout hotspot. Always navigates to Frame 1. */}
+      {/* BOTTOM right-side callout hotspot. Always navigates to
+          active=1 (Kanban view). */}
       <button
         type="button"
-        onClick={() => select(0)}
+        onClick={() => select(1)}
         aria-label="Show the Kanban Task Board view"
-        aria-pressed={active === 0}
+        aria-pressed={active === 1}
         className={`absolute right-[2.5%] top-[56%] h-[19%] w-[20%] rounded-2xl outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white/70 ${
           bottomIsClickable
             ? "cursor-pointer hover:bg-white/10"
@@ -128,11 +133,9 @@ export default function CardsVersionSwitcher() {
         }`}
       />
 
-      {/* Carousel dots. The source PNGs no longer carry the baked
-          indicator, so these React dots are the only copy. Active dot
-          is a wider white pill, inactive is a small white-60% dot
-          that expands + brightens on hover so it clearly reads as
-          interactive. */}
+      {/* Carousel dots. React-only since the source PNGs no longer
+          carry the baked indicator. Active dot = wider white pill;
+          inactive dot expands + brightens on hover. */}
       <div className="absolute bottom-[3.5%] left-1/2 flex -translate-x-1/2 items-center gap-2.5">
         {FRAMES.map((_, i) => (
           <button
