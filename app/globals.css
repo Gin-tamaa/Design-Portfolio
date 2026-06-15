@@ -495,19 +495,18 @@ body.shopos-hero.shopos-nav-solid header button {
   white-space: nowrap;
 }
 .glass-pill::before {
-  /* Surface: subtle white tint + a hairline light border wrapping the
-     full perimeter + the Light -45 / 80 highlight stacked on top. */
+  /* Surface: subtle white tint + the Light -45 / 80 highlight,
+     plus a faint edge brighten on the opposite side */
   content: '';
   position: absolute;
   inset: 0;
   z-index: 1;
   border-radius: inherit;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-sizing: border-box;
   box-shadow:
-    inset 1.5px 1.5px 0 -0.5px rgba(255, 255, 255, 0.7),
-    inset 0 0 6px 0 rgba(255, 255, 255, 0.22);
+    inset 2px 2px 0 -1px rgba(255, 255, 255, 0.8),
+    inset 0 0 4px 1px rgba(255, 255, 255, 0.3),
+    inset -1px -1px 0 -0.5px rgba(255, 255, 255, 0.16);
   pointer-events: none;
 }
 .glass-pill::after {

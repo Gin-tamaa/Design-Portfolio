@@ -666,52 +666,60 @@ export default function ShopOSCaseStudy() {
           </defs>
         </svg>
         <Container>
-          <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:items-center md:gap-16">
-            {/* LEFT, eyebrow + headline (tight) + body. h2 is inlined
-                here instead of using <SectionHeader> so we can control
-                the spacing precisely (the helper hardcodes mt-6). */}
-            <div className="md:col-span-5">
-              <div className="flex flex-col gap-4">
-                <p className="cs-eyebrow">The buyer isn&rsquo;t the user</p>
-                <h2 className="cs-section max-w-[32ch]">
-                  The product, the way you move through it
-                </h2>
+          {/* Outer rounded card with a hairline light border, matching
+              the Figma container (rounded-[30px], bg-white). Sits
+              around both the text column and the gradient card so the
+              whole section reads as one boxed unit. */}
+          <div className="rounded-[30px] border border-[#E5E5E5] bg-white p-8 md:p-12">
+            <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:items-center md:gap-16">
+              {/* LEFT, eyebrow + headline (tight) + body. h2 is
+                  inlined here instead of using <SectionHeader> so we
+                  can control the spacing precisely (the helper
+                  hardcodes mt-6). */}
+              <div className="md:col-span-5">
+                <div className="flex flex-col gap-4">
+                  <p className="cs-eyebrow">The buyer isn&rsquo;t the user</p>
+                  <h2 className="cs-section max-w-[32ch]">
+                    The product, the way you move through it
+                  </h2>
+                </div>
+                <p className="cs-body mt-6 max-w-[var(--cs-prose-col)]">
+                  Built for founders, but the founder rarely sits in it
+                  all day. A founder buys a super team for the org; the
+                  brand&rsquo;s own marketing, CRM, and ops people run
+                  it, each working the agents they own.
+                </p>
               </div>
-              <p className="cs-body mt-6 max-w-[var(--cs-prose-col)]">
-                Built for founders, but the founder rarely sits in it
-                all day. A founder buys a super team for the org; the
-                brand&rsquo;s own marketing, CRM, and ops people run it,
-                each working the agents they own.
-              </p>
-            </div>
 
-            {/* RIGHT, gradient card. Gradient angle/stops are from
-                Figma node 186:2041 verbatim. Inner ul uses items-center
-                so the fixed-width rows centre horizontally in the card;
-                justify-between distributes the four rows vertically. */}
-            <div
-              className="md:col-span-7 overflow-hidden rounded-3xl"
-              style={{
-                background:
-                  "linear-gradient(137.67deg, #026DDB 0%, #4EEEC2 100%)",
-              }}
-            >
-              <ul className="flex min-h-[420px] flex-col items-center justify-between gap-8 px-8 py-14 md:min-h-[520px] md:gap-10 md:px-10 md:py-20">
-                {[
-                  ["Step 1", "Meet the team"],
-                  ["Step 2", "Shape and brief an agent"],
-                  ["Step 3", "Watch the work"],
-                  ["Step 4", "Review what needs you"],
-                ].map(([n, label]) => (
-                  <li
-                    key={n}
-                    className="flex w-full max-w-[400px] items-center gap-2"
-                  >
-                    <GlassPill>{n}</GlassPill>
-                    <GlassPill>{label}</GlassPill>
-                  </li>
-                ))}
-              </ul>
+              {/* RIGHT, gradient card. Gradient angle/stops are from
+                  Figma node 186:2041 verbatim. Inner ul uses
+                  items-center so the fixed-width rows centre
+                  horizontally in the card; justify-between distributes
+                  the four rows vertically. */}
+              <div
+                className="md:col-span-7 overflow-hidden rounded-3xl"
+                style={{
+                  background:
+                    "linear-gradient(137.67deg, #026DDB 0%, #4EEEC2 100%)",
+                }}
+              >
+                <ul className="flex min-h-[420px] flex-col items-center justify-between gap-8 px-8 py-14 md:min-h-[520px] md:gap-10 md:px-10 md:py-20">
+                  {[
+                    ["Step 1", "Meet the team"],
+                    ["Step 2", "Shape and brief an agent"],
+                    ["Step 3", "Watch the work"],
+                    ["Step 4", "Review what needs you"],
+                  ].map(([n, label]) => (
+                    <li
+                      key={n}
+                      className="flex w-full max-w-[400px] items-center gap-2"
+                    >
+                      <GlassPill>{n}</GlassPill>
+                      <GlassPill>{label}</GlassPill>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </Container>
