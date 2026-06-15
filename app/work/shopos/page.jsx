@@ -971,19 +971,23 @@ export default function ShopOSCaseStudy() {
                 Progress &rarr; Completed, tracked in the Tasks tab for
                 bigger pieces.
               </p>
-              {/* Kanban board, transparent PNG. The asset itself is
-                  framed so the right and bottom edges already show
-                  partial cards (visual cue that the board extends
-                  beyond) — so we just render it naturally inside the
-                  card's content area, no negative margins or width
-                  hacks needed. */}
-              <div className="mt-auto pt-8">
+              {/* Kanban board. Container has negative right + bottom
+                  margins to cancel the card's padding, so its edges
+                  land at the card's outer edge; the card's
+                  overflow-hidden then clips anything past that.
+                  Image is wider than the container (w-[115%]) so it
+                  extends past the right edge, and the container's
+                  max-h holds it short of the card-stretch height the
+                  natural h-auto would otherwise force — i.e., the
+                  kanban "bleeds" out of the bottom + right of the
+                  card without making the card taller. */}
+              <div className="mt-auto -mb-7 -mr-7 max-h-[180px] overflow-hidden pt-8 md:-mb-9 md:-mr-9 md:max-h-[240px]">
                 <img
                   src="/images/shopos/two-doors-kanban.png"
-                  alt="The Scheduled column (TOFU Static Ad assigned to Monica) and Need Attention column (Pulling ad performance from Meta Ads with Gavin, Creative Brief with Richard) of the Kanban board, the rest of the board clipped at the card edges to suggest it extends further."
-                  width={659}
-                  height={376}
-                  className="block h-auto w-full"
+                  alt="The Scheduled column (TOFU Static Ad assigned to Monica) and Need Attention column (Pulling ad performance from Meta Ads with Gavin, Creative Brief with Richard) of the Kanban board, the rest of the board bleeding out of the card's right and bottom edges to suggest it extends further."
+                  width={1188}
+                  height={636}
+                  className="block h-auto w-[115%] max-w-none"
                   loading="lazy"
                   decoding="async"
                 />
