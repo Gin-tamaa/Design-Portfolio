@@ -741,46 +741,33 @@ export default function ShopOSCaseStudy() {
               The Figma export (Kanban mockup + the four critique
               callouts as glass pills on a gradient) already carries
               the bullet content, so the bullet list is intentionally
-              omitted here. The header sits in Container; the image
-              breaks out below to a wider max-w-[1280px], modelled on
-              chatgpt.com/overview's featured-image sections (rounded
-              container, image fills edge-to-edge, no caption). */}
+              omitted. Image is rendered inside the same Container as
+              the heading so its left/right edges line up exactly
+              with the H3 above it (chatgpt.com's wider break-out is
+              not used here per design feedback). */}
           <div className="mt-16 md:mt-20">
             <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
-              <span className="tabular-nums">01</span> &middot; Kanban MVP{" "}
-              <span className="font-normal italic text-[#525252]">
-                &rarr; what not to build
-              </span>
+              Version <span className="tabular-nums">01</span> - Kanban
             </h3>
+            <div className="mt-10 md:mt-12">
+              <div className="overflow-hidden rounded-2xl">
+                <img
+                  src="/images/shopos/kanban-mvp.png"
+                  alt="v1 Kanban MVP: agents listed down the left, tasks in Kanban columns on the right. Four critique callouts overlaid: agents and tasks indistinguishable, ownership unclear, no connector path, red team feedback that it didn't read as an agent experience."
+                  width={3840}
+                  height={2160}
+                  className="block h-auto w-full"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </div>
           </div>
-        </Container>
 
-        {/* Featured Kanban MVP image: breaks out of the 1080px page
-            Container to a wider 1280px max-width, with mobile padding
-            falling through. Native source is 3840x2160. */}
-        <div className="mt-10 w-full px-6 md:mt-12 md:px-10">
-          <div className="mx-auto max-w-[1280px] overflow-hidden rounded-2xl">
-            <img
-              src="/images/shopos/kanban-mvp.png"
-              alt="v1 Kanban MVP: agents listed down the left, tasks in Kanban columns on the right. Four critique callouts overlaid: agents and tasks indistinguishable, ownership unclear, no connector path, red team feedback that it didn't read as an agent experience."
-              width={3840}
-              height={2160}
-              className="block h-auto w-full"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-        </div>
-
-        <Container>
           {/* ITERATION 02: Cards + onboarding -> closer */}
           <div className="mt-20 md:mt-24">
             <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
-              <span className="tabular-nums">02</span> &middot; Cards +
-              onboarding{" "}
-              <span className="font-normal italic text-[#525252]">
-                &rarr; closer
-              </span>
+              Version <span className="tabular-nums">02</span> - Cards
             </h3>
             <ul className="mt-6 space-y-3 max-w-[var(--cs-prose-col)]">
               <Bullet>
@@ -805,10 +792,7 @@ export default function ShopOSCaseStudy() {
           {/* ITERATION 03: Org view -> shipped */}
           <div className="mt-20 md:mt-24">
             <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
-              <span className="tabular-nums">03</span> &middot; Org view{" "}
-              <span className="font-normal italic text-[#525252]">
-                &rarr; shipped
-              </span>
+              Version <span className="tabular-nums">03</span> - Org view
             </h3>
             <ul className="mt-6 space-y-3 max-w-[var(--cs-prose-col)]">
               <Bullet>
