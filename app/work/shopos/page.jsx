@@ -882,8 +882,16 @@ export default function ShopOSCaseStudy() {
       </section>
 
       {/* ===== 08 · Two doors into one team ==============================
-           Scaffolded: italic lead + two-bullet stack (Chat first per
-           the new spec) + a wide ImageSlot. */}
+           Layout per Figma 210:5610. Two side-by-side cards, each one
+           a peach-pink CSS gradient panel with the heading + body text
+           rendered as real HTML on top, plus a small cropped UI
+           screenshot (chat input pill / kanban columns) docked at the
+           bottom. Mobile stacks single-column.
+
+           The text is selectable, the gradient is editable in CSS,
+           and only the actual product-UI bits are images — total
+           image payload for this section is ~150KB instead of the
+           ~1.5MB it would be if I had pasted the whole Figma frame. */}
       <section className="reveal py-32 md:py-44">
         <Container>
           <SectionHeader>Two doors into one team</SectionHeader>
@@ -891,27 +899,65 @@ export default function ShopOSCaseStudy() {
             Same engine, two entry points. You brief the way your head
             already works.
           </Lead>
-          <ul className="mt-8 space-y-3 max-w-[var(--cs-prose-col)]">
-            <Bullet>
-              <strong>Chat / Cowork</strong>, for goal thinkers: state
-              the outcome, talk to one agent or let the orchestrator
-              recruit the team into one thread
-            </Bullet>
-            <Bullet>
-              <strong>Jobs / Kanban</strong>, for task thinkers: work
-              moves{" "}
-              <em>
-                Needs Attention &rarr; In Progress &rarr; Completed
-              </em>
-              , tracked in the Tasks tab for bigger pieces
-            </Bullet>
-          </ul>
 
-          <div className="mt-16 md:mt-20">
-            <ImageSlot
-              aspect="wide"
-              caption="Cowork + Kanban side by side: two views of one orchestration engine."
-            />
+          <div className="mt-12 grid grid-cols-1 gap-6 md:mt-16 md:grid-cols-2">
+            {/* LEFT card: Chat / Cowork */}
+            <article
+              className="relative overflow-hidden rounded-3xl p-7 md:p-9"
+              style={{
+                background:
+                  "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
+              }}
+            >
+              <h3 className="text-[18px] font-semibold leading-tight text-[#0a0a0a] md:text-[20px]">
+                Chat / Cowork
+              </h3>
+              <p className="mt-3 max-w-[34ch] text-[14px] leading-[1.55] text-[#0a0a0a]/85 md:text-[15px]">
+                For goal thinkers: state the outcome, talk to one agent
+                or let the orchestrator recruit the team into one
+                thread.
+              </p>
+              <div className="mt-8 md:mt-10">
+                <img
+                  src="/images/shopos/two-doors-chat.png"
+                  alt="A single chat input pill reading 'Get me my emails from the connectors, create a theme based mail for our upcoming shoe, and send an email for the pre-hype phase of our sneaker' with a Brand Memory toggle and a send arrow."
+                  width={620}
+                  height={140}
+                  className="block h-auto w-full"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </article>
+
+            {/* RIGHT card: Jobs / Kanban */}
+            <article
+              className="relative overflow-hidden rounded-3xl p-7 md:p-9"
+              style={{
+                background:
+                  "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
+              }}
+            >
+              <h3 className="text-[18px] font-semibold leading-tight text-[#0a0a0a] md:text-[20px]">
+                Jobs / Kanban
+              </h3>
+              <p className="mt-3 max-w-[34ch] text-[14px] leading-[1.55] text-[#0a0a0a]/85 md:text-[15px]">
+                For task thinkers: work moves{" "}
+                <em>Needs Attention &rarr; In Progress &rarr; Completed</em>
+                , tracked in the Tasks tab for bigger pieces.
+              </p>
+              <div className="mt-6 md:mt-8">
+                <img
+                  src="/images/shopos/two-doors-kanban.png"
+                  alt="Kanban columns showing two task cards in the Scheduled and Need Attention columns: a TOFU Static Ad assigned to Monica with a 1m 52s timer, a Pulling ad performance from Meta Ads task assigned to Gavin, and a Creative Brief task assigned to Richard."
+                  width={650}
+                  height={325}
+                  className="block h-auto w-full"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </article>
           </div>
         </Container>
       </section>
