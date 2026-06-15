@@ -557,29 +557,37 @@ export default function ShopOSCaseStudy() {
         <Container>
           <div className="rounded-[30px] border border-[#E5E5E5] bg-white p-8 md:p-12">
             <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:items-center md:gap-16">
-              {/* LEFT, gradient + bubbles asset, straight from Figma */}
-              <div className="md:col-span-5">
+              {/* LEFT, gradient + bubbles asset, straight from Figma.
+                  col-span-7 to match the visual proportions of the
+                  blue gradient card in Section 4 (which sits at
+                  col-span-7 on the right side of that row). */}
+              <div className="md:col-span-7">
                 <img
                   src="/images/shopos/chat-problem-bubbles.png"
                   alt="A peach gradient mini-card holding three chat bubble pills: 'ShopOS Thought for 12s' with the sparkle mark, 'Who will manage my store?' with a brown-haired user avatar, and 'Who handles branding?' with a pink-haired user avatar."
-                  width={720}
-                  height={734}
+                  width={718}
+                  height={654}
                   className="block h-auto w-full rounded-2xl"
                   loading="lazy"
                   decoding="async"
                 />
               </div>
 
-              {/* RIGHT, eyebrow + headline + body */}
-              <div className="md:col-span-7">
-                <p className="text-[14px] font-semibold leading-tight text-[#0a0a0a]">
-                  How do we solve this for the customers and gain their
-                  trust?
-                </p>
-                <h2 className="cs-section mt-6 max-w-[18ch]">
-                  This wasn&rsquo;t a chat problem. It was an org
-                  problem.
-                </h2>
+              {/* RIGHT, eyebrow + headline + body. col-span-5 mirrors
+                  Section 4's text column. Eyebrow uses cs-eyebrow
+                  (uppercase tracking) for visual consistency with the
+                  "THE BUYER ISN'T THE USER" eyebrow in Section 4. */}
+              <div className="md:col-span-5">
+                <div className="flex flex-col gap-4">
+                  <p className="cs-eyebrow">
+                    How do we solve this for the customers and gain
+                    their trust?
+                  </p>
+                  <h2 className="cs-section max-w-[18ch]">
+                    This wasn&rsquo;t a chat problem. It was an org
+                    problem.
+                  </h2>
+                </div>
                 <p className="cs-body mt-6 max-w-[var(--cs-prose-col)]">
                   The challenge wasn&rsquo;t the prompt box. It was{" "}
                   <strong>Legible Orchestration</strong>: making a team
@@ -594,6 +602,7 @@ export default function ShopOSCaseStudy() {
           </div>
         </Container>
       </section>
+      {/* /end section 02 */}
 
       {/* ===== 03 · We didn't invent the team... =========================
            Layout per Figma 210:5115. The four approach steps render as
