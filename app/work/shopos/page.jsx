@@ -20,7 +20,6 @@ import ChatLauncher from "../../components/ChatLauncher";
 import AgentsFanOut from "./AgentsFanOut";
 import TooManyTasks from "./TooManyTasks";
 import CardsVersionSwitcher from "./CardsVersionSwitcher";
-import AgentAvatar from "../../components/AgentAvatar";
 
 const SKY_SRC = "/images/shopos-hero-sky.png";
 const AGENTS_SRC = "/images/agents-hero.png";
@@ -548,86 +547,27 @@ export default function ShopOSCaseStudy() {
       </section>
 
       {/* ===== 02 · This wasn't a chat problem. It was an org problem. ===
-           Built to mirror Section 4 ("The product, the way you move
-           through it") structurally and proportionally:
-             - Outer bordered card (rounded-[30px], border-#E5E5E5,
-               bg-white, p-8 md:p-12).
-             - Two-up grid, col-span-7 visual + col-span-5 text.
-             - Visual is a CSS gradient div (NOT an image) with the
-               same min-h-[420px] / md:min-h-[520px] as the blue card
-               in Section 4. Inside it, three chat-bubble pills built
-               as JSX with real AgentAvatar portraits. Glass-pill
-               treatment same as Section 4. */}
+           Outer bordered card (rounded-[30px], border-#E5E5E5,
+           bg-white, p-8 md:p-12). Image (chat-problem-bubbles.png,
+           extracted from Figma 210:10057) on the left at col-span-7,
+           sized to fill min-h-[420px]/md:min-h-[520px] via object-cover
+           so it matches Section 4's blue card visual weight. Text
+           on the right at col-span-5. */}
       <section className="reveal py-24 md:py-36">
         <Container>
           <div className="rounded-[30px] border border-[#E5E5E5] bg-white p-8 md:p-12">
             <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:items-center md:gap-16">
-              {/* LEFT, peach gradient div with chat bubbles. Mirrors
-                  Section 4's blue gradient card geometry exactly. */}
-              <div
-                className="overflow-hidden rounded-3xl md:col-span-7"
-                style={{
-                  background:
-                    "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
-                }}
-              >
-                <div className="flex min-h-[420px] flex-col justify-center gap-3 px-8 py-14 md:min-h-[520px] md:gap-4 md:px-10 md:py-20">
-                  {/* ShopOS thinking */}
-                  <div
-                    className="inline-flex w-fit items-center gap-2.5 rounded-full py-1.5 pl-1.5 pr-5"
-                    style={{
-                      background: "rgba(255, 255, 255, 0.30)",
-                      backdropFilter: "blur(12px) saturate(160%)",
-                      WebkitBackdropFilter: "blur(12px) saturate(160%)",
-                      boxShadow:
-                        "inset 1.5px 1.5px 0 -0.5px rgba(255,255,255,0.7), inset 0 0 4px 1px rgba(255,255,255,0.25)",
-                    }}
-                  >
-                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white">
-                      <svg width="16" height="16" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                        <path d="M7 0L8.5 5.5L14 7L8.5 8.5L7 14L5.5 8.5L0 7L5.5 5.5L7 0Z" fill="#ec4899" />
-                      </svg>
-                    </span>
-                    <span className="text-[16px] font-semibold text-[#0a0a0a]">
-                      ShopOS
-                    </span>
-                    <span className="text-[16px] text-white">
-                      Thought for 12s
-                    </span>
-                  </div>
-                  {/* User 1: Creative Head portrait */}
-                  <div
-                    className="inline-flex w-fit items-center gap-2.5 rounded-full py-1.5 pl-1.5 pr-5"
-                    style={{
-                      background: "rgba(255, 255, 255, 0.30)",
-                      backdropFilter: "blur(12px) saturate(160%)",
-                      WebkitBackdropFilter: "blur(12px) saturate(160%)",
-                      boxShadow:
-                        "inset 1.5px 1.5px 0 -0.5px rgba(255,255,255,0.7), inset 0 0 4px 1px rgba(255,255,255,0.25)",
-                    }}
-                  >
-                    <AgentAvatar persona="creative-head" size={36} />
-                    <span className="text-[16px] text-white">
-                      Who will manage my store?
-                    </span>
-                  </div>
-                  {/* User 2: Funny Side portrait */}
-                  <div
-                    className="inline-flex w-fit items-center gap-2.5 rounded-full py-1.5 pl-1.5 pr-5"
-                    style={{
-                      background: "rgba(255, 255, 255, 0.30)",
-                      backdropFilter: "blur(12px) saturate(160%)",
-                      WebkitBackdropFilter: "blur(12px) saturate(160%)",
-                      boxShadow:
-                        "inset 1.5px 1.5px 0 -0.5px rgba(255,255,255,0.7), inset 0 0 4px 1px rgba(255,255,255,0.25)",
-                    }}
-                  >
-                    <AgentAvatar persona="funny-side" size={36} />
-                    <span className="text-[16px] text-white">
-                      Who handles branding?
-                    </span>
-                  </div>
-                </div>
+              {/* LEFT, peach gradient + bubbles, straight from Figma */}
+              <div className="overflow-hidden rounded-3xl md:col-span-7">
+                <img
+                  src="/images/shopos/chat-problem-bubbles.png"
+                  alt="A peach gradient mini-card holding three chat bubble pills: 'ShopOS Thought for 12s' with the sparkle mark, 'Who will manage my store?' with a brown-haired user avatar, and 'Who handles branding?' with a pink-haired user avatar."
+                  width={718}
+                  height={654}
+                  className="block h-full min-h-[420px] w-full object-cover md:min-h-[520px]"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
 
               {/* RIGHT, eyebrow + headline + body */}
