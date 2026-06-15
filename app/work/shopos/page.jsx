@@ -527,7 +527,7 @@ export default function ShopOSCaseStudy() {
                 &middot; yesterday&rsquo;s ROAS &middot; caption &middot;
                 analytics &middot; customer replies &middot; video script
                 &middot; SEO audit &middot; social post &middot; restock
-                alerts &middot; newsletter. Twelve jobs.
+                alerts &middot; newsletter.
               </em>
             </p>
             <p>
@@ -920,17 +920,13 @@ export default function ShopOSCaseStudy() {
               result
             </Bullet>
             <Bullet>
-              The Activity Hub is the live feed: what each agent is
-              doing right now, in plain language
-            </Bullet>
-            <Bullet>
               Every state designed: empty, loading, error, success. A
               team that fails silently can&rsquo;t be trusted
             </Bullet>
           </ul>
 
           <div className="mt-16 md:mt-20">
-            <ImageSlot caption="Orchestration thread + Activity Hub: an Arc in flight above the live feed of every agent's current move." />
+            <ImageSlot caption="Orchestration thread: an Arc in flight, the plan, the current step, and who is working it." />
           </div>
         </Container>
       </section>
@@ -943,8 +939,9 @@ export default function ShopOSCaseStudy() {
             What needs you, in 60 seconds instead of six tabs
           </SectionHeader>
           <Lead>
-            Mission Control reads, surfaces, and alerts. It never
-            generates, that happens inside the agents.
+            Same surface, scrolled down. Above this sits the org view
+            you already met; below it, Mission Control does the one
+            job a tab-crawl never could: tell you what needs a human.
           </Lead>
           <ul className="mt-8 space-y-3 max-w-[var(--cs-prose-col)]">
             <Bullet>
@@ -953,8 +950,9 @@ export default function ShopOSCaseStudy() {
               action. Never a vague &ldquo;performance is down&rdquo;
             </Bullet>
             <Bullet>
-              <strong>SKU scatter</strong>: every product plotted by ad
-              spend versus revenue, so the gaps surface at a glance
+              <strong>Activity</strong>: the live feed of what each
+              agent is doing right now, in plain language, the moment
+              they do it
             </Bullet>
           </ul>
 
@@ -965,7 +963,7 @@ export default function ShopOSCaseStudy() {
             />
             <ImageSlot
               aspect="wide"
-              caption="SKU scatter: every product by ad spend × revenue; gaps surface at a glance."
+              caption="Activity feed: each agent's current move, in plain language, as it happens."
             />
           </div>
         </Container>
@@ -989,7 +987,7 @@ export default function ShopOSCaseStudy() {
               Cowork, the multi-agent thread, the Kanban board
             </Bullet>
             <Bullet>
-              Needs Attention and Activity Hub, every state to
+              Needs Attention and Activity, every state to
               near-production fidelity
             </Bullet>
           </ul>
