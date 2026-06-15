@@ -766,7 +766,7 @@ export default function ShopOSCaseStudy() {
           </div>
 
           {/* ITERATION 02: Cards. Same treatment as the Kanban MVP
-              iteration — the bullet content is baked into the Figma
+              iteration. The bullet content is baked into the Figma
               frames, so the standalone bullet list is omitted. The
               CardsVersionSwitcher renders an interactive 2-frame
               switcher (Kanban view <-> Cards-grid view) that

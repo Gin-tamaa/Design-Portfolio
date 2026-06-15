@@ -9,7 +9,7 @@
 // Behaviour:
 //   - Auto-switch every 5s while no user interaction has happened.
 //   - The two right-side cards in the image are clickable hotspots
-//     (transparent buttons positioned absolutely over them) — clicking
+//     (transparent buttons positioned absolutely over them); clicking
 //     either swaps to the corresponding frame and cancels auto-switch.
 //   - The dot indicator at the bottom is also clickable; same effect.
 //   - The visible active-state styling (which card is highlighted,
