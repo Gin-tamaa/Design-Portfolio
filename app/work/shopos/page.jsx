@@ -978,18 +978,20 @@ export default function ShopOSCaseStudy() {
                 <em>Needs Attention &rarr; In Progress &rarr; Completed</em>
                 , tracked in the Tasks tab for bigger pieces.
               </p>
-              {/* Kanban board (four columns: Scheduled, Need Attention,
-                  In Progress, Completed) sourced from Figma 210:9549.
-                  Overflow on the right is intentional — the Completed
-                  column is partially visible at the edge to suggest
-                  there's more board off-frame. */}
-              <div className="mt-auto pt-8">
+              {/* Kanban board, transparent PNG. Sized wider than the
+                  card's content area (w-[160%]) and pushed flush to
+                  the right edge (-mr-7 / md:-mr-9, cancelling the
+                  card's padding) so the board reads as extending
+                  end-to-end and clipping at the right edge — same
+                  framing the Figma uses for this section. The card's
+                  overflow-hidden does the clipping. */}
+              <div className="mt-auto pt-8 -mr-7 md:-mr-9">
                 <img
                   src="/images/shopos/two-doors-kanban.png"
-                  alt="A four-column kanban board: Scheduled (TOFU Static Ad assigned to Monica), Need Attention (Pulling ad performance from Meta Ads with Gavin, Creative Brief with Richard, Ad Copy Variants with Dinesh), In Progress (A/B Test Setup with Erlich), and Completed (Hook Test, Video Storyboard, Learning Log, BOFU Retargeting Ad)."
+                  alt="A four-column kanban board extending end-to-end: Scheduled (TOFU Static Ad assigned to Monica), Need Attention (Pulling ad performance from Meta Ads with Gavin, Creative Brief with Richard, Ad Copy Variants with Dinesh), In Progress (A/B Test Setup with Erlich), and Completed (Hook Test, Video Storyboard, Learning Log, BOFU Retargeting Ad), clipped at the right card edge."
                   width={1188}
                   height={636}
-                  className="block h-auto w-full"
+                  className="block h-auto w-[160%] max-w-none"
                   loading="lazy"
                   decoding="async"
                 />
