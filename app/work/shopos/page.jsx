@@ -20,7 +20,6 @@ import ChatLauncher from "../../components/ChatLauncher";
 import AgentsFanOut from "./AgentsFanOut";
 import TooManyTasks from "./TooManyTasks";
 import CardsVersionSwitcher from "./CardsVersionSwitcher";
-import AgentAvatar from "../../components/AgentAvatar";
 
 const SKY_SRC = "/images/shopos-hero-sky.png";
 const AGENTS_SRC = "/images/agents-hero.png";
@@ -548,74 +547,27 @@ export default function ShopOSCaseStudy() {
       </section>
 
       {/* ===== 02 · This wasn't a chat problem. It was an org problem. ===
-           Layout per Figma 210:10057. Peach gradient wrapper (same
-           palette as the "Two doors into one team" cards below for
-           consistency). Two-up grid: three chat bubbles on the LEFT,
-           the eyebrow + headline + body on the RIGHT. Chat bubbles
-           are JSX with real AgentAvatar portraits, no images. */}
+           Mirrors the "The product, the way you move through it"
+           divider section below: same outer bordered card
+           (rounded-[30px], border-#E5E5E5, bg-white). Image on the
+           LEFT (the peach gradient mini-card with the three chat
+           bubbles, extracted directly from Figma 210:10057), text on
+           the RIGHT. */}
       <section className="reveal py-32 md:py-44">
         <Container>
-          <div
-            className="overflow-hidden rounded-[30px] p-8 md:p-12"
-            style={{
-              background:
-                "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
-            }}
-          >
+          <div className="rounded-[30px] border border-[#E5E5E5] bg-white p-8 md:p-12">
             <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:items-center md:gap-16">
-              {/* LEFT, three chat bubbles built as JSX. Bubble bg is
-                  a translucent white wash with backdrop-blur so they
-                  read as glass on the peach gradient. */}
-              <div className="flex flex-col gap-3 md:col-span-5">
-                {/* ShopOS thinking */}
-                <div
-                  className="inline-flex w-fit items-center gap-2.5 rounded-full py-1.5 pl-2 pr-5"
-                  style={{
-                    background: "rgba(255, 255, 255, 0.35)",
-                    backdropFilter: "blur(8px)",
-                    WebkitBackdropFilter: "blur(8px)",
-                  }}
-                >
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                      <path d="M7 0L8.5 5.5L14 7L8.5 8.5L7 14L5.5 8.5L0 7L5.5 5.5L7 0Z" fill="#ec4899" />
-                    </svg>
-                  </span>
-                  <span className="text-[15px] font-medium text-[#0a0a0a]">
-                    ShopOS
-                  </span>
-                  <span className="text-[15px] text-[#0a0a0a]/55">
-                    Thought for 12s
-                  </span>
-                </div>
-                {/* User 1: portrait avatar */}
-                <div
-                  className="inline-flex w-fit items-center gap-2.5 rounded-full py-1.5 pl-2 pr-5 md:ml-6"
-                  style={{
-                    background: "rgba(255, 255, 255, 0.35)",
-                    backdropFilter: "blur(8px)",
-                    WebkitBackdropFilter: "blur(8px)",
-                  }}
-                >
-                  <AgentAvatar persona="creative-head" size={28} />
-                  <span className="text-[15px] text-[#0a0a0a]/75">
-                    Who will manage my store?
-                  </span>
-                </div>
-                {/* User 2: portrait avatar */}
-                <div
-                  className="inline-flex w-fit items-center gap-2.5 rounded-full py-1.5 pl-2 pr-5 md:ml-12"
-                  style={{
-                    background: "rgba(255, 255, 255, 0.35)",
-                    backdropFilter: "blur(8px)",
-                    WebkitBackdropFilter: "blur(8px)",
-                  }}
-                >
-                  <AgentAvatar persona="funny-side" size={28} />
-                  <span className="text-[15px] text-[#0a0a0a]/75">
-                    Who handles branding?
-                  </span>
-                </div>
+              {/* LEFT, gradient + bubbles asset, straight from Figma */}
+              <div className="md:col-span-5">
+                <img
+                  src="/images/shopos/chat-problem-bubbles.png"
+                  alt="A peach gradient mini-card holding three chat bubble pills: 'ShopOS Thought for 12s' with the sparkle mark, 'Who will manage my store?' with a brown-haired user avatar, and 'Who handles branding?' with a pink-haired user avatar."
+                  width={720}
+                  height={734}
+                  className="block h-auto w-full rounded-2xl"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
 
               {/* RIGHT, eyebrow + headline + body */}
