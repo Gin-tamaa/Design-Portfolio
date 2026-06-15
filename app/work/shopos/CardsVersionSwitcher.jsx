@@ -1,31 +1,40 @@
 "use client";
 
 // Version 02 - Cards iteration: a 2-frame switcher that flips between
-// the Kanban-task-board view (frame 1) and the Meet-the-Agents card
-// view (frame 2). The bullet content for this iteration is baked into
-// the Figma frames themselves, so the standalone bullet list above is
-// intentionally absent (matches the v1 Kanban MVP treatment).
+// the Kanban-task-board view (frame 1) and the Meet-the-Agents cards
+// view (frame 2). The bullet content is baked into the frames, so the
+// standalone bullet list above is intentionally absent.
 //
-// Behaviour:
-//   - Auto-switch every 5s while no user interaction has happened.
-//   - The two right-side cards in the image are clickable hotspots
-//     (transparent buttons positioned absolutely over them); clicking
-//     either swaps to the corresponding frame and cancels auto-switch.
-//   - The dot indicator at the bottom is also clickable; same effect.
-//   - The visible active-state styling (which card is highlighted,
-//     which dot is wider) is baked into each frame export, so the
-//     React state only needs to drive the image swap.
+// State mapping:
+//   active = 0 -> Frame 1 (Kanban view). On the right rail the
+//                 BOTTOM callout reads as white/active (it describes
+//                 the Kanban tab), and the TOP callout sits in the
+//                 glass/inactive state.
+//   active = 1 -> Frame 2 (Cards-grid view). The TOP callout reads
+//                 as white/active (it describes the cards grid), and
+//                 the BOTTOM callout is the glass/inactive one.
+//
+// So the hotspots have fixed destinations: clicking the TOP callout
+// always goes to Frame 2; clicking the BOTTOM callout always goes to
+// Frame 1. Whichever hotspot is currently sitting on top of a
+// glass-style card is the only one with a hover lift; the other is
+// already the active surface and gets cursor-default.
+//
+// Auto-cycle:
+//   The view auto-cycles between frames every 5s until the user
+//   touches any switcher (a callout hotspot OR a carousel dot).
+//   After that, the cycle is permanently cancelled for this session.
 
 import { useEffect, useRef, useState } from "react";
 
 const FRAMES = [
   {
     src: "/images/shopos/cards-v2-frame-1.png",
-    alt: "v2 Cards iteration, frame 1: Kanban Task Board view; the 'Each agent a card' callout is highlighted on the right.",
+    alt: "v2 Cards iteration, frame 1: Kanban Task Board view; the right-side 'Kanban Task Board lies separately' callout reads as active.",
   },
   {
     src: "/images/shopos/cards-v2-frame-2.png",
-    alt: "v2 Cards iteration, frame 2: Meet the Agents card grid view; the 'Kanban Task Board lies separately' callout is highlighted on the right.",
+    alt: "v2 Cards iteration, frame 2: Meet the Agents cards grid view; the right-side 'Each agent a card' callout reads as active.",
   },
 ];
 
@@ -34,11 +43,10 @@ const AUTO_SWITCH_MS = 5000;
 export default function CardsVersionSwitcher() {
   const [active, setActive] = useState(0);
   // userInteracted flips true on any click. Once true, the auto-cycle
-  // is permanently cancelled for the rest of the session (the page).
+  // is permanently cancelled for the rest of the session.
   const [userInteracted, setUserInteracted] = useState(false);
   const intervalRef = useRef(null);
 
-  // Auto-cycle every 5s until the user touches a switcher.
   useEffect(() => {
     if (userInteracted) return;
     intervalRef.current = setInterval(() => {
@@ -52,10 +60,14 @@ export default function CardsVersionSwitcher() {
     setUserInteracted(true);
   };
 
+  // Which side is currently the clickable / glass-style one.
+  const topIsClickable = active !== 1;     // top callout sits in glass state when frame 1 is showing
+  const bottomIsClickable = active !== 0;  // bottom callout sits in glass state when frame 2 is showing
+
   return (
     <div className="relative aspect-video w-full overflow-hidden rounded-2xl">
-      {/* Both frames are always in the DOM, the inactive one is faded
-          out so the swap is a soft crossfade rather than a hard cut. */}
+      {/* Both frames stay mounted; the inactive one fades to 0 so the
+          swap is a soft 500ms crossfade rather than a hard cut. */}
       {FRAMES.map((f, i) => (
         <img
           key={f.src}
@@ -71,29 +83,41 @@ export default function CardsVersionSwitcher() {
         />
       ))}
 
-      {/* Clickable hotspot over the TOP right-side callout. The visual
-          highlight in the image is what shows the active state; this
-          button is intentionally transparent. */}
-      <button
-        type="button"
-        onClick={() => select(0)}
-        aria-label="Show the Kanban Task Board frame"
-        aria-pressed={active === 0}
-        className="absolute right-[2.5%] top-[33%] h-[19%] w-[20%] cursor-pointer rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-      />
-      {/* Clickable hotspot over the BOTTOM right-side callout. */}
+      {/* Top right-side callout hotspot. Always navigates to Frame 2
+          (where the top callout reads as the active white card). When
+          the user is already on Frame 2 this hotspot is the active
+          one, so no hover lift; on Frame 1 it's the glass/clickable
+          one and we soft-light it on hover so it reads as tappable. */}
       <button
         type="button"
         onClick={() => select(1)}
-        aria-label="Show the Meet the Agents card grid frame"
+        aria-label="Show the Meet the Agents cards grid view"
         aria-pressed={active === 1}
-        className="absolute right-[2.5%] top-[56%] h-[19%] w-[20%] cursor-pointer rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+        className={`absolute right-[2.5%] top-[33%] h-[19%] w-[20%] rounded-2xl outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white/70 ${
+          topIsClickable
+            ? "cursor-pointer hover:bg-white/10"
+            : "cursor-default"
+        }`}
       />
 
-      {/* Carousel-dot hotspots. The dot indicator is part of the image,
-          so the React buttons here are invisible click targets sitting
-          on top of the rendered dots. */}
-      <div className="absolute bottom-[4%] left-1/2 flex -translate-x-1/2 items-center gap-2">
+      {/* Bottom right-side callout hotspot. Always navigates to Frame 1. */}
+      <button
+        type="button"
+        onClick={() => select(0)}
+        aria-label="Show the Kanban Task Board view"
+        aria-pressed={active === 0}
+        className={`absolute right-[2.5%] top-[56%] h-[19%] w-[20%] rounded-2xl outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white/70 ${
+          bottomIsClickable
+            ? "cursor-pointer hover:bg-white/10"
+            : "cursor-default"
+        }`}
+      />
+
+      {/* Carousel dots, React-rendered and positioned over the baked-in
+          dot indicator in the image. Visible active-state styling
+          (wider pill when active, small dot when inactive) plus a
+          slight hover brighten on the inactive dot. */}
+      <div className="absolute bottom-[3.5%] left-1/2 flex -translate-x-1/2 items-center gap-2">
         {FRAMES.map((_, i) => (
           <button
             key={i}
@@ -101,7 +125,11 @@ export default function CardsVersionSwitcher() {
             onClick={() => select(i)}
             aria-label={`Switch to frame ${i + 1}`}
             aria-pressed={i === active}
-            className="h-4 w-10 cursor-pointer rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+            className={`h-[6px] cursor-pointer rounded-full outline-none transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white/70 ${
+              i === active
+                ? "w-10 bg-white"
+                : "w-[6px] bg-white/50 hover:bg-white/80"
+            }`}
           />
         ))}
       </div>
