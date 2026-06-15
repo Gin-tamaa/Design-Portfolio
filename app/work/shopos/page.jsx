@@ -575,8 +575,11 @@ export default function ShopOSCaseStudy() {
       </section>
 
       {/* ===== 03 · We didn't invent the team... =========================
-           Scaffolded: italic lead + tight bullet stack + ImageSlot for
-           the approach loop diagram. */}
+           Layout per Figma 210:5115. The four approach steps render as
+           a 4-column numbered row on desktop (big number + small body
+           text below each), collapsing to 2x2 on tablet and a single
+           column on mobile. Pure HTML, no image — all copy stays
+           selectable. */}
       <section className="reveal py-32 md:py-44">
         <Container>
           <SectionHeader>
@@ -587,29 +590,24 @@ export default function ShopOSCaseStudy() {
             on people we had, then pressure-tested it on the ones closest
             to the customer.
           </Lead>
-          <ul className="mt-8 space-y-3 max-w-[var(--cs-prose-col)]">
-            <Bullet>
-              Modeled each agent on a real role: paid lead, CRM manager,
-              creative director
-            </Bullet>
-            <Bullet>
-              Built an internal MVP, ran it through our own team, each
-              person testing the agent for the job they actually do
-            </Bullet>
-            <Bullet>
-              Leaned hardest on CRM and sales, the people closest to
-              users, to pressure-test which agents mattered
-            </Bullet>
-            <Bullet>
-              Validated cheap: a vibe-coded MVP in front of onboarded
-              brands first, the Figma version built in parallel as
-              feedback came in
-            </Bullet>
-          </ul>
 
-          <div className="mt-16 md:mt-20">
-            <ImageSlot caption="Approach loop: internal MVP → team feedback → user MVP → feedback → live." />
-          </div>
+          <ol className="mt-12 grid grid-cols-1 gap-x-10 gap-y-10 md:mt-16 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              "Modeled each agent on a real role: paid lead, CRM manager, creative director",
+              "Built an internal MVP, ran it through our own team, each person testing the agent for the job they actually do",
+              "Leaned hardest on CRM and sales, the people closest to users, to pressure-test which agents mattered",
+              "Validated cheap: a vibe-coded MVP in front of onboarded brands first, the Figma version built in parallel as feedback came in",
+            ].map((text, i) => (
+              <li key={i} className="flex flex-col">
+                <span className="text-[24px] font-medium leading-none tabular-nums text-[#0a0a0a] md:text-[28px]">
+                  {i + 1}
+                </span>
+                <p className="mt-6 text-[15px] leading-[1.65] text-[#525252] md:text-[16px]">
+                  {text}
+                </p>
+              </li>
+            ))}
+          </ol>
         </Container>
       </section>
 
