@@ -903,7 +903,7 @@ export default function ShopOSCaseStudy() {
           <div className="mt-12 grid grid-cols-1 gap-6 md:mt-16 md:grid-cols-2">
             {/* LEFT card: Chat / Cowork */}
             <article
-              className="relative overflow-hidden rounded-3xl p-7 md:p-9"
+              className="relative flex flex-col overflow-hidden rounded-3xl p-7 md:p-9"
               style={{
                 background:
                   "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
@@ -917,12 +917,14 @@ export default function ShopOSCaseStudy() {
                 or let the orchestrator recruit the team into one
                 thread.
               </p>
-              <div className="mt-8 md:mt-10">
+              {/* Chat input pill, sourced from Figma 210:9547 (trimmed
+                  of the dark canvas margin). */}
+              <div className="mt-auto pt-10">
                 <img
                   src="/images/shopos/two-doors-chat.png"
-                  alt="A single chat input pill reading 'Get me my emails from the connectors, create a theme based mail for our upcoming shoe, and send an email for the pre-hype phase of our sneaker' with a Brand Memory toggle and a send arrow."
-                  width={620}
-                  height={140}
+                  alt="A chat input pill reading 'Get me my emails from the connectors, create a theme-based mail for our upcoming shoe and send an email for the pre-hype phase of our sneaker' with a + attach button, Brand Memory toggle, and a send arrow."
+                  width={603}
+                  height={120}
                   className="block h-auto w-full"
                   loading="lazy"
                   decoding="async"
@@ -932,7 +934,7 @@ export default function ShopOSCaseStudy() {
 
             {/* RIGHT card: Jobs / Kanban */}
             <article
-              className="relative overflow-hidden rounded-3xl p-7 md:p-9"
+              className="relative flex flex-col overflow-hidden rounded-3xl p-7 md:p-9"
               style={{
                 background:
                   "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
@@ -946,12 +948,17 @@ export default function ShopOSCaseStudy() {
                 <em>Needs Attention &rarr; In Progress &rarr; Completed</em>
                 , tracked in the Tasks tab for bigger pieces.
               </p>
-              <div className="mt-6 md:mt-8">
+              {/* Kanban board (four columns: Scheduled, Need Attention,
+                  In Progress, Completed) sourced from Figma 210:9549.
+                  Overflow on the right is intentional — the Completed
+                  column is partially visible at the edge to suggest
+                  there's more board off-frame. */}
+              <div className="mt-auto pt-8">
                 <img
                   src="/images/shopos/two-doors-kanban.png"
-                  alt="Kanban columns showing two task cards in the Scheduled and Need Attention columns: a TOFU Static Ad assigned to Monica with a 1m 52s timer, a Pulling ad performance from Meta Ads task assigned to Gavin, and a Creative Brief task assigned to Richard."
-                  width={650}
-                  height={325}
+                  alt="A four-column kanban board: Scheduled (TOFU Static Ad assigned to Monica), Need Attention (Pulling ad performance from Meta Ads with Gavin, Creative Brief with Richard, Ad Copy Variants with Dinesh), In Progress (A/B Test Setup with Erlich), and Completed (Hook Test, Video Storyboard, Learning Log, BOFU Retargeting Ad)."
+                  width={1188}
+                  height={636}
                   className="block h-auto w-full"
                   loading="lazy"
                   decoding="async"
