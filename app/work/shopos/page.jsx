@@ -828,7 +828,10 @@ export default function ShopOSCaseStudy() {
       </section>
 
       {/* ===== 07 · Then you open an agent, and make it yours ============
-           Scaffolded: italic lead + tight bullet stack + ImageSlot. */}
+           Bullets are baked into the Figma 206:6535 composition (three
+           panels: agent expanded view, soul.md editor, A/B Test Setup
+           handoff), so the standalone bullet list is omitted — same
+           pattern as v1/v2/v3. */}
       <section className="reveal py-32 md:py-44">
         <Container>
           <SectionHeader>
@@ -838,26 +841,19 @@ export default function ShopOSCaseStudy() {
             Click any agent and it expands. This is where a stock agent
             becomes staff.
           </Lead>
-          <ul className="mt-8 space-y-3 max-w-[var(--cs-prose-col)]">
-            <Bullet>
-              Inside: who it is, the jobs it runs, its connectors, and
-              its editable{" "}
-              <code className="px-1 text-[0.92em]">soul.md</code>
-            </Bullet>
-            <Bullet>
-              <code className="px-1 text-[0.92em]">soul.md</code> is a
-              short persona file you name and write. Russ opens his
-              with{" "}
-              <em>&ldquo;Every statement includes a number.&rdquo;</em>{" "}
-              One line, and he answers differently forever
-            </Bullet>
-            <Bullet>
-              From the same panel: chat with the agent, or hand it a job
-            </Bullet>
-          </ul>
 
-          <div className="mt-16 md:mt-20">
-            <ImageSlot caption="Agent panel: name, character, jobs, connectors, the soul.md editor, with Chat and Assign right there." />
+          <div className="mt-10 md:mt-12">
+            <div className="overflow-hidden rounded-2xl">
+              <img
+                src="/images/shopos/then-you-open-an-agent.png"
+                alt="Three-panel composition. TOP LEFT: 'Inside: who it is, the jobs it runs, its connectors, and its editable soul.md' shown next to the expanded agent panel listing the jobs and connectors. TOP RIGHT: 'soul.md is a short persona file you name and write. Russ opens his with Every statement includes a number. One line, and he answers differently forever' shown next to a soul.md editor. BOTTOM: 'From the same panel: chat with the agent, or hand it a job' shown above an A/B Test Setup screen mid-flow."
+                width={3840}
+                height={3480}
+                className="block h-auto w-full"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
           </div>
         </Container>
       </section>
