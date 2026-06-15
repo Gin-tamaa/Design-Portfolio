@@ -971,26 +971,35 @@ export default function ShopOSCaseStudy() {
                 Progress &rarr; Completed, tracked in the Tasks tab for
                 bigger pieces.
               </p>
-              {/* Kanban board. Container has negative right + bottom
-                  margins to cancel the card's padding, so its edges
-                  land at the card's outer edge; the card's
-                  overflow-hidden then clips anything past that.
-                  Image is wider than the container (w-[115%]) so it
-                  extends past the right edge, and the container's
-                  max-h holds it short of the card-stretch height the
-                  natural h-auto would otherwise force — i.e., the
-                  kanban "bleeds" out of the bottom + right of the
-                  card without making the card taller. */}
+              {/* Kanban board. Wrapped in a frosted-glass surface
+                  (same recipe as the Section 4 glass pills) so the
+                  kanban reads as sitting on a translucent pane over
+                  the peach gradient, with a 1.5px white inset
+                  highlight on the top-left and a faint inner glow.
+                  Outer container negative margins + max-h still
+                  keep the kanban bleeding out of the card's bottom
+                  + right edges without growing card height. */}
               <div className="mt-auto -mb-7 -mr-7 max-h-[180px] overflow-hidden pt-8 md:-mb-9 md:-mr-9 md:max-h-[240px]">
-                <img
-                  src="/images/shopos/two-doors-kanban.png"
-                  alt="The Scheduled column (TOFU Static Ad assigned to Monica) and Need Attention column (Pulling ad performance from Meta Ads with Gavin, Creative Brief with Richard) of the Kanban board, the rest of the board bleeding out of the card's right and bottom edges to suggest it extends further."
-                  width={1188}
-                  height={636}
-                  className="block h-auto w-[115%] max-w-none"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <div
+                  className="rounded-2xl"
+                  style={{
+                    background: "rgba(255, 255, 255, 0.10)",
+                    backdropFilter: "blur(12px) saturate(160%)",
+                    WebkitBackdropFilter: "blur(12px) saturate(160%)",
+                    boxShadow:
+                      "inset 1.5px 1.5px 0 -0.5px rgba(255,255,255,0.7), inset 0 0 4px 1px rgba(255,255,255,0.25)",
+                  }}
+                >
+                  <img
+                    src="/images/shopos/two-doors-kanban.png"
+                    alt="The Scheduled column (TOFU Static Ad assigned to Monica) and Need Attention column (Pulling ad performance from Meta Ads with Gavin, Creative Brief with Richard) of the Kanban board, the rest of the board bleeding out of the card's right and bottom edges to suggest it extends further."
+                    width={1188}
+                    height={636}
+                    className="block h-auto w-[115%] max-w-none"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
               </div>
             </article>
           </div>
