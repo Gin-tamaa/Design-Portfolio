@@ -41,7 +41,8 @@ const FRAMES = [
 const AUTO_SWITCH_MS = 5000;
 
 export default function CardsVersionSwitcher() {
-  const [active, setActive] = useState(0);
+  // Default to Frame 2 (Meet the Agents / cards grid) per design spec.
+  const [active, setActive] = useState(1);
   // userInteracted flips true on any click. Once true, the auto-cycle
   // is permanently cancelled for the rest of the session.
   const [userInteracted, setUserInteracted] = useState(false);
@@ -82,6 +83,21 @@ export default function CardsVersionSwitcher() {
           decoding="async"
         />
       ))}
+
+      {/* "Select the cards to switch in between them" instruction.
+          Baked into the Figma export at 32px on a 3840px canvas
+          (#606060 SF Pro Regular). The React overlay below sits on
+          top at a slightly larger 14px so the instruction stays
+          legible at the rendered display widths the case-study page
+          uses. pointer-events-none so it doesn't intercept clicks
+          aimed at the callout hotspots below it. */}
+      <p
+        aria-hidden="true"
+        className="pointer-events-none absolute right-[2.5%] top-[3.5%] text-right text-[14px] font-normal leading-tight text-[#606060]"
+        style={{ fontFamily: "Inter, sans-serif" }}
+      >
+        Select the cards to switch in between them
+      </p>
 
       {/* Top right-side callout hotspot. Always navigates to Frame 2
           (where the top callout reads as the active white card). When
