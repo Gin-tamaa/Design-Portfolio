@@ -935,7 +935,7 @@ export default function ShopOSCaseStudy() {
               <h3 className="text-[18px] font-semibold leading-tight text-[#0a0a0a] md:text-[20px]">
                 Chat / Cowork
               </h3>
-              <p className="mt-3 max-w-[34ch] text-[14px] leading-[1.55] text-[#0a0a0a]/85 md:text-[15px]">
+              <p className="mt-3 max-w-[34ch] text-[14px] leading-[1.55] text-[#0a0a0a] md:text-[15px]">
                 For goal thinkers: state the outcome, talk to one agent
                 or let the orchestrator recruit the team into one
                 thread.
@@ -966,10 +966,10 @@ export default function ShopOSCaseStudy() {
               <h3 className="text-[18px] font-semibold leading-tight text-[#0a0a0a] md:text-[20px]">
                 Jobs / Kanban
               </h3>
-              <p className="mt-3 max-w-[34ch] text-[14px] leading-[1.55] text-[#0a0a0a]/85 md:text-[15px]">
-                For task thinkers: work moves{" "}
-                <em>Needs Attention &rarr; In Progress &rarr; Completed</em>
-                , tracked in the Tasks tab for bigger pieces.
+              <p className="mt-3 max-w-[34ch] text-[14px] leading-[1.55] text-[#0a0a0a] md:text-[15px]">
+                For task thinkers: work moves Needs Attention &rarr; In
+                Progress &rarr; Completed, tracked in the Tasks tab for
+                bigger pieces.
               </p>
               {/* Kanban board, transparent PNG. The asset itself is
                   framed so the right and bottom edges already show
