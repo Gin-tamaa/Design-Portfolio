@@ -828,10 +828,13 @@ export default function ShopOSCaseStudy() {
       </section>
 
       {/* ===== 07 · Then you open an agent, and make it yours ============
-           Bullets are baked into the Figma 206:6535 composition (three
-           panels: agent expanded view, soul.md editor, A/B Test Setup
-           handoff), so the standalone bullet list is omitted — same
-           pattern as v1/v2/v3. */}
+           Three Figma panels (206:6535) rendered as a real grid: two
+           panels side-by-side on top, full-width panel below. Bullet
+           copy is baked into each panel's gradient so the standalone
+           bullet list above is intentionally absent — same pattern as
+           v1/v2/v3. The dark gaps that lived between the panels in
+           the raw Figma export are gone; gap-6 page bg sits there
+           instead. */}
       <section className="reveal py-32 md:py-44">
         <Container>
           <SectionHeader>
@@ -842,13 +845,35 @@ export default function ShopOSCaseStudy() {
             becomes staff.
           </Lead>
 
-          <div className="mt-10 md:mt-12">
+          <div className="mt-10 grid grid-cols-1 gap-6 md:mt-12 md:grid-cols-2">
             <div className="overflow-hidden rounded-2xl">
               <img
-                src="/images/shopos/then-you-open-an-agent.png"
-                alt="Three-panel composition. TOP LEFT: 'Inside: who it is, the jobs it runs, its connectors, and its editable soul.md' shown next to the expanded agent panel listing the jobs and connectors. TOP RIGHT: 'soul.md is a short persona file you name and write. Russ opens his with Every statement includes a number. One line, and he answers differently forever' shown next to a soul.md editor. BOTTOM: 'From the same panel: chat with the agent, or hand it a job' shown above an A/B Test Setup screen mid-flow."
+                src="/images/shopos/agent-panel-1.png"
+                alt="'Inside: who it is, the jobs it runs, its connectors, and its editable soul.md' shown next to the expanded GEO agent panel, listing the four jobs (AI engine query tool, GEO visibility scorer, JSON-LD generator, Keyword research tool), the soul.md block, and connectors (Shopify, Google Search Console)."
+                width={1840}
+                height={1660}
+                className="block h-auto w-full"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div className="overflow-hidden rounded-2xl">
+              <img
+                src="/images/shopos/agent-panel-2.png"
+                alt="'soul.md is a short persona file you name and write. Russ opens his with Every statement includes a number. One line, and he answers differently forever' shown next to the soul.md editor for the GEO & SEO Strategist agent."
+                width={1840}
+                height={1660}
+                className="block h-auto w-full"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <div className="overflow-hidden rounded-2xl md:col-span-2">
+              <img
+                src="/images/shopos/agent-panel-3.png"
+                alt="'From the same panel: chat with the agent, or hand it a job' shown above the A/B Test Setup screen mid-flow."
                 width={3840}
-                height={3480}
+                height={1660}
                 className="block h-auto w-full"
                 loading="lazy"
                 decoding="async"
