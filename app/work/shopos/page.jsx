@@ -510,6 +510,7 @@ export default function ShopOSCaseStudy() {
            are; it lives in this section and is left untouched. */}
       <section className="reveal py-24 md:py-36">
         <Container>
+          <Eyebrow>Context</Eyebrow>
           <SectionHeader>
             A brand running a store is running eight jobs at once
           </SectionHeader>
@@ -573,17 +574,21 @@ export default function ShopOSCaseStudy() {
               {/* RIGHT, eyebrow + headline + body */}
               <div className="md:col-span-5">
                 <div className="flex flex-col gap-4">
-                  <p className="cs-eyebrow">
-                    How do we solve this for the customers and gain
-                    their trust?
-                  </p>
+                  <p className="cs-eyebrow">The reframe</p>
                   <h2 className="cs-section max-w-[18ch]">
                     This wasn&rsquo;t a chat problem. It was an org
                     problem.
                   </h2>
                 </div>
+                <p className="mt-6 max-w-[var(--cs-prose-col)] text-[16px] italic leading-[1.7] text-[#525252]">
+                  Single-agent chat is solved. Nobody had a pattern
+                  for one agent recruiting specialists into a
+                  conversation, reasoning out loud, and reporting
+                  back without losing the human watching.
+                </p>
                 <p className="cs-body mt-6 max-w-[var(--cs-prose-col)]">
-                  The challenge wasn&rsquo;t the prompt box. It was{" "}
+                  That reframe is the whole project. The challenge
+                  wasn&rsquo;t the prompt box. It was{" "}
                   <strong>Legible Orchestration</strong>: making a team
                   of autonomous agents <em>watchable</em>, so a brand
                   can trust work it never personally checked. An AI
@@ -605,6 +610,7 @@ export default function ShopOSCaseStudy() {
            selectable. */}
       <section className="reveal py-24 md:py-36">
         <Container>
+          <Eyebrow>The approach</Eyebrow>
           <SectionHeader>
             We didn&rsquo;t invent the team. We modeled it on our own.
           </SectionHeader>
@@ -631,6 +637,10 @@ export default function ShopOSCaseStudy() {
               </li>
             ))}
           </ol>
+
+          <div className="mt-16 md:mt-20">
+            <ImageSlot caption="Approach loop: internal MVP → team feedback → user MVP → feedback → live." />
+          </div>
         </Container>
       </section>
 
@@ -700,16 +710,23 @@ export default function ShopOSCaseStudy() {
                   hardcodes mt-6). */}
               <div className="md:col-span-5">
                 <div className="flex flex-col gap-4">
-                  <p className="cs-eyebrow">The buyer isn&rsquo;t the user</p>
+                  <p className="cs-eyebrow">The hard part</p>
                   <h2 className="cs-section max-w-[32ch]">
-                    The product, the way you move through it
+                    The product, the way you actually move through it
                   </h2>
                 </div>
-                <p className="cs-body mt-6 max-w-[var(--cs-prose-col)]">
+                <p className="mt-6 max-w-[var(--cs-prose-col)] text-[16px] italic leading-[1.7] text-[#525252]">
                   Built for founders, but the founder rarely sits in it
                   all day. A founder buys a super team for the org; the
                   brand&rsquo;s own marketing, CRM, and ops people run
                   it, each working the agents they own.
+                </p>
+                <p className="cs-body mt-6 max-w-[var(--cs-prose-col)]">
+                  The walk below is that surface, in the order you move
+                  through it: meet the team &rarr; shape and brief an
+                  agent &rarr; watch the work &rarr; read what needs
+                  you. Each screen carries the one decision that earned
+                  it.
                 </p>
               </div>
 
@@ -752,6 +769,7 @@ export default function ShopOSCaseStudy() {
            header, tight bullet stack, ImageSlot. */}
       <section className="reveal py-24 md:py-36">
         <Container>
+          <Eyebrow>Meet the team</Eyebrow>
           <SectionHeader>First, you meet your team</SectionHeader>
           <Lead>
             Mission Control opens on the team, not a prompt box. Showing
@@ -759,18 +777,18 @@ export default function ShopOSCaseStudy() {
             last&rsquo;s confusion.
           </Lead>
 
-          {/* ITERATION 01: Kanban MVP -> what not to build.
-              The Figma export (Kanban mockup + the four critique
-              callouts as glass pills on a gradient) already carries
-              the bullet content, so the bullet list is intentionally
-              omitted. Image is rendered inside the same Container as
-              the heading so its left/right edges line up exactly
-              with the H3 above it (chatgpt.com's wider break-out is
-              not used here per design feedback). */}
+          {/* ITERATION 01: Kanban MVP -> what not to build. */}
           <div className="mt-16 md:mt-20">
             <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
-              Version <span className="tabular-nums">01</span> - Kanban
+              <span className="tabular-nums">01</span> &middot; Kanban
+              MVP &rarr;{" "}
+              <em className="font-normal text-[#525252]">
+                what not to build
+              </em>
             </h3>
+            <div className="mt-8 md:mt-10">
+              <ImageSlot caption="v1 wireframe: agents crammed left, tasks right, no line between who works and what the work is." />
+            </div>
             <div className="mt-10 md:mt-12">
               <div className="overflow-hidden rounded-2xl">
                 <img
@@ -796,7 +814,9 @@ export default function ShopOSCaseStudy() {
               a frame. */}
           <div className="mt-20 md:mt-24">
             <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
-              Version <span className="tabular-nums">02</span> - Cards
+              <span className="tabular-nums">02</span> &middot; Cards +
+              onboarding &rarr;{" "}
+              <em className="font-normal text-[#525252]">closer</em>
             </h3>
             <div className="mt-10 md:mt-12">
               <CardsVersionSwitcher />
@@ -809,7 +829,9 @@ export default function ShopOSCaseStudy() {
               the standalone bullet list above is omitted. */}
           <div className="mt-20 md:mt-24">
             <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
-              Version <span className="tabular-nums">03</span> - Org view
+              <span className="tabular-nums">03</span> &middot; Org view{" "}
+              &rarr;{" "}
+              <em className="font-normal text-[#525252]">shipped</em>
             </h3>
             <div className="mt-10 md:mt-12">
               <div className="overflow-hidden rounded-2xl">
@@ -832,6 +854,7 @@ export default function ShopOSCaseStudy() {
            Kept as prose per spec. No visual slot. */}
       <section className="reveal py-24 md:py-36">
         <Container>
+          <Eyebrow>The honest tradeoff</Eyebrow>
           <SectionHeader>The tradeoff I&rsquo;d redo</SectionHeader>
           <Prose className="mt-12">
             <p>
@@ -858,6 +881,7 @@ export default function ShopOSCaseStudy() {
            instead. */}
       <section className="reveal py-24 md:py-36">
         <Container>
+          <Eyebrow>Make it yours</Eyebrow>
           <SectionHeader>
             Then you open an agent, and make it yours
           </SectionHeader>
@@ -917,6 +941,7 @@ export default function ShopOSCaseStudy() {
            ~1.5MB it would be if I had pasted the whole Figma frame. */}
       <section className="reveal py-24 md:py-36">
         <Container>
+          <Eyebrow>Briefing</Eyebrow>
           <SectionHeader>Two doors into one team</SectionHeader>
           <Lead>
             Same engine, two entry points. You brief the way your head
@@ -1010,6 +1035,7 @@ export default function ShopOSCaseStudy() {
            Scaffolded: italic lead + tight bullet stack + ImageSlot. */}
       <section className="reveal py-24 md:py-36">
         <Container>
+          <Eyebrow>Watching</Eyebrow>
           <SectionHeader>Then you watch the team think</SectionHeader>
           <Lead>
             Legible Orchestration, made into pixels. Assign a goal and
@@ -1044,6 +1070,7 @@ export default function ShopOSCaseStudy() {
            Scaffolded: italic lead + 2-bullet stack + two ImageSlots. */}
       <section className="reveal py-24 md:py-36">
         <Container>
+          <Eyebrow>Mission Control</Eyebrow>
           <SectionHeader>
             What needs you, in 60 seconds instead of six tabs
           </SectionHeader>
@@ -1082,6 +1109,7 @@ export default function ShopOSCaseStudy() {
            Scaffolded: italic lead + 3-bullet stack + ImageSlot. */}
       <section className="reveal py-24 md:py-36">
         <Container>
+          <Eyebrow>What shipped</Eyebrow>
           <SectionHeader>What shipped</SectionHeader>
           <Lead>
             Eight agents running real store work today, live with 10+
@@ -1116,7 +1144,8 @@ export default function ShopOSCaseStudy() {
       <section className="reveal pb-24 pt-10 md:pb-36 md:pt-14">
         <Container>
           <div className="rounded-3xl bg-[#0a0a0a] px-8 py-16 text-white md:px-14 md:py-20">
-            <h2 className="cs-section cs-on-dark">
+            <Eyebrow dark>Proof</Eyebrow>
+            <h2 className="cs-section cs-on-dark mt-6">
               What we&rsquo;re measuring, live and honest about it
             </h2>
             <p className="mt-6 max-w-[var(--cs-prose-col)] text-[16px] italic leading-[1.7] text-white/65">
@@ -1180,8 +1209,7 @@ export default function ShopOSCaseStudy() {
                   instead ·{" "}
                   <span aria-hidden="true">📊</span>{" "}
                   <strong className="font-semibold">Metric:</strong>{" "}
-                  hours run per agent, specialist-hours saved{" "}
-                  <em className="text-white/55">(pending real data)</em>
+                  hours run per agent, specialist-hours saved
                 </span>
               </li>
               <li className="flex gap-3 text-[15px] leading-[1.7] text-white/85">
@@ -1198,17 +1226,10 @@ export default function ShopOSCaseStudy() {
                   clients name agents unprompted ·{" "}
                   <span aria-hidden="true">📊</span>{" "}
                   <strong className="font-semibold">Metric:</strong>{" "}
-                  client-confirmed lift on the owned function{" "}
-                  <em className="text-white/55">(pending real data)</em>
+                  client-confirmed lift on the owned function
                 </span>
               </li>
             </ul>
-
-            {/* Pending quote line */}
-            <p className="mt-14 text-[14px] italic leading-[1.7] text-white/55">
-              Client quote pending real confirmation: the line that
-              proves the team feels like a team.
-            </p>
           </div>
         </Container>
       </section>
