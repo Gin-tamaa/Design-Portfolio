@@ -20,6 +20,7 @@ import ChatLauncher from "../../components/ChatLauncher";
 import AgentsFanOut from "./AgentsFanOut";
 import TooManyTasks from "./TooManyTasks";
 import CardsVersionSwitcher from "./CardsVersionSwitcher";
+import AgentAvatar from "../../components/AgentAvatar";
 
 const SKY_SRC = "/images/shopos-hero-sky.png";
 const AGENTS_SRC = "/images/agents-hero.png";
@@ -547,23 +548,83 @@ export default function ShopOSCaseStudy() {
       </section>
 
       {/* ===== 02 · This wasn't a chat problem. It was an org problem. ===
-           Layout per Figma 210:9838. Same outer bordered card as the
-           "The product, the way you move through it" divider section
-           below (rounded-[30px], border-[#E5E5E5], bg-white). Two-up
-           grid inside: headline + body on the left, three JSX-built
-           chat bubbles on the right (built in code, not pasted as a
-           screenshot, per the no-placeholders push). */}
+           Layout per Figma 210:10057. Peach gradient wrapper (same
+           palette as the "Two doors into one team" cards below for
+           consistency). Two-up grid: three chat bubbles on the LEFT,
+           the eyebrow + headline + body on the RIGHT. Chat bubbles
+           are JSX with real AgentAvatar portraits, no images. */}
       <section className="reveal py-32 md:py-44">
         <Container>
-          <div className="rounded-[30px] border border-[#E5E5E5] bg-white p-8 md:p-12">
-            <p className="text-[14px] font-semibold leading-tight text-[#0a0a0a]">
-              How do we solve this for the customers and gain their trust?
-            </p>
+          <div
+            className="overflow-hidden rounded-[30px] p-8 md:p-12"
+            style={{
+              background:
+                "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
+            }}
+          >
+            <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:items-center md:gap-16">
+              {/* LEFT, three chat bubbles built as JSX. Bubble bg is
+                  a translucent white wash with backdrop-blur so they
+                  read as glass on the peach gradient. */}
+              <div className="flex flex-col gap-3 md:col-span-5">
+                {/* ShopOS thinking */}
+                <div
+                  className="inline-flex w-fit items-center gap-2.5 rounded-full py-1.5 pl-2 pr-5"
+                  style={{
+                    background: "rgba(255, 255, 255, 0.35)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
+                  }}
+                >
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                      <path d="M7 0L8.5 5.5L14 7L8.5 8.5L7 14L5.5 8.5L0 7L5.5 5.5L7 0Z" fill="#ec4899" />
+                    </svg>
+                  </span>
+                  <span className="text-[15px] font-medium text-[#0a0a0a]">
+                    ShopOS
+                  </span>
+                  <span className="text-[15px] text-[#0a0a0a]/55">
+                    Thought for 12s
+                  </span>
+                </div>
+                {/* User 1: portrait avatar */}
+                <div
+                  className="inline-flex w-fit items-center gap-2.5 rounded-full py-1.5 pl-2 pr-5 md:ml-6"
+                  style={{
+                    background: "rgba(255, 255, 255, 0.35)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
+                  }}
+                >
+                  <AgentAvatar persona="creative-head" size={28} />
+                  <span className="text-[15px] text-[#0a0a0a]/75">
+                    Who will manage my store?
+                  </span>
+                </div>
+                {/* User 2: portrait avatar */}
+                <div
+                  className="inline-flex w-fit items-center gap-2.5 rounded-full py-1.5 pl-2 pr-5 md:ml-12"
+                  style={{
+                    background: "rgba(255, 255, 255, 0.35)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
+                  }}
+                >
+                  <AgentAvatar persona="funny-side" size={28} />
+                  <span className="text-[15px] text-[#0a0a0a]/75">
+                    Who handles branding?
+                  </span>
+                </div>
+              </div>
 
-            <div className="mt-10 grid grid-cols-1 gap-12 md:mt-14 md:grid-cols-12 md:items-center md:gap-16">
-              {/* LEFT, headline + body */}
+              {/* RIGHT, eyebrow + headline + body */}
               <div className="md:col-span-7">
-                <h2 className="cs-section max-w-[18ch]">
+                <p className="text-[14px] font-semibold leading-tight text-[#0a0a0a]">
+                  How do we solve this for the customers and gain their
+                  trust?
+                </p>
+                <h2 className="cs-section mt-6 max-w-[18ch]">
                   This wasn&rsquo;t a chat problem. It was an org
                   problem.
                 </h2>
@@ -576,60 +637,6 @@ export default function ShopOSCaseStudy() {
                   was the product, and the rest of this is how one
                   screen earns it.
                 </p>
-              </div>
-
-              {/* RIGHT, three chat bubbles. All JSX; the avatar
-                  circles are coloured discs with first-initial labels
-                  except the ShopOS bubble which carries the sparkle
-                  asterisk inline. */}
-              <div className="flex flex-col gap-3 md:col-span-5 md:items-end">
-                {/* ShopOS thinking */}
-                <div className="inline-flex items-center gap-2.5 self-end rounded-full bg-[#0a0a0a]/[0.06] py-1.5 pl-2 pr-5">
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white">
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 14 14"
-                      fill="none"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M7 0L8.5 5.5L14 7L8.5 8.5L7 14L5.5 8.5L0 7L5.5 5.5L7 0Z"
-                        fill="#ec4899"
-                      />
-                    </svg>
-                  </span>
-                  <span className="text-[15px] font-medium text-[#0a0a0a]">
-                    ShopOS
-                  </span>
-                  <span className="text-[15px] text-[#525252]">
-                    Thought for 12s
-                  </span>
-                </div>
-                {/* User 1 */}
-                <div className="inline-flex items-center gap-2.5 self-end rounded-full bg-[#0a0a0a]/[0.06] py-1.5 pl-2 pr-5">
-                  <span
-                    aria-hidden="true"
-                    className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#f4a896] to-[#c97a5c] text-[12px] font-semibold text-white"
-                  >
-                    M
-                  </span>
-                  <span className="text-[15px] text-[#525252]">
-                    Who will manage my store?
-                  </span>
-                </div>
-                {/* User 2 */}
-                <div className="inline-flex items-center gap-2.5 self-start rounded-full bg-[#0a0a0a]/[0.06] py-1.5 pl-2 pr-5 md:self-end md:mr-12">
-                  <span
-                    aria-hidden="true"
-                    className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#7cb88f] to-[#3e8061] text-[12px] font-semibold text-white"
-                  >
-                    B
-                  </span>
-                  <span className="text-[15px] text-[#525252]">
-                    Who handles branding?
-                  </span>
-                </div>
               </div>
             </div>
           </div>
