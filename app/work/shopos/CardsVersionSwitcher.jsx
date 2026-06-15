@@ -84,21 +84,6 @@ export default function CardsVersionSwitcher() {
         />
       ))}
 
-      {/* "Select the cards to switch in between them" instruction.
-          Baked into the Figma export at 32px on a 3840px canvas
-          (#606060 SF Pro Regular). The React overlay below sits on
-          top at a slightly larger 14px so the instruction stays
-          legible at the rendered display widths the case-study page
-          uses. pointer-events-none so it doesn't intercept clicks
-          aimed at the callout hotspots below it. */}
-      <p
-        aria-hidden="true"
-        className="pointer-events-none absolute right-[2.5%] top-[3.5%] text-right text-[14px] font-normal leading-tight text-[#606060]"
-        style={{ fontFamily: "Inter, sans-serif" }}
-      >
-        Select the cards to switch in between them
-      </p>
-
       {/* Top right-side callout hotspot. Always navigates to Frame 2
           (where the top callout reads as the active white card). When
           the user is already on Frame 2 this hotspot is the active
@@ -129,11 +114,13 @@ export default function CardsVersionSwitcher() {
         }`}
       />
 
-      {/* Carousel dots, React-rendered and positioned over the baked-in
-          dot indicator in the image. Visible active-state styling
-          (wider pill when active, small dot when inactive) plus a
-          slight hover brighten on the inactive dot. */}
-      <div className="absolute bottom-[3.5%] left-1/2 flex -translate-x-1/2 items-center gap-2">
+      {/* Invisible click hotspots over the baked-in carousel indicator.
+          The dots themselves stay rendered in the source image so we
+          don't end up with two visible carousels. These transparent
+          buttons just sit on top of where the dots are drawn and
+          handle clicks (the active-state visual swap happens via the
+          underlying image change). */}
+      <div className="pointer-events-none absolute bottom-[2%] left-1/2 flex -translate-x-1/2 items-center gap-3">
         {FRAMES.map((_, i) => (
           <button
             key={i}
@@ -141,11 +128,7 @@ export default function CardsVersionSwitcher() {
             onClick={() => select(i)}
             aria-label={`Switch to frame ${i + 1}`}
             aria-pressed={i === active}
-            className={`h-[6px] cursor-pointer rounded-full outline-none transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white/70 ${
-              i === active
-                ? "w-10 bg-white"
-                : "w-[6px] bg-white/50 hover:bg-white/80"
-            }`}
+            className="pointer-events-auto h-6 w-14 cursor-pointer rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/70"
           />
         ))}
       </div>
