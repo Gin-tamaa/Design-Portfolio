@@ -737,7 +737,14 @@ export default function ShopOSCaseStudy() {
             last&rsquo;s confusion.
           </Lead>
 
-          {/* ITERATION 01: Kanban MVP -> what not to build */}
+          {/* ITERATION 01: Kanban MVP -> what not to build.
+              The Figma export (Kanban mockup + the four critique
+              callouts as glass pills on a gradient) already carries
+              the bullet content, so the bullet list is intentionally
+              omitted here. The header sits in Container; the image
+              breaks out below to a wider max-w-[1280px], modelled on
+              chatgpt.com/overview's featured-image sections (rounded
+              container, image fills edge-to-edge, no caption). */}
           <div className="mt-16 md:mt-20">
             <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
               <span className="tabular-nums">01</span> &middot; Kanban MVP{" "}
@@ -745,29 +752,27 @@ export default function ShopOSCaseStudy() {
                 &rarr; what not to build
               </span>
             </h3>
-            <ul className="mt-6 space-y-3 max-w-[var(--cs-prose-col)]">
-              <Bullet>
-                Agents down the left, tasks in Kanban columns on the
-                right
-              </Bullet>
-              <Bullet>
-                Couldn&rsquo;t tell an agent from a task, or what any
-                agent owned
-              </Bullet>
-              <Bullet>
-                No connector path: tools were buried in settings, nothing
-                nudged you
-              </Bullet>
-              <Bullet>
-                Red team: &ldquo;this doesn&rsquo;t look like an agent
-                experience&rdquo;
-              </Bullet>
-            </ul>
-            <div className="mt-10 md:mt-12">
-              <ImageSlot caption="v1 wireframe: agents crammed left, tasks right, no line between who works and what the work is." />
-            </div>
           </div>
+        </Container>
 
+        {/* Featured Kanban MVP image: breaks out of the 1080px page
+            Container to a wider 1280px max-width, with mobile padding
+            falling through. Native source is 3840x2160. */}
+        <div className="mt-10 w-full px-6 md:mt-12 md:px-10">
+          <div className="mx-auto max-w-[1280px] overflow-hidden rounded-2xl">
+            <img
+              src="/images/shopos/kanban-mvp.png"
+              alt="v1 Kanban MVP: agents listed down the left, tasks in Kanban columns on the right. Four critique callouts overlaid: agents and tasks indistinguishable, ownership unclear, no connector path, red team feedback that it didn't read as an agent experience."
+              width={3840}
+              height={2160}
+              className="block h-auto w-full"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+
+        <Container>
           {/* ITERATION 02: Cards + onboarding -> closer */}
           <div className="mt-20 md:mt-24">
             <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
