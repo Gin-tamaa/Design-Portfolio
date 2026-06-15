@@ -782,24 +782,26 @@ export default function ShopOSCaseStudy() {
             </div>
           </div>
 
-          {/* ITERATION 03: Org view -> shipped */}
+          {/* ITERATION 03: Org view. Same treatment as v1 and v2 — the
+              two bullet points are baked into the Figma export as
+              glass-pill callouts on the left of the composition, so
+              the standalone bullet list above is omitted. */}
           <div className="mt-20 md:mt-24">
             <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
               Version <span className="tabular-nums">03</span> - Org view
             </h3>
-            <ul className="mt-6 space-y-3 max-w-[var(--cs-prose-col)]">
-              <Bullet>
-                Orchestrator at top, five lifecycle stages across,
-                specialists grouped beneath each
-              </Bullet>
-              <Bullet>
-                The proud move: the brand&rsquo;s own name sits at the
-                top, so it reads &ldquo;you run this team,&rdquo; not
-                &ldquo;the software has a manager&rdquo;
-              </Bullet>
-            </ul>
             <div className="mt-10 md:mt-12">
-              <ImageSlot caption="Org view: brand-as-orchestrator, branching into Discover / Acquire / Convert / Retain / Grow." />
+              <div className="overflow-hidden rounded-2xl">
+                <img
+                  src="/images/shopos/cards-v3.png"
+                  alt="v3 Org view: brand-as-orchestrator at the top, branching into Discover / Acquire / Convert / Retain / Grow with specialist agents grouped under each lifecycle stage. Two glass-pill callouts on the left explain the structure: 'Orchestrator at top, five lifecycle stages across, specialists grouped beneath each' and 'The proud move: the brand's own name sits at the top, so it reads you run this team, not the software has a manager.'"
+                  width={3840}
+                  height={2160}
+                  className="block h-auto w-full"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
             </div>
           </div>
         </Container>
