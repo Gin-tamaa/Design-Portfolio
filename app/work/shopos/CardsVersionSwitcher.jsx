@@ -104,15 +104,15 @@ export default function CardsVersionSwitcher() {
       </p>
 
       {/* TOP right-side callout hotspot. Always navigates to active=0
-          (Cards-grid, the frame where the top callout is white/active).
-          Hover lift only fires when the user is on the OTHER frame
-          (i.e. when this callout is currently the glass/clickable one). */}
+          (Cards-grid). Position + size measured directly off the
+          rendered frame (callout y ~37.9-46.8%, ~9% tall, ~22% wide,
+          right edge ~2.5% from container right). */}
       <button
         type="button"
         onClick={() => select(0)}
         aria-label="Show the Meet the Agents cards grid view"
         aria-pressed={active === 0}
-        className={`absolute right-[2.5%] top-[33%] h-[19%] w-[20%] rounded-2xl outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white/70 ${
+        className={`absolute right-[2.5%] top-[37%] h-[10%] w-[22%] rounded-2xl outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white/70 ${
           topIsClickable
             ? "cursor-pointer hover:bg-white/10"
             : "cursor-default"
@@ -120,13 +120,13 @@ export default function CardsVersionSwitcher() {
       />
 
       {/* BOTTOM right-side callout hotspot. Always navigates to
-          active=1 (Kanban view). */}
+          active=1 (Kanban view). Callout y ~50.6-62.1%, ~12% tall. */}
       <button
         type="button"
         onClick={() => select(1)}
         aria-label="Show the Kanban Task Board view"
         aria-pressed={active === 1}
-        className={`absolute right-[2.5%] top-[56%] h-[19%] w-[20%] rounded-2xl outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white/70 ${
+        className={`absolute right-[2.5%] top-[50%] h-[13%] w-[22%] rounded-2xl outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-white/70 ${
           bottomIsClickable
             ? "cursor-pointer hover:bg-white/10"
             : "cursor-default"
