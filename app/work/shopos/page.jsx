@@ -508,7 +508,7 @@ export default function ShopOSCaseStudy() {
            Kept as PROSE per spec (context opening). TooManyTasks is one
            of the two existing thumbnails that stay exactly where they
            are; it lives in this section and is left untouched. */}
-      <section className="reveal py-32 md:py-44">
+      <section className="reveal py-24 md:py-36">
         <Container>
           <SectionHeader>
             A brand running a store is running eight jobs at once
@@ -553,7 +553,7 @@ export default function ShopOSCaseStudy() {
            LEFT (the peach gradient mini-card with the three chat
            bubbles, extracted directly from Figma 210:10057), text on
            the RIGHT. */}
-      <section className="reveal py-32 md:py-44">
+      <section className="reveal py-24 md:py-36">
         <Container>
           <div className="rounded-[30px] border border-[#E5E5E5] bg-white p-8 md:p-12">
             <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:items-center md:gap-16">
@@ -610,7 +610,7 @@ export default function ShopOSCaseStudy() {
            text below each), collapsing to 2x2 on tablet and a single
            column on mobile. Pure HTML, no image — all copy stays
            selectable. */}
-      <section className="reveal py-32 md:py-44">
+      <section className="reveal py-24 md:py-36">
         <Container>
           <SectionHeader>
             We didn&rsquo;t invent the team. We modeled it on our own.
@@ -648,7 +648,7 @@ export default function ShopOSCaseStudy() {
            max-w-[400px], centered. Pills use a real liquid-glass
            treatment (.glass-pill in globals.css) backed by an SVG
            displacement filter inlined below for refraction. */}
-      <section className="reveal py-32 md:py-44">
+      <section className="reveal py-24 md:py-36">
         {/* Inline SVG filter for the liquid-glass refraction. zero-size
             + absolute + pointer-events: none so it doesn't take any
             layout. fractalNoise + feDisplacementMap produces the gentle
@@ -757,7 +757,7 @@ export default function ShopOSCaseStudy() {
       {/* ===== 05 · First, you meet your team ============================
            Three labelled iterations. Each block: "0X . Title -> tag"
            header, tight bullet stack, ImageSlot. */}
-      <section className="reveal py-32 md:py-44">
+      <section className="reveal py-24 md:py-36">
         <Container>
           <SectionHeader>First, you meet your team</SectionHeader>
           <Lead>
@@ -837,7 +837,7 @@ export default function ShopOSCaseStudy() {
 
       {/* ===== 06 · The tradeoff I'd redo ================================
            Kept as prose per spec. No visual slot. */}
-      <section className="reveal py-32 md:py-44">
+      <section className="reveal py-24 md:py-36">
         <Container>
           <SectionHeader>The tradeoff I&rsquo;d redo</SectionHeader>
           <Prose className="mt-12">
@@ -863,7 +863,7 @@ export default function ShopOSCaseStudy() {
            v1/v2/v3. The dark gaps that lived between the panels in
            the raw Figma export are gone; gap-6 page bg sits there
            instead. */}
-      <section className="reveal py-32 md:py-44">
+      <section className="reveal py-24 md:py-36">
         <Container>
           <SectionHeader>
             Then you open an agent, and make it yours
@@ -922,7 +922,7 @@ export default function ShopOSCaseStudy() {
            and only the actual product-UI bits are images — total
            image payload for this section is ~150KB instead of the
            ~1.5MB it would be if I had pasted the whole Figma frame. */}
-      <section className="reveal py-32 md:py-44">
+      <section className="reveal py-24 md:py-36">
         <Container>
           <SectionHeader>Two doors into one team</SectionHeader>
           <Lead>
@@ -1001,7 +1001,7 @@ export default function ShopOSCaseStudy() {
 
       {/* ===== 09 · Then you watch the team think ========================
            Scaffolded: italic lead + tight bullet stack + ImageSlot. */}
-      <section className="reveal py-32 md:py-44">
+      <section className="reveal py-24 md:py-36">
         <Container>
           <SectionHeader>Then you watch the team think</SectionHeader>
           <Lead>
@@ -1035,7 +1035,7 @@ export default function ShopOSCaseStudy() {
 
       {/* ===== 10 · What needs you, in 60 seconds instead of six tabs ====
            Scaffolded: italic lead + 2-bullet stack + two ImageSlots. */}
-      <section className="reveal py-32 md:py-44">
+      <section className="reveal py-24 md:py-36">
         <Container>
           <SectionHeader>
             What needs you, in 60 seconds instead of six tabs
@@ -1073,7 +1073,7 @@ export default function ShopOSCaseStudy() {
 
       {/* ===== 11 · What shipped =========================================
            Scaffolded: italic lead + 3-bullet stack + ImageSlot. */}
-      <section className="reveal py-32 md:py-44">
+      <section className="reveal py-24 md:py-36">
         <Container>
           <SectionHeader>What shipped</SectionHeader>
           <Lead>
@@ -1106,7 +1106,7 @@ export default function ShopOSCaseStudy() {
            then the pending-quote line. Emojis and arrows kept as
            written. Old stub markers and bracketed name/role
            placeholders have been removed. */}
-      <section className="reveal pb-32 pt-12 md:pb-44 md:pt-16">
+      <section className="reveal pb-24 pt-10 md:pb-36 md:pt-14">
         <Container>
           <div className="rounded-3xl bg-[#0a0a0a] px-8 py-16 text-white md:px-14 md:py-20">
             <h2 className="cs-section cs-on-dark">
