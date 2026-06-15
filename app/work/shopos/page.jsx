@@ -547,30 +547,92 @@ export default function ShopOSCaseStudy() {
       </section>
 
       {/* ===== 02 · This wasn't a chat problem. It was an org problem. ===
-           Italic lead carries the setup; the following paragraph stays
-           as prose to land the reframe. No visual slot. */}
+           Layout per Figma 210:9838. Same outer bordered card as the
+           "The product, the way you move through it" divider section
+           below (rounded-[30px], border-[#E5E5E5], bg-white). Two-up
+           grid inside: headline + body on the left, three JSX-built
+           chat bubbles on the right (built in code, not pasted as a
+           screenshot, per the no-placeholders push). */}
       <section className="reveal py-32 md:py-44">
         <Container>
-          <SectionHeader>
-            This wasn&rsquo;t a chat problem. It was an org problem.
-          </SectionHeader>
-          <Lead>
-            Single-agent chat is solved. Nobody had a pattern for one
-            agent recruiting specialists into a conversation, reasoning
-            out loud, and reporting back without losing the human
-            watching.
-          </Lead>
-          <Prose className="mt-8">
-            <p>
-              That reframe is the whole project. The challenge wasn&rsquo;t
-              the prompt box. It was{" "}
-              <strong>Legible Orchestration</strong>: making a team of
-              autonomous agents <em>watchable</em>, so a brand can trust
-              work it never personally checked. An AI team that fails
-              silently isn&rsquo;t a team. Trust was the product, and
-              the rest of this is how one screen earns it.
+          <div className="rounded-[30px] border border-[#E5E5E5] bg-white p-8 md:p-12">
+            <p className="text-[14px] font-semibold leading-tight text-[#0a0a0a]">
+              How do we solve this for the customers and gain their trust?
             </p>
-          </Prose>
+
+            <div className="mt-10 grid grid-cols-1 gap-12 md:mt-14 md:grid-cols-12 md:items-center md:gap-16">
+              {/* LEFT, headline + body */}
+              <div className="md:col-span-7">
+                <h2 className="cs-section max-w-[18ch]">
+                  This wasn&rsquo;t a chat problem. It was an org
+                  problem.
+                </h2>
+                <p className="cs-body mt-6 max-w-[var(--cs-prose-col)]">
+                  The challenge wasn&rsquo;t the prompt box. It was{" "}
+                  <strong>Legible Orchestration</strong>: making a team
+                  of autonomous agents <em>watchable</em>, so a brand
+                  can trust work it never personally checked. An AI
+                  team that fails silently isn&rsquo;t a team. Trust
+                  was the product, and the rest of this is how one
+                  screen earns it.
+                </p>
+              </div>
+
+              {/* RIGHT, three chat bubbles. All JSX; the avatar
+                  circles are coloured discs with first-initial labels
+                  except the ShopOS bubble which carries the sparkle
+                  asterisk inline. */}
+              <div className="flex flex-col gap-3 md:col-span-5 md:items-end">
+                {/* ShopOS thinking */}
+                <div className="inline-flex items-center gap-2.5 self-end rounded-full bg-[#0a0a0a]/[0.06] py-1.5 pl-2 pr-5">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 14 14"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M7 0L8.5 5.5L14 7L8.5 8.5L7 14L5.5 8.5L0 7L5.5 5.5L7 0Z"
+                        fill="#ec4899"
+                      />
+                    </svg>
+                  </span>
+                  <span className="text-[15px] font-medium text-[#0a0a0a]">
+                    ShopOS
+                  </span>
+                  <span className="text-[15px] text-[#525252]">
+                    Thought for 12s
+                  </span>
+                </div>
+                {/* User 1 */}
+                <div className="inline-flex items-center gap-2.5 self-end rounded-full bg-[#0a0a0a]/[0.06] py-1.5 pl-2 pr-5">
+                  <span
+                    aria-hidden="true"
+                    className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#f4a896] to-[#c97a5c] text-[12px] font-semibold text-white"
+                  >
+                    M
+                  </span>
+                  <span className="text-[15px] text-[#525252]">
+                    Who will manage my store?
+                  </span>
+                </div>
+                {/* User 2 */}
+                <div className="inline-flex items-center gap-2.5 self-start rounded-full bg-[#0a0a0a]/[0.06] py-1.5 pl-2 pr-5 md:self-end md:mr-12">
+                  <span
+                    aria-hidden="true"
+                    className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-[#7cb88f] to-[#3e8061] text-[12px] font-semibold text-white"
+                  >
+                    B
+                  </span>
+                  <span className="text-[15px] text-[#525252]">
+                    Who handles branding?
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </Container>
       </section>
 
