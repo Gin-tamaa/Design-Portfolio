@@ -450,11 +450,15 @@ export default function BrandMemoryPage() {
               memory, on every single prompt.
             </p>
           </Prose>
-          <figure className="mt-16 md:mt-20">
-            <div className="mx-auto max-w-[560px]">
+          {/* Sit in the prose column so the demo, the caption, and the
+              body paragraph above all share one left edge. The input
+              itself caps at 640px so it reads as a UI element rather
+              than a billboard. */}
+          <figure className="mt-12 max-w-[var(--cs-prose-col)] md:mt-14">
+            <div className="max-w-[640px]">
               <PromptInput />
             </div>
-            <figcaption className="mt-3 max-w-[var(--cs-prose-col)] text-[13px] leading-[1.55] text-[#525252]">
+            <figcaption className="mt-4 max-w-[640px] text-[13px] leading-[1.55] text-[#525252]">
               Toggle off: the brief that had to spell the whole brand
               out, every time. Toggle on: the shorter prompt Brand
               Memory makes possible once the context is in the system.
