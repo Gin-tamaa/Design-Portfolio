@@ -112,11 +112,16 @@ export default function AgentsJoinLoop() {
   const overlap = isDesktop ? OVERLAP_DESKTOP : OVERLAP_MOBILE;
   const stackWidth = 2 * (size - overlap) + size;
 
+  // Park the text past the rightmost possible avatar slot so it never
+  // shifts when an agent joins — even in state 0 the phrase sits where
+  // it will eventually live in state 3.
+  const textOffset = stackWidth + (isDesktop ? 36 : 24);
+
   return (
-    <div className="flex items-center gap-3 md:gap-4">
+    <div className="flex items-center">
       <div
         className="relative flex-shrink-0"
-        style={{ width: stackWidth, height: size }}
+        style={{ width: textOffset, height: size }}
         aria-label="Avatars of agents joining the thread"
         role="img"
       >
@@ -126,12 +131,13 @@ export default function AgentsJoinLoop() {
         <Avatar avatar={GREEN}   slot={state.green}   zIndex={Z.green}   size={size} overlap={overlap} />
       </div>
       <span
-        className="shimmer-adding whitespace-nowrap italic leading-none"
+        className="shimmer-adding whitespace-nowrap leading-none"
         style={{
           fontFamily: "'Inter', sans-serif",
           fontWeight: 400,
-          // Fluid size so it always fits in the card next to the
-          // avatar stack — never wraps to a second line at any
+          fontStyle: "normal",
+          // Fluid size so the phrase always fits in the card next to
+          // the avatar stack — never wraps to a second line at any
           // breakpoint.
           fontSize: "clamp(18px, 2.6vw, 30px)",
         }}
