@@ -1,9 +1,10 @@
 // Global footer rendered from app/layout.jsx so every route gets the
 // same trailing nav + brand block beneath the page content.
 //
-// Tone matches the existing design system: cream #F4F1EA surface, a
-// thin black/10 top border for separation, Inter at the established
-// case-study scale, and the same S—K wordmark + nav set as the header.
+// Surface matches the body bg in app/layout.jsx (#ffffff) so the
+// footer reads as part of the same page rather than a separate
+// shaded strip. A hairline black/10 top border carries the visual
+// break since the colours are now identical.
 //
 // SOCIALS lives at the top of the file as an array so adding another
 // platform is a one-line edit.
@@ -58,7 +59,7 @@ export default function Footer() {
     <footer
       role="contentinfo"
       className="border-t border-black/10"
-      style={{ background: "#F4F1EA" }}
+      style={{ background: "#ffffff" }}
     >
       <div className="mx-auto w-full max-w-[1400px] px-6 py-16 md:px-10 md:py-20">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-10">
