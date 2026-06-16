@@ -776,11 +776,7 @@ export default function ShopOSCaseStudy() {
           {/* ITERATION 01: Kanban MVP -> what not to build. */}
           <div className="mt-16 md:mt-20">
             <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
-              <span className="tabular-nums">01</span> &middot; Kanban
-              MVP &rarr;{" "}
-              <em className="font-normal text-[#525252]">
-                what not to build
-              </em>
+              Version <span className="tabular-nums">1</span>
             </h3>
             <div className="mt-10 md:mt-12">
               <div className="overflow-hidden rounded-2xl">
@@ -807,9 +803,7 @@ export default function ShopOSCaseStudy() {
               a frame. */}
           <div className="mt-20 md:mt-24">
             <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
-              <span className="tabular-nums">02</span> &middot; Cards +
-              onboarding &rarr;{" "}
-              <em className="font-normal text-[#525252]">closer</em>
+              Version <span className="tabular-nums">2</span>
             </h3>
             <div className="mt-10 md:mt-12">
               <CardsVersionSwitcher />
@@ -822,9 +816,7 @@ export default function ShopOSCaseStudy() {
               the standalone bullet list above is omitted. */}
           <div className="mt-20 md:mt-24">
             <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
-              <span className="tabular-nums">03</span> &middot; Org view{" "}
-              &rarr;{" "}
-              <em className="font-normal text-[#525252]">shipped</em>
+              Version <span className="tabular-nums">3</span>
             </h3>
             <div className="mt-10 md:mt-12">
               <div className="overflow-hidden rounded-2xl">
