@@ -637,10 +637,6 @@ export default function ShopOSCaseStudy() {
               </li>
             ))}
           </ol>
-
-          <div className="mt-16 md:mt-20">
-            <ImageSlot caption="Approach loop: internal MVP → team feedback → user MVP → feedback → live." />
-          </div>
         </Container>
       </section>
 
