@@ -11,8 +11,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import ChatLauncher from "../../components/ChatLauncher";
 import PromptInput from "./PromptInput";
-
-const SKY_SRC = "/images/shopos-hero-sky.png";
+import NeuralNoise from "./NeuralNoise";
 
 /* ============================================================================
    Primitives copied verbatim from the ShopOS scaffold so the two
@@ -189,40 +188,27 @@ function DecisionContrast({ rejected, chosen }) {
 
 export default function BrandMemoryPage() {
   const heroRef = useRef(null);
-  const skyRef = useRef(null);
   const wordmarkRef = useRef(null);
   const bracketsRef = useRef(null);
 
-  // Same parallax + reveal scaffold the ShopOS page runs. Sky moves at
-  // 0.35, brackets at 0.50, the "Memory" wordmark at 0.55 (fading out
-  // by 70% of the hero height). Reduced motion → static + visible.
+  // Brackets at 0.50, "Memory" wordmark at 0.55 (fading out by 70% of
+  // the hero height). The bg is the WebGL Neural Noise canvas, it
+  // animates on its own, no parallax needed there. Reduced motion →
+  // static + visible.
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const reduced = mediaQuery.matches;
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
-    document.body.classList.add("shopos-hero");
-
     let rafId = null;
-    let solid = false;
 
     const update = () => {
       const y = window.scrollY;
       const heroH = heroRef.current?.offsetHeight || 760;
-      const navThreshold = heroH - 90;
-
-      const shouldBeSolid = y > navThreshold;
-      if (shouldBeSolid !== solid) {
-        solid = shouldBeSolid;
-        document.body.classList.toggle("shopos-nav-solid", solid);
-      }
 
       if (!reduced && y < heroH) {
         const mult = isMobile ? 0.5 : 1;
 
-        if (skyRef.current) {
-          skyRef.current.style.transform = `translate3d(0, ${y * 0.35 * mult}px, 0)`;
-        }
         if (bracketsRef.current) {
           bracketsRef.current.style.transform = `translate3d(0, ${y * 0.5 * mult}px, 0)`;
         }
@@ -266,7 +252,6 @@ export default function BrandMemoryPage() {
     }
 
     return () => {
-      document.body.classList.remove("shopos-hero", "shopos-nav-solid");
       window.removeEventListener("scroll", onScroll);
       if (rafId !== null) cancelAnimationFrame(rafId);
       if (observer) observer.disconnect();
@@ -275,42 +260,24 @@ export default function BrandMemoryPage() {
 
   return (
     <main className="cs-scope min-h-screen bg-white text-[#0a0a0a] antialiased">
-      {/* ===== HERO, parallax stage. Foreground composition pending,
-           ships now with sky + wordmark + brackets so the route has
-           a proper top stage. ============================================ */}
+      {/* ===== HERO, NeuralNoise canvas bg + brackets + wordmark.
+           Light-theme adaptation: page bg stays white, the canvas
+           draws soft graphite traces, wordmark + brackets render in
+           near-black. ===================================================== */}
       <section
         ref={heroRef}
-        className="relative w-full overflow-hidden"
+        className="relative w-full overflow-hidden bg-white"
         style={{ height: "min(820px, calc(100vh + 60px))", minHeight: "640px" }}
       >
-        {/* Layer 1, sky + clouds bg (parallax 0.35) */}
-        <div
-          ref={skyRef}
-          className="absolute inset-0 will-change-transform"
-          style={{ top: "-60px", height: "calc(100% + 120px)" }}
-        >
-          <img
-            src={SKY_SRC}
-            alt=""
-            aria-hidden="true"
-            className="h-full w-full object-cover"
-            draggable={false}
-          />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 -z-10"
-            style={{
-              background:
-                "linear-gradient(180deg, #2aa3a8 0%, #66bdc1 28%, #b8dbdc 60%, #ffffff 100%)",
-            }}
-          />
-        </div>
+        {/* Layer 1, WebGL neural-noise bg (animates on its own) */}
+        <NeuralNoise />
 
         {/* Layer 2, brackets (parallax 0.50), 4 corners */}
         <div
           ref={bracketsRef}
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 text-white will-change-transform"
+          className="pointer-events-none absolute inset-0 will-change-transform"
+          style={{ color: "rgba(10, 10, 10, 0.55)" }}
         >
           <Bracket pos="tl" className="top-[17.2%] left-[23.75%]" />
           <Bracket pos="tr" className="top-[17.2%] right-[23.75%]" />
@@ -330,7 +297,7 @@ export default function BrandMemoryPage() {
             fontSize: "clamp(96px, 17vw, 240px)",
             lineHeight: 1.08,
             letterSpacing: "-0.06em",
-            color: "#ffffff",
+            color: "#0a0a0a",
             whiteSpace: "nowrap",
             margin: 0,
           }}
@@ -345,7 +312,6 @@ export default function BrandMemoryPage() {
           style={{
             background:
               "linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 84.8%)",
-            backdropFilter: "blur(2px)",
           }}
         />
       </section>
@@ -450,15 +416,12 @@ export default function BrandMemoryPage() {
               memory, on every single prompt.
             </p>
           </Prose>
-          {/* Sit in the prose column so the demo, the caption, and the
-              body paragraph above all share one left edge. The input
-              itself caps at 640px so it reads as a UI element rather
-              than a billboard. */}
-          <figure className="mt-12 max-w-[var(--cs-prose-col)] md:mt-14">
-            <div className="max-w-[640px]">
-              <PromptInput />
-            </div>
-            <figcaption className="mt-4 max-w-[640px] text-[13px] leading-[1.55] text-[#525252]">
+          {/* Sit at the full prose-col width so the demo, the caption,
+              and the body paragraph above share the same left and
+              right edges. */}
+          <figure className="mt-10 max-w-[var(--cs-prose-col)] md:mt-12">
+            <PromptInput />
+            <figcaption className="mt-4 text-[13px] leading-[1.55] text-[#525252]">
               Toggle off: the brief that had to spell the whole brand
               out, every time. Toggle on: the shorter prompt Brand
               Memory makes possible once the context is in the system.

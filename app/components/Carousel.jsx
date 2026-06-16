@@ -9,6 +9,7 @@
 // scroll-reveal entrance.
 
 import Link from "next/link";
+import AgentsThumbnail from "./AgentsThumbnail";
 
 const CARDS = [
   {
@@ -17,6 +18,7 @@ const CARDS = [
     title: "ShopOS Agents",
     href: "/work/shopos",
     img: null,
+    visual: "agents",
     placeholderBg: "linear-gradient(to bottom, #000000, #2e2e2e)",
     alt: "ShopOS Agents — AI workforce for commerce",
   },
@@ -31,7 +33,11 @@ const CARDS = [
   },
 ];
 
-function FeedCardInner({ project, year, title, img, alt, placeholderBg }) {
+function FeedCardInner({ project, year, title, img, alt, placeholderBg, visual }) {
+  // `visual` lets a card swap the default placeholder/<img> for a
+  // bespoke composition (e.g. the ShopOS Agents thumbnail with its
+  // staged reveal). Falls back to img → placeholderBg.
+  const hasVisualComponent = visual === "agents";
   return (
     <article className="feed-card">
       <div className="feed-card-meta">
@@ -42,9 +48,13 @@ function FeedCardInner({ project, year, title, img, alt, placeholderBg }) {
       <h2 className="feed-card-title">{title}</h2>
       <div
         className="feed-card-visual"
-        style={img ? undefined : { background: placeholderBg }}
+        style={img || hasVisualComponent ? undefined : { background: placeholderBg }}
       >
-        {img ? <img src={img} alt={alt || title} draggable={false} /> : null}
+        {hasVisualComponent ? (
+          <AgentsThumbnail />
+        ) : img ? (
+          <img src={img} alt={alt || title} draggable={false} />
+        ) : null}
       </div>
     </article>
   );
