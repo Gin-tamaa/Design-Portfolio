@@ -1080,14 +1080,21 @@ export default function ShopOSCaseStudy() {
                 Reasoning states (&ldquo;thinking for 8s&rdquo;) show
                 the work happening, not a frozen spinner
               </p>
-              {/* Chat row: avatar + name | status + chevron, on a
-                  white rounded pill */}
-              <div className="mt-auto pt-10">
+              {/* "Analysing your store..." status pill, per Figma
+                  210:8668. Glass surface (white tint + backdrop
+                  blur) with Richard's avatar on the left and a
+                  faded-white shimmer phrase, matching the Adding
+                  agents indicator on card 1. Vertically centered in
+                  the remaining space. */}
+              <div className="flex flex-1 items-center pt-2">
                 <div
-                  className="flex items-center gap-2 rounded-full bg-white px-3 py-2 text-[13px] md:text-[14px]"
+                  className="flex w-full items-center gap-3 rounded-full px-3 py-2 md:gap-4 md:px-4 md:py-2.5"
                   style={{
+                    background: "rgba(255, 255, 255, 0.22)",
+                    backdropFilter: "blur(14px) saturate(170%)",
+                    WebkitBackdropFilter: "blur(14px) saturate(170%)",
                     boxShadow:
-                      "0 1px 2px rgba(0,0,0,0.06), 0 6px 18px rgba(0,0,0,0.06)",
+                      "inset 0 0 0 1px rgba(255,255,255,0.55), 0 1px 2px rgba(0,0,0,0.05), 0 6px 18px rgba(0,0,0,0.05)",
                   }}
                 >
                   <img
@@ -1095,40 +1102,26 @@ export default function ShopOSCaseStudy() {
                     alt="Richard avatar"
                     width={72}
                     height={72}
-                    className="block h-7 w-7 flex-shrink-0 rounded-full"
+                    className="block h-8 w-8 flex-shrink-0 rounded-full md:h-9 md:w-9"
                     loading="lazy"
                     decoding="async"
                   />
-                  <span className="font-medium text-[#0a0a0a]">
-                    Richard (Store Manager)
-                  </span>
-                  <span className="text-[#bdbdbd]" aria-hidden="true">
-                    |
-                  </span>
-                  <span className="truncate text-[#9a9a9a]">
-                    Checking Meta ad
+                  <span
+                    className="shimmer-adding whitespace-nowrap leading-none"
+                    style={{
+                      fontFamily: "'Inter', sans-serif",
+                      fontWeight: 400,
+                      fontStyle: "normal",
+                      fontSize: "clamp(16px, 2.2vw, 24px)",
+                    }}
+                  >
+                    Analysing your store
                     <span className="inline-flex">
                       <span className="ml-[2px]">.</span>
                       <span>.</span>
                       <span>.</span>
                     </span>
                   </span>
-                  <svg
-                    aria-hidden="true"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    className="ml-auto flex-shrink-0 text-[#9a9a9a]"
-                  >
-                    <path
-                      d="M6 9l6 6 6-6"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
                 </div>
               </div>
             </article>
@@ -1221,8 +1214,11 @@ export default function ShopOSCaseStudy() {
           </Lead>
 
           <div className="mt-12 grid grid-cols-1 gap-6 md:mt-16 md:grid-cols-2">
-            {/* LEFT card — Needs Attention */}
-            <article className="rounded-3xl bg-[#F4F4F5] p-6 md:p-8">
+            {/* LEFT card — Needs Attention. Heading + description live
+                in JSX (selectable); the row list is the user-exported
+                Figma asset since it carries brand logos, the exact
+                row outlines, and the "Open in Cowork" pills 1:1. */}
+            <article className="rounded-3xl bg-white p-6 ring-1 ring-[#EFEFF1] md:p-8">
               <h3 className="text-[20px] font-semibold leading-tight text-[#0a0a0a] md:text-[22px]">
                 Needs Attention
               </h3>
@@ -1231,68 +1227,23 @@ export default function ShopOSCaseStudy() {
                 the metric, and one action. Never a vague &ldquo;performance
                 is down&rdquo;
               </p>
-              <ul className="mt-8 space-y-3">
-                {[
-                  {
-                    icon: "meta",
-                    title: "Pulling ad performance from Meta Ads",
-                    sub: "Don · Analyzing spend, ROAS, and CTR across 23 SKUs.",
-                  },
-                  {
-                    icon: "googleads",
-                    title: "3 negative reviews on Arc 7 Projector — avg 1.8★",
-                    sub: "Sam · Draft responses ready · needs approval before posting",
-                  },
-                  {
-                    icon: "googleads",
-                    title: "3 negative reviews on Arc 7 Projector — avg 1.8★",
-                    sub: "Sam · Draft responses ready · needs approval",
-                  },
-                ].map((row, i) => (
-                  <li
-                    key={i}
-                    className="flex items-center gap-3 rounded-2xl bg-white p-3 ring-1 ring-[#EAEAEC] md:p-4"
-                  >
-                    <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl bg-white ring-1 ring-[#EFEFF1]">
-                      {row.icon === "meta" ? (
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                          <path
-                            d="M6.5 7.3c2.6 0 4 2.6 5.6 5.4 1.6 2.7 3 5.4 5.6 5.4 1.6 0 2.8-1 2.8-3.2 0-2.3-1.4-5.5-3-7.7-1-1.4-2-2.2-3.4-2.2-1.5 0-2.6.9-4 2.8-1.4-1.9-2.5-2.8-4-2.8-3 0-5.6 4.9-5.6 8.7 0 2.6 1.2 4.4 3.2 4.4 1.7 0 2.7-1.1 3.7-2.7"
-                            stroke="#1877F2"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      ) : (
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                          <path d="M9.5 3l-8 14a1.5 1.5 0 0 0 1.3 2.3h6.4l-3.2-5.5L9.5 3z" fill="#FBBC04" />
-                          <path d="M9.5 3l5.5 9.5L11.8 18l-2.3-4 0-11z" fill="#34A853" />
-                          <circle cx="18.5" cy="17" r="3" fill="#4285F4" />
-                        </svg>
-                      )}
-                    </span>
-                    <div className="min-w-0 flex-grow">
-                      <p className="truncate text-[13px] font-semibold text-[#0a0a0a] md:text-[14px]">
-                        {row.title}
-                      </p>
-                      <p className="mt-0.5 truncate text-[12px] leading-[1.5] text-[#737378] md:text-[13px]">
-                        {row.sub}
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      className="flex-shrink-0 rounded-lg bg-white px-3 py-2 text-[11px] font-medium text-[#0a0a0a] ring-1 ring-[#E5E5E5] transition-colors hover:bg-[#0a0a0a] hover:text-white md:text-[12px]"
-                    >
-                      Open in Cowork
-                    </button>
-                  </li>
-                ))}
-              </ul>
+              <div className="mt-8">
+                <img
+                  src="/images/shopos/needs-attention.png"
+                  alt="Three pinned alert rows. Row 1: the Meta logo, 'Pulling ad performance from Meta Ads', 'Don analyzing spend, ROAS, and CTR across 23 SKUs', with an Open in Cowork button. Row 2 and 3: the Google Ads logo, '3 negative reviews on Arc 7 Projector with an average of 1.8 stars', 'Sam, draft responses ready, needs approval', with an Open in Cowork button."
+                  width={683}
+                  height={400}
+                  className="block h-auto w-full"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
             </article>
 
-            {/* RIGHT card — Activity */}
-            <article className="rounded-3xl bg-[#F4F4F5] p-6 md:p-8">
+            {/* RIGHT card — Activity. Same pattern: JSX heading +
+                description on top of the user-exported Figma asset
+                for the live agent feed. */}
+            <article className="rounded-3xl bg-white p-6 ring-1 ring-[#EFEFF1] md:p-8">
               <h3 className="text-[20px] font-semibold leading-tight text-[#0a0a0a] md:text-[22px]">
                 Activity:
               </h3>
@@ -1300,106 +1251,16 @@ export default function ShopOSCaseStudy() {
                 The live feed of what each agent is doing right now,
                 in plain language, the moment they do it
               </p>
-
-              <div className="mt-8 overflow-hidden rounded-2xl bg-white ring-1 ring-[#EAEAEC]">
-                <div className="flex items-center gap-2 border-b border-[#F0F0F2] px-4 py-3">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <path
-                      d="M3 12h3l2-6 4 12 2-6 3 0h4"
-                      stroke="#525252"
-                      strokeWidth="1.75"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  <span className="text-[13px] font-medium text-[#0a0a0a]">
-                    Agents Activity
-                  </span>
-                  <span className="text-[13px] text-[#a0a0a5]">(2)</span>
-                </div>
-                <ul className="divide-y divide-[#F0F0F2]">
-                  {[
-                    {
-                      msg: "CTR down 34% week-over-week on Morning Routine. Frequency at 4.1. Briefed Claude — replac…",
-                      agent: "Aria",
-                      avatar: "aria",
-                      time: "2 mins ago",
-                    },
-                    {
-                      msg: 'Generating 5 hook variants. "Problem → product" format, 3-second openers. ETA 4 minutes.',
-                      agent: "Gavin",
-                      avatar: "/images/shopos/agent-other.png",
-                      time: "2 mins ago",
-                    },
-                    {
-                      msg: "Creative fatigue on 3 Meta ad sets — ROAS dropped to 2.1x",
-                      agent: "Dinesh",
-                      avatar: "/images/shopos/agent-8bit.png",
-                      time: "2 mins ago",
-                    },
-                    {
-                      msg: "3 negative Arc 7 reviews flagged. Common theme: brightness in ambient light. Draft responses ready.",
-                      agent: "Erlich",
-                      avatar: "/images/shopos/agent-richard.png",
-                      time: "2 mins ago",
-                    },
-                  ].map((row, i) => (
-                    <li key={i} className="px-4 py-3">
-                      <div className="flex items-start gap-3">
-                        <span className="mt-[5px] h-[10px] w-[10px] flex-shrink-0 rounded-full ring-1 ring-[#D5D5D8]" />
-                        <div className="min-w-0 flex-grow">
-                          <p className="text-[13px] leading-[1.5] text-[#0a0a0a] md:text-[14px]">
-                            {row.msg}
-                          </p>
-                          <div className="mt-2 flex items-center gap-2">
-                            {row.avatar === "aria" ? (
-                              <span
-                                aria-hidden="true"
-                                className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full"
-                                style={{
-                                  background:
-                                    "linear-gradient(135deg, #FB7185 0%, #F472B6 100%)",
-                                }}
-                              >
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="white">
-                                  <path d="M12 2l1.6 6.4L20 10l-6.4 1.6L12 18l-1.6-6.4L4 10l6.4-1.6L12 2z" />
-                                </svg>
-                              </span>
-                            ) : (
-                              <img
-                                src={row.avatar}
-                                alt=""
-                                width={72}
-                                height={72}
-                                className="block h-5 w-5 flex-shrink-0 rounded-full"
-                                loading="lazy"
-                                decoding="async"
-                              />
-                            )}
-                            <span className="text-[12px] font-medium text-[#0a0a0a]">
-                              {row.agent}
-                            </span>
-                            <span aria-hidden="true" className="text-[#d5d5d8]">
-                              |
-                            </span>
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-                              <circle cx="12" cy="12" r="9" stroke="#9a9aa0" strokeWidth="1.75" />
-                              <path
-                                d="M12 7v5l3 2"
-                                stroke="#9a9aa0"
-                                strokeWidth="1.75"
-                                strokeLinecap="round"
-                              />
-                            </svg>
-                            <span className="text-[12px] text-[#737378]">
-                              {row.time}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+              <div className="mt-8">
+                <img
+                  src="/images/shopos/agents-activity.png"
+                  alt="Agents Activity feed (2). Aria: 'CTR down 34% week-over-week on Morning Routine. Frequency at 4.1. Briefed Claude — replac…', 2 mins ago. Gavin: 'Generating 5 hook variants. Problem to product format, 3-second openers. ETA 4 minutes.', 2 mins ago. Dinesh: 'Creative fatigue on 3 Meta ad sets, ROAS dropped to 2.1x', 2 mins ago. Erlich: '3 negative Arc 7 reviews flagged. Common theme: brightness in ambient light. Draft responses ready.', 2 mins ago."
+                  width={683}
+                  height={400}
+                  className="block h-auto w-full"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
             </article>
           </div>
