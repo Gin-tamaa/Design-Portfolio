@@ -197,6 +197,21 @@ body.shopos-hero.shopos-nav-solid header button {
   .thinking-avatar { animation: none !important; }
 }
 
+/* ===== Prompt-input cursor blink (Brand Memory, "The problem") ===== */
+@keyframes prompt-cursor-blink {
+  0%, 50%   { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+.prompt-cursor {
+  display: inline-block;
+  margin-left: 1px;
+  font-weight: 300;
+  animation: prompt-cursor-blink 1s steps(1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .prompt-cursor { animation: none; opacity: 1; }
+}
+
 /* ===== "Adding agents..." shimmer (Watching card 1) =====
    Reuses the shimmerSweep keyframe. Faded white as the base, bright
    white as the highlight, swept across the text on the peach gradient

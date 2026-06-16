@@ -1,16 +1,18 @@
 // app/work/brand-memory/page.jsx
 // Brand Memory case study. Same scaffold as the ShopOS case study:
-// .cs-scope main, the editorial type primitives, the TL;DR table, the
-// "My role" block, and section pattern of eyebrow → SectionHeader →
-// Lead → Prose/bullets → ImageSlot. No parallax hero on this one
-// because the project doesn't have an equivalent wordmark composition;
-// the page opens straight on the back link + kicker.
+// parallax sky hero with a wordmark ("Memory" here, "Agents" there),
+// .cs-scope main with the editorial type primitives, the TL;DR
+// table, the "My role" block, and the section pattern of eyebrow →
+// SectionHeader → Lead → Prose/bullets → ImageSlot.
 
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import ChatLauncher from "../../components/ChatLauncher";
+import PromptInput from "./PromptInput";
+
+const SKY_SRC = "/images/shopos-hero-sky.png";
 
 /* ============================================================================
    Primitives copied verbatim from the ShopOS scaffold so the two
@@ -120,6 +122,28 @@ function Lead({ children, className = "" }) {
   );
 }
 
+// Bracket primitive: 24x24 SVG drawing the bottom-left L shape; the
+// `pos` prop rotates it for the other three corners of the hero stage.
+function Bracket({ pos, className = "" }) {
+  const rot = { tl: 90, tr: 180, br: -90, bl: 0 }[pos] ?? 0;
+  return (
+    <span
+      aria-hidden="true"
+      className={`pointer-events-none absolute h-6 w-6 ${className}`}
+      style={{ transform: `rotate(${rot}deg)` }}
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M0 0 L0 23 L24 23"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="square"
+        />
+      </svg>
+    </span>
+  );
+}
+
 function Bullet({ children }) {
   return (
     <li className="flex gap-4">
@@ -164,13 +188,64 @@ function DecisionContrast({ rejected, chosen }) {
 ============================================================================ */
 
 export default function BrandMemoryPage() {
-  // Reveal observer copied from the ShopOS scaffold so .reveal blocks
-  // ease in as the user scrolls. No parallax hero on this page, so the
-  // scroll handler the ShopOS effect manages isn't needed here.
+  const heroRef = useRef(null);
+  const skyRef = useRef(null);
+  const wordmarkRef = useRef(null);
+  const bracketsRef = useRef(null);
+
+  // Same parallax + reveal scaffold the ShopOS page runs. Sky moves at
+  // 0.35, brackets at 0.50, the "Memory" wordmark at 0.55 (fading out
+  // by 70% of the hero height). Reduced motion → static + visible.
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const reduced = mediaQuery.matches;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
+    document.body.classList.add("shopos-hero");
+
+    let rafId = null;
+    let solid = false;
+
+    const update = () => {
+      const y = window.scrollY;
+      const heroH = heroRef.current?.offsetHeight || 760;
+      const navThreshold = heroH - 90;
+
+      const shouldBeSolid = y > navThreshold;
+      if (shouldBeSolid !== solid) {
+        solid = shouldBeSolid;
+        document.body.classList.toggle("shopos-nav-solid", solid);
+      }
+
+      if (!reduced && y < heroH) {
+        const mult = isMobile ? 0.5 : 1;
+
+        if (skyRef.current) {
+          skyRef.current.style.transform = `translate3d(0, ${y * 0.35 * mult}px, 0)`;
+        }
+        if (bracketsRef.current) {
+          bracketsRef.current.style.transform = `translate3d(0, ${y * 0.5 * mult}px, 0)`;
+        }
+        if (wordmarkRef.current) {
+          wordmarkRef.current.style.transform = `translate3d(-50%, ${y * 0.55 * mult}px, 0)`;
+          wordmarkRef.current.style.opacity = String(
+            Math.max(0, 1 - y / (heroH * 0.7))
+          );
+        }
+      }
+
+      rafId = null;
+    };
+
+    const onScroll = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(update);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    update();
+
+    // Reveals
     const revealEls = Array.from(document.querySelectorAll(".reveal"));
     let observer = null;
     if (!reduced && "IntersectionObserver" in window) {
@@ -191,12 +266,90 @@ export default function BrandMemoryPage() {
     }
 
     return () => {
+      document.body.classList.remove("shopos-hero", "shopos-nav-solid");
+      window.removeEventListener("scroll", onScroll);
+      if (rafId !== null) cancelAnimationFrame(rafId);
       if (observer) observer.disconnect();
     };
   }, []);
 
   return (
     <main className="cs-scope min-h-screen bg-white text-[#0a0a0a] antialiased">
+      {/* ===== HERO, parallax stage. Foreground composition pending,
+           ships now with sky + wordmark + brackets so the route has
+           a proper top stage. ============================================ */}
+      <section
+        ref={heroRef}
+        className="relative w-full overflow-hidden"
+        style={{ height: "min(820px, calc(100vh + 60px))", minHeight: "640px" }}
+      >
+        {/* Layer 1, sky + clouds bg (parallax 0.35) */}
+        <div
+          ref={skyRef}
+          className="absolute inset-0 will-change-transform"
+          style={{ top: "-60px", height: "calc(100% + 120px)" }}
+        >
+          <img
+            src={SKY_SRC}
+            alt=""
+            aria-hidden="true"
+            className="h-full w-full object-cover"
+            draggable={false}
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10"
+            style={{
+              background:
+                "linear-gradient(180deg, #2aa3a8 0%, #66bdc1 28%, #b8dbdc 60%, #ffffff 100%)",
+            }}
+          />
+        </div>
+
+        {/* Layer 2, brackets (parallax 0.50), 4 corners */}
+        <div
+          ref={bracketsRef}
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 text-white will-change-transform"
+        >
+          <Bracket pos="tl" className="top-[17.2%] left-[23.75%]" />
+          <Bracket pos="tr" className="top-[17.2%] right-[23.75%]" />
+          <Bracket pos="bl" className="top-[50.1%] left-[23.75%]" />
+          <Bracket pos="br" className="top-[50.1%] right-[23.75%]" />
+        </div>
+
+        {/* Layer 3, wordmark "Memory" (parallax 0.55, fades) */}
+        <h1
+          ref={wordmarkRef}
+          className="absolute left-1/2 will-change-transform"
+          style={{
+            top: "129px",
+            transform: "translate3d(-50%, 0, 0)",
+            fontFamily: "'Space Grotesk', sans-serif",
+            fontWeight: 500,
+            fontSize: "clamp(96px, 17vw, 240px)",
+            lineHeight: 1.08,
+            letterSpacing: "-0.06em",
+            color: "#ffffff",
+            whiteSpace: "nowrap",
+            margin: 0,
+          }}
+        >
+          Memory
+        </h1>
+
+        {/* Bottom fade overlay, smooths into the white content below */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[230px]"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 84.8%)",
+            backdropFilter: "blur(2px)",
+          }}
+        />
+      </section>
+
       {/* ===== TOP, kicker + H1 + lede =================================== */}
       <Container className="reveal pt-16 md:pt-20">
         <p className="cs-eyebrow">
@@ -297,9 +450,15 @@ export default function BrandMemoryPage() {
               memory, on every single prompt.
             </p>
           </Prose>
-          <div className="mt-16 md:mt-20">
-            <ImageSlot caption="Without Memory vs With Memory: the same PDP brief, generated." />
-          </div>
+          <figure className="mt-16 md:mt-20">
+            <div className="mx-auto max-w-[560px]">
+              <PromptInput />
+            </div>
+            <figcaption className="mt-3 max-w-[var(--cs-prose-col)] text-[13px] leading-[1.55] text-[#525252]">
+              The prompt every brief used to start with. No memory of the
+              brand, so the whole thing had to be re-typed each generation.
+            </figcaption>
+          </figure>
         </Container>
       </section>
 
