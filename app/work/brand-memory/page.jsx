@@ -455,8 +455,9 @@ export default function BrandMemoryPage() {
               <PromptInput />
             </div>
             <figcaption className="mt-3 max-w-[var(--cs-prose-col)] text-[13px] leading-[1.55] text-[#525252]">
-              The prompt every brief used to start with. No memory of the
-              brand, so the whole thing had to be re-typed each generation.
+              Toggle off: the brief that had to spell the whole brand
+              out, every time. Toggle on: the shorter prompt Brand
+              Memory makes possible once the context is in the system.
             </figcaption>
           </figure>
         </Container>
