@@ -20,6 +20,7 @@ import ChatLauncher from "../../components/ChatLauncher";
 import AgentsFanOut from "./AgentsFanOut";
 import TooManyTasks from "./TooManyTasks";
 import CardsVersionSwitcher from "./CardsVersionSwitcher";
+import AgentsJoinLoop from "./AgentsJoinLoop";
 
 const SKY_SRC = "/images/shopos-hero-sky.png";
 const AGENTS_SRC = "/images/agents-hero.png";
@@ -1052,30 +1053,11 @@ export default function ShopOSCaseStudy() {
                 Watch one agent pull another into the thread when work
                 demands it
               </p>
-              {/* "Adding agents..." indicator */}
-              <div className="mt-auto flex items-center gap-3 pt-10">
-                <span
-                  aria-hidden="true"
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white/25 text-white"
-                  style={{ backdropFilter: "blur(8px)" }}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                    <path
-                      d="M12 2v8m0 4v8m-10-10h8m4 0h8M5 5l5 5m4 4l5 5M19 5l-5 5m-4 4l-5 5"
-                      stroke="currentColor"
-                      strokeWidth="1.75"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </span>
-                <span className="text-[15px] italic text-white/85">
-                  Adding agents
-                  <span className="inline-flex">
-                    <span className="ml-[2px]">.</span>
-                    <span>.</span>
-                    <span>.</span>
-                  </span>
-                </span>
+              {/* "Adding agents..." indicator — cycles through the
+                  four Figma 210:9504 states (sparkle alone → sparkle +
+                  Richard → three agents + sparkle → varied lineup). */}
+              <div className="mt-auto pt-10">
+                <AgentsJoinLoop />
               </div>
             </article>
 
@@ -1163,117 +1145,19 @@ export default function ShopOSCaseStudy() {
                 Multi-step Arcs show each step as it runs, not just the
                 final result
               </p>
-              {/* White Arc plan card with three steps */}
-              <div className="relative mt-auto pt-10">
-                {/* Sparkle decoration floating at the top-right of the
-                    plan card */}
-                <span
-                  aria-hidden="true"
-                  className="absolute -top-1 right-2 text-[#f06292]"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2l1.6 6.4L20 10l-6.4 1.6L12 18l-1.6-6.4L4 10l6.4-1.6L12 2z" />
-                  </svg>
-                </span>
-                <div
-                  className="max-w-[240px] rounded-2xl bg-white p-3 text-[13px] md:text-[14px]"
-                  style={{
-                    boxShadow:
-                      "0 1px 2px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.08)",
-                  }}
-                >
-                  {[
-                    {
-                      label: "Research websites",
-                      icon: (
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                        >
-                          <circle
-                            cx="11"
-                            cy="11"
-                            r="6"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          />
-                          <path
-                            d="M20 20l-3-3"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                          />
-                        </svg>
-                      ),
-                    },
-                    {
-                      label: "Analyse results",
-                      icon: (
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                        >
-                          <path
-                            d="M6 12l-2 2M12 6l-2-2M18 12l2 2M12 18l-2 2"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                          />
-                          <circle
-                            cx="12"
-                            cy="12"
-                            r="3"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          />
-                        </svg>
-                      ),
-                    },
-                    {
-                      label: "Create report",
-                      icon: (
-                        <svg
-                          width="14"
-                          height="14"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                        >
-                          <rect
-                            x="5"
-                            y="3"
-                            width="14"
-                            height="18"
-                            rx="2"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                          />
-                          <path
-                            d="M9 8h6M9 12h6M9 16h4"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                          />
-                        </svg>
-                      ),
-                    },
-                  ].map((step, i, arr) => (
-                    <div
-                      key={step.label}
-                      className={`flex items-center gap-3 px-2 py-2 ${
-                        i < arr.length - 1
-                          ? "border-b border-[#f0f0f0]"
-                          : ""
-                      }`}
-                    >
-                      <span className="text-[#9a9a9a]">{step.icon}</span>
-                      <span className="text-[#0a0a0a]">{step.label}</span>
-                    </div>
-                  ))}
-                </div>
+              {/* Arc plan card — exported from Figma as a transparent
+                  PNG so the white card and the pink sparkle keep the
+                  exact spec without rebuilding. */}
+              <div className="mt-auto pt-8">
+                <img
+                  src="/images/shopos/the-plan-is-visible.png"
+                  alt="An Arc plan card with three steps: Research websites with a magnifying-glass icon, Analyse results with a framed search icon, and Create report with a notebook icon. A pink sparkle floats at the top-right of the card."
+                  width={400}
+                  height={320}
+                  className="block h-auto w-[78%] max-w-[260px]"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
             </article>
 
@@ -1294,15 +1178,16 @@ export default function ShopOSCaseStudy() {
                 because trust dies the moment work disappears without a
                 word
               </p>
-              {/* Pixel portrait of the team, bleeding off the bottom
-                  + sides of the card (the only baked image in this
-                  section: photographic content, not a UI primitive) */}
-              <div className="mt-auto -mb-7 -ml-7 -mr-7 max-h-[180px] overflow-hidden pt-8 md:-mb-9 md:-ml-9 md:-mr-9 md:max-h-[220px]">
+              {/* Pixel portrait of the team, transparent PNG so it
+                  sits directly on the card gradient. The only baked
+                  image in this section because it's photographic
+                  content, not a UI primitive. */}
+              <div className="mt-auto -mb-7 -ml-7 -mr-7 pt-6 md:-mb-9 md:-ml-9 md:-mr-9">
                 <img
                   src="/images/shopos/watching-people.png"
-                  alt="A pixel-art illustration of five team members standing together: a person in plaid, a person holding a laptop, a person in a blazer, a person in a striped shirt, and a person in a dark suit holding a coffee, against a peach gradient."
-                  width={800}
-                  height={330}
+                  alt="A pixel-art illustration of five team members standing together: a person in plaid holding a coffee, a person holding a laptop, a person in a blazer, a person in a striped shirt, and a person in a dark suit holding a coffee."
+                  width={683}
+                  height={400}
                   className="block h-auto w-full"
                   loading="lazy"
                   decoding="async"
