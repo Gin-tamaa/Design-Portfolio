@@ -392,23 +392,7 @@ export default function ShopOSCaseStudy() {
            Type scale untouched: cs-eyebrow / cs-thesis / cs-lede are the
            same classes used previously. */}
       <Container className="reveal pt-16 md:pt-20">
-        <Link
-          href="/work"
-          className="inline-flex items-center gap-2 text-[13px] font-medium text-[#525252] transition-colors hover:text-[#0a0a0a]"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M19 12H5M11 6l-6 6 6 6"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          Work
-        </Link>
-
-        <p className="cs-eyebrow mt-10">
+        <p className="cs-eyebrow">
           ShopOS &middot; &ldquo;Mission Control&rdquo; &middot; Research
           &middot; Product Design &middot; Frontend &middot; Mar 2026
           &ndash; Present
