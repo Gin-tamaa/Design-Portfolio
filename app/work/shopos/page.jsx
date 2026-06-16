@@ -786,9 +786,6 @@ export default function ShopOSCaseStudy() {
                 what not to build
               </em>
             </h3>
-            <div className="mt-8 md:mt-10">
-              <ImageSlot caption="v1 wireframe: agents crammed left, tasks right, no line between who works and what the work is." />
-            </div>
             <div className="mt-10 md:mt-12">
               <div className="overflow-hidden rounded-2xl">
                 <img
