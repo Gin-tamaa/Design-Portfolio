@@ -1054,9 +1054,12 @@ export default function ShopOSCaseStudy() {
                 demands it
               </p>
               {/* "Adding agents..." indicator — cycles through the
-                  four Figma 210:9504 states (sparkle alone → sparkle +
-                  Richard → three agents + sparkle → varied lineup). */}
-              <div className="mt-auto pt-10">
+                  four Figma 224:6051 states (sparkle → sparkle +
+                  Richard → sparkle + curly → sparkle + curly +
+                  green). Wrapper takes the remaining vertical space
+                  and centers the loop, so the indicator sits halfway
+                  between the body copy above and the card bottom. */}
+              <div className="flex flex-1 items-center">
                 <AgentsJoinLoop />
               </div>
             </article>
