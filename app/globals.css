@@ -197,6 +197,34 @@ body.shopos-hero.shopos-nav-solid header button {
   .thinking-avatar { animation: none !important; }
 }
 
+/* ===== "Adding agents..." shimmer (Watching card 1) =====
+   Reuses the shimmerSweep keyframe. Faded white as the base, bright
+   white as the highlight, swept across the text on the peach gradient
+   so the phrase reads as live/in-progress instead of static label. */
+.shimmer-adding {
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: shimmerSweep 2.4s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .shimmer-adding {
+    animation: none;
+    background: none;
+    color: rgba(255, 255, 255, 0.85);
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.85);
+  }
+}
+
 /* ===== Site pet (homepage desktop mascot) =====
    Autonomous bottom-of-viewport wanderer. The component
    (app/components/SitePet.jsx) writes --pet-x as an inline style every

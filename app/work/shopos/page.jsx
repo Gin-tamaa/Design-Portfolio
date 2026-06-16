@@ -1087,13 +1087,14 @@ export default function ShopOSCaseStudy() {
                       "0 1px 2px rgba(0,0,0,0.06), 0 6px 18px rgba(0,0,0,0.06)",
                   }}
                 >
-                  <span
-                    aria-hidden="true"
-                    className="h-6 w-6 flex-shrink-0 rounded-full"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #f5b58a 0%, #e07a5f 100%)",
-                    }}
+                  <img
+                    src="/images/shopos/agent-other.png"
+                    alt="Richard avatar"
+                    width={72}
+                    height={72}
+                    className="block h-7 w-7 flex-shrink-0 rounded-full"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <span className="font-medium text-[#0a0a0a]">
                     Richard (Store Manager)
