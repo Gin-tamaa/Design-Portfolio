@@ -1036,14 +1036,14 @@ export default function ShopOSCaseStudy() {
             you get a window, not a spinner.
           </Lead>
 
-          <div className="mt-12 grid grid-cols-1 gap-5 md:mt-16 md:grid-cols-2 md:gap-6">
+          <div className="mt-12 grid grid-cols-1 gap-5 md:mt-16 md:auto-rows-fr md:grid-cols-2 md:gap-6">
             {/* Card 1, Agents join in */}
             <article
               className="relative flex flex-col overflow-hidden rounded-3xl p-7 md:p-9"
               style={{
                 background:
                   "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
-                minHeight: 320,
+                minHeight: 420,
               }}
             >
               <h3 className="text-[18px] font-semibold leading-tight text-[#0a0a0a] md:text-[20px]">
@@ -1067,7 +1067,7 @@ export default function ShopOSCaseStudy() {
               style={{
                 background:
                   "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
-                minHeight: 320,
+                minHeight: 420,
               }}
             >
               <h3 className="text-[18px] font-semibold leading-tight text-[#0a0a0a] md:text-[20px]">
@@ -1135,7 +1135,7 @@ export default function ShopOSCaseStudy() {
               style={{
                 background:
                   "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
-                minHeight: 320,
+                minHeight: 420,
               }}
             >
               <h3 className="text-[18px] font-semibold leading-tight text-[#0a0a0a] md:text-[20px]">
@@ -1147,14 +1147,15 @@ export default function ShopOSCaseStudy() {
               </p>
               {/* Arc plan card — exported from Figma as a transparent
                   PNG so the white card and the pink sparkle keep the
-                  exact spec without rebuilding. */}
-              <div className="mt-auto pt-8">
+                  exact spec without rebuilding. Centered horizontally
+                  so the empty card area balances on both sides. */}
+              <div className="mt-auto flex justify-center pt-6">
                 <img
                   src="/images/shopos/the-plan-is-visible.png"
                   alt="An Arc plan card with three steps: Research websites with a magnifying-glass icon, Analyse results with a framed search icon, and Create report with a notebook icon. A pink sparkle floats at the top-right of the card."
                   width={400}
                   height={320}
-                  className="block h-auto w-[78%] max-w-[260px]"
+                  className="block h-auto w-[85%] max-w-[300px]"
                   loading="lazy"
                   decoding="async"
                 />
@@ -1167,7 +1168,7 @@ export default function ShopOSCaseStudy() {
               style={{
                 background:
                   "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
-                minHeight: 320,
+                minHeight: 420,
               }}
             >
               <h3 className="text-[18px] font-semibold leading-tight text-[#0a0a0a] md:text-[20px]">
