@@ -979,7 +979,7 @@ export default function ShopOSCaseStudy() {
               <p className="mt-3 max-w-[34ch] text-[14px] leading-[1.55] text-[#0a0a0a] md:text-[15px]">
                 For task thinkers: work moves Needs Attention &rarr; In
                 Progress &rarr; Completed, tracked in the Tasks tab for
-                bigger pieces.
+                bigger pieces
               </p>
               {/* Kanban board. Wrapped in a frosted-glass surface
                   (same recipe as the Section 4 glass pills) so the
@@ -1002,10 +1002,10 @@ export default function ShopOSCaseStudy() {
                 >
                   <img
                     src="/images/shopos/two-doors-kanban.png"
-                    alt="The Scheduled column (TOFU Static Ad assigned to Monica) and Need Attention column (Pulling ad performance from Meta Ads with Gavin, Creative Brief with Richard) of the Kanban board, the rest of the board bleeding out of the card's right and bottom edges to suggest it extends further."
-                    width={1188}
-                    height={636}
-                    className="block h-auto w-[115%] max-w-none"
+                    alt="Scheduled (TOFU Static Ad with Monica), Need Attention (Pulling ad performance from Meta Ads with Gavin, Creative Brief with Richard, Ad Copy Variants partially visible), and In Progress (A/B Test Setup with Erlich) columns of the Kanban board, with the rest of the board bleeding out of the card's right and bottom edges."
+                    width={1212}
+                    height={660}
+                    className="block h-auto w-[125%] max-w-none"
                     loading="lazy"
                     decoding="async"
                   />
@@ -1026,27 +1026,19 @@ export default function ShopOSCaseStudy() {
             Legible Orchestration, made into pixels. Assign a goal and
             you get a window, not a spinner.
           </Lead>
-          <ul className="mt-8 space-y-3 max-w-[var(--cs-prose-col)]">
-            <Bullet>
-              Watch one agent pull another into the thread when work
-              demands it
-            </Bullet>
-            <Bullet>
-              Reasoning states (&ldquo;thinking for 8s&rdquo;) show the
-              work happening
-            </Bullet>
-            <Bullet>
-              Multi-step Arcs expose the plan as it runs, not just the
-              result
-            </Bullet>
-            <Bullet>
-              Every state designed: empty, loading, error, success. A
-              team that fails silently can&rsquo;t be trusted
-            </Bullet>
-          </ul>
 
-          <div className="mt-16 md:mt-20">
-            <ImageSlot caption="Orchestration thread: an Arc in flight, the plan, the current step, and who is working it." />
+          <div className="mt-12 md:mt-16">
+            <div className="overflow-hidden rounded-2xl">
+              <img
+                src="/images/shopos/watching-cards.png"
+                alt="Four quadrant cards on a peach gradient. Agents join in: watch one agent pull another into the thread when work demands it, with an Adding agents indicator. They think out loud: reasoning states ('thinking for 8s') show the work happening, not a frozen spinner, with Richard (Store Manager) checking Meta ads. The plan is visible: multi-step Arcs show each step as it runs, not just the final result, with Research websites / Analyse results / Create report. Nothing fails silently: every state is designed (empty, loading, error, success) because trust dies the moment work disappears without a word."
+                width={1728}
+                height={1114}
+                className="block h-auto w-full"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
           </div>
         </Container>
       </section>
