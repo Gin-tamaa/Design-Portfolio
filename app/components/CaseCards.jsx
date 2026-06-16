@@ -10,7 +10,7 @@ const cards = [
   {
     client: "Brand Memory",
     tags: "Identity, Design Systems",
-    href: "/work",
+    href: "/work/brand-memory",
     img: "/images/card-project2.png",
   },
   {

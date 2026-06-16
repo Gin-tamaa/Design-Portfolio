@@ -24,7 +24,7 @@ const CARDS = [
     project: "ShopOS",
     year: "2026",
     title: "Brand Memory",
-    href: null,
+    href: "/work/brand-memory",
     img: null,
     placeholderBg: "linear-gradient(to bottom, #fafafa, #eeeeee)",
     alt: "Brand Memory — identity system",
