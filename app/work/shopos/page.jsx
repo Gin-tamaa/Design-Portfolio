@@ -776,7 +776,7 @@ export default function ShopOSCaseStudy() {
           {/* ITERATION 01: Kanban MVP -> what not to build. */}
           <div className="mt-16 md:mt-20">
             <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
-              Version <span className="tabular-nums">1</span>
+              Version <span className="tabular-nums">1</span> - Kanban
             </h3>
             <div className="mt-10 md:mt-12">
               <div className="overflow-hidden rounded-2xl">
@@ -803,7 +803,8 @@ export default function ShopOSCaseStudy() {
               a frame. */}
           <div className="mt-20 md:mt-24">
             <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
-              Version <span className="tabular-nums">2</span>
+              Version <span className="tabular-nums">2</span> - Cards
+              view
             </h3>
             <div className="mt-10 md:mt-12">
               <CardsVersionSwitcher />
@@ -816,7 +817,7 @@ export default function ShopOSCaseStudy() {
               the standalone bullet list above is omitted. */}
           <div className="mt-20 md:mt-24">
             <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
-              Version <span className="tabular-nums">3</span>
+              Version <span className="tabular-nums">3</span> - Org view
             </h3>
             <div className="mt-10 md:mt-12">
               <div className="overflow-hidden rounded-2xl">
@@ -991,13 +992,13 @@ export default function ShopOSCaseStudy() {
                   + right edges without growing card height. */}
               <div className="mt-auto -mb-7 -mr-7 max-h-[180px] overflow-hidden pt-8 md:-mb-9 md:-mr-9 md:max-h-[240px]">
                 <div
-                  className="rounded-2xl"
+                  className="rounded-tl-2xl"
                   style={{
                     background: "rgba(255, 255, 255, 0.10)",
                     backdropFilter: "blur(12px) saturate(160%)",
                     WebkitBackdropFilter: "blur(12px) saturate(160%)",
                     boxShadow:
-                      "inset 1.5px 1.5px 0 -0.5px rgba(255,255,255,0.7), inset 0 0 4px 1px rgba(255,255,255,0.25)",
+                      "inset 1.5px 0 0 -0.5px rgba(255,255,255,0.7), inset 1.5px 1.5px 0 -0.5px rgba(255,255,255,0.7), inset 0 0 4px 1px rgba(255,255,255,0.25)",
                   }}
                 >
                   <img
@@ -1018,6 +1019,13 @@ export default function ShopOSCaseStudy() {
 
       {/* ===== 09 · Then you watch the team think ========================
            Scaffolded: italic lead + tight bullet stack + ImageSlot. */}
+      {/* ===== 09 · Then you watch the team think ========================
+           2x2 grid of peach gradient cards, same recipe as Two doors
+           (Section 8). Each card carries one of the four points as a
+           heading + body + a small inline UI element built in JSX.
+           Card 4 is the only one that uses a real asset (the pixel
+           portrait photo bleeding off the bottom) because it's a
+           photographic element, not a UI primitive. */}
       <section className="reveal py-24 md:py-36">
         <Container>
           <Eyebrow>Watching</Eyebrow>
@@ -1027,18 +1035,280 @@ export default function ShopOSCaseStudy() {
             you get a window, not a spinner.
           </Lead>
 
-          <div className="mt-12 md:mt-16">
-            <div className="overflow-hidden rounded-2xl">
-              <img
-                src="/images/shopos/watching-cards.png"
-                alt="Four quadrant cards on a peach gradient. Agents join in: watch one agent pull another into the thread when work demands it, with an Adding agents indicator. They think out loud: reasoning states ('thinking for 8s') show the work happening, not a frozen spinner, with Richard (Store Manager) checking Meta ads. The plan is visible: multi-step Arcs show each step as it runs, not just the final result, with Research websites / Analyse results / Create report. Nothing fails silently: every state is designed (empty, loading, error, success) because trust dies the moment work disappears without a word."
-                width={1728}
-                height={1114}
-                className="block h-auto w-full"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
+          <div className="mt-12 grid grid-cols-1 gap-5 md:mt-16 md:grid-cols-2 md:gap-6">
+            {/* Card 1, Agents join in */}
+            <article
+              className="relative flex flex-col overflow-hidden rounded-3xl p-7 md:p-9"
+              style={{
+                background:
+                  "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
+                minHeight: 320,
+              }}
+            >
+              <h3 className="text-[18px] font-semibold leading-tight text-[#0a0a0a] md:text-[20px]">
+                Agents join in
+              </h3>
+              <p className="mt-3 max-w-[32ch] text-[14px] leading-[1.55] text-[#0a0a0a] md:text-[15px]">
+                Watch one agent pull another into the thread when work
+                demands it
+              </p>
+              {/* "Adding agents..." indicator */}
+              <div className="mt-auto flex items-center gap-3 pt-10">
+                <span
+                  aria-hidden="true"
+                  className="flex h-10 w-10 items-center justify-center rounded-full bg-white/25 text-white"
+                  style={{ backdropFilter: "blur(8px)" }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M12 2v8m0 4v8m-10-10h8m4 0h8M5 5l5 5m4 4l5 5M19 5l-5 5m-4 4l-5 5"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </span>
+                <span className="text-[15px] italic text-white/85">
+                  Adding agents
+                  <span className="inline-flex">
+                    <span className="ml-[2px]">.</span>
+                    <span>.</span>
+                    <span>.</span>
+                  </span>
+                </span>
+              </div>
+            </article>
+
+            {/* Card 2, They think out loud */}
+            <article
+              className="relative flex flex-col overflow-hidden rounded-3xl p-7 md:p-9"
+              style={{
+                background:
+                  "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
+                minHeight: 320,
+              }}
+            >
+              <h3 className="text-[18px] font-semibold leading-tight text-[#0a0a0a] md:text-[20px]">
+                They think out loud
+              </h3>
+              <p className="mt-3 max-w-[32ch] text-[14px] leading-[1.55] text-[#0a0a0a] md:text-[15px]">
+                Reasoning states (&ldquo;thinking for 8s&rdquo;) show
+                the work happening, not a frozen spinner
+              </p>
+              {/* Chat row: avatar + name | status + chevron, on a
+                  white rounded pill */}
+              <div className="mt-auto pt-10">
+                <div
+                  className="flex items-center gap-2 rounded-full bg-white px-3 py-2 text-[13px] md:text-[14px]"
+                  style={{
+                    boxShadow:
+                      "0 1px 2px rgba(0,0,0,0.06), 0 6px 18px rgba(0,0,0,0.06)",
+                  }}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="h-6 w-6 flex-shrink-0 rounded-full"
+                    style={{
+                      background:
+                        "linear-gradient(135deg, #f5b58a 0%, #e07a5f 100%)",
+                    }}
+                  />
+                  <span className="font-medium text-[#0a0a0a]">
+                    Richard (Store Manager)
+                  </span>
+                  <span className="text-[#bdbdbd]" aria-hidden="true">
+                    |
+                  </span>
+                  <span className="truncate text-[#9a9a9a]">
+                    Checking Meta ad
+                    <span className="inline-flex">
+                      <span className="ml-[2px]">.</span>
+                      <span>.</span>
+                      <span>.</span>
+                    </span>
+                  </span>
+                  <svg
+                    aria-hidden="true"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    className="ml-auto flex-shrink-0 text-[#9a9a9a]"
+                  >
+                    <path
+                      d="M6 9l6 6 6-6"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </article>
+
+            {/* Card 3, The plan is visible */}
+            <article
+              className="relative flex flex-col overflow-hidden rounded-3xl p-7 md:p-9"
+              style={{
+                background:
+                  "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
+                minHeight: 320,
+              }}
+            >
+              <h3 className="text-[18px] font-semibold leading-tight text-[#0a0a0a] md:text-[20px]">
+                The plan is visible
+              </h3>
+              <p className="mt-3 max-w-[32ch] text-[14px] leading-[1.55] text-[#0a0a0a] md:text-[15px]">
+                Multi-step Arcs show each step as it runs, not just the
+                final result
+              </p>
+              {/* White Arc plan card with three steps */}
+              <div className="relative mt-auto pt-10">
+                {/* Sparkle decoration floating at the top-right of the
+                    plan card */}
+                <span
+                  aria-hidden="true"
+                  className="absolute -top-1 right-2 text-[#f06292]"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2l1.6 6.4L20 10l-6.4 1.6L12 18l-1.6-6.4L4 10l6.4-1.6L12 2z" />
+                  </svg>
+                </span>
+                <div
+                  className="max-w-[240px] rounded-2xl bg-white p-3 text-[13px] md:text-[14px]"
+                  style={{
+                    boxShadow:
+                      "0 1px 2px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.08)",
+                  }}
+                >
+                  {[
+                    {
+                      label: "Research websites",
+                      icon: (
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <circle
+                            cx="11"
+                            cy="11"
+                            r="6"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                          />
+                          <path
+                            d="M20 20l-3-3"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      ),
+                    },
+                    {
+                      label: "Analyse results",
+                      icon: (
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <path
+                            d="M6 12l-2 2M12 6l-2-2M18 12l2 2M12 18l-2 2"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                          />
+                          <circle
+                            cx="12"
+                            cy="12"
+                            r="3"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                          />
+                        </svg>
+                      ),
+                    },
+                    {
+                      label: "Create report",
+                      icon: (
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <rect
+                            x="5"
+                            y="3"
+                            width="14"
+                            height="18"
+                            rx="2"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                          />
+                          <path
+                            d="M9 8h6M9 12h6M9 16h4"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      ),
+                    },
+                  ].map((step, i, arr) => (
+                    <div
+                      key={step.label}
+                      className={`flex items-center gap-3 px-2 py-2 ${
+                        i < arr.length - 1
+                          ? "border-b border-[#f0f0f0]"
+                          : ""
+                      }`}
+                    >
+                      <span className="text-[#9a9a9a]">{step.icon}</span>
+                      <span className="text-[#0a0a0a]">{step.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </article>
+
+            {/* Card 4, Nothing fails silently */}
+            <article
+              className="relative flex flex-col overflow-hidden rounded-3xl p-7 md:p-9"
+              style={{
+                background:
+                  "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
+                minHeight: 320,
+              }}
+            >
+              <h3 className="text-[18px] font-semibold leading-tight text-[#0a0a0a] md:text-[20px]">
+                Nothing fails silently
+              </h3>
+              <p className="mt-3 max-w-[34ch] text-[14px] leading-[1.55] text-[#0a0a0a] md:text-[15px]">
+                Every state is designed, empty, loading, error, success,
+                because trust dies the moment work disappears without a
+                word
+              </p>
+              {/* Pixel portrait of the team, bleeding off the bottom
+                  + sides of the card (the only baked image in this
+                  section: photographic content, not a UI primitive) */}
+              <div className="mt-auto -mb-7 -ml-7 -mr-7 max-h-[180px] overflow-hidden pt-8 md:-mb-9 md:-ml-9 md:-mr-9 md:max-h-[220px]">
+                <img
+                  src="/images/shopos/watching-people.png"
+                  alt="A pixel-art illustration of five team members standing together: a person in plaid, a person holding a laptop, a person in a blazer, a person in a striped shirt, and a person in a dark suit holding a coffee, against a peach gradient."
+                  width={800}
+                  height={330}
+                  className="block h-auto w-full"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </article>
           </div>
         </Container>
       </section>
