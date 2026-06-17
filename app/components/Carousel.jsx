@@ -41,6 +41,21 @@ const CARDS = [
     placeholderBg: "linear-gradient(to bottom, #fafafa, #eeeeee)",
     alt: "Brand Memory — identity system",
   },
+  {
+    // External link out to the DreamCall Figma prototype (new tab). No
+    // /work/dreamcall route and no chat wiring — thumbnail only. The sub
+    // copy rides in the meta line (no year), DreamCall stays the title.
+    // Visual is left empty so the default #f6f6f6 placeholder shows until
+    // an export PNG is dropped in later.
+    project: "A net-new monetisation feature for a 100M-download app",
+    year: null,
+    title: "DreamCall",
+    href: "https://www.figma.com/proto/rVZrlv1O9JKBFDgwjzkzVI/Presentation-DreamCall?node-id=1-106&page-id=0%3A1&starting-point-node-id=1%3A106&scaling=scale-down&content-scaling=fixed&t=yAtRqUnjpQIAIi4z-1",
+    external: true,
+    img: null,
+    visual: null,
+    alt: "DreamCall",
+  },
 ];
 
 function FeedCardInner({ project, year, title, img, alt, placeholderBg, visual }) {
@@ -52,8 +67,12 @@ function FeedCardInner({ project, year, title, img, alt, placeholderBg, visual }
     <article className="feed-card">
       <div className="feed-card-meta">
         <span>{project}</span>
-        <span className="feed-card-dot" aria-hidden="true" />
-        <span>{year}</span>
+        {year ? (
+          <>
+            <span className="feed-card-dot" aria-hidden="true" />
+            <span>{year}</span>
+          </>
+        ) : null}
       </div>
       <h2 className="feed-card-title">{title}</h2>
       <div
@@ -76,6 +95,22 @@ function FeedCard({ openingHref, onOpen, ...props }) {
   const isOpening = !!openingHref;
   const isThisOpening = openingHref === props.href;
   const isDimmed = isOpening && !isThisOpening;
+
+  // External cards link straight out in a new tab — no router push, no
+  // in-page open animation. Same .feed-card-link styling as the rest.
+  if (props.external && props.href) {
+    return (
+      <a
+        href={props.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`feed-card-link ${isDimmed ? "is-dimmed" : ""}`}
+        aria-label={props.title}
+      >
+        <FeedCardInner {...props} />
+      </a>
+    );
+  }
 
   if (props.href) {
     const handleClick = (e) => {
