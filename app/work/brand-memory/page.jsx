@@ -402,35 +402,36 @@ export default function BrandMemoryPage() {
         </ProseColumn>
       </Container>
 
-      {/* ===== Vimeo walkthrough — full-bleed between My Role and
-           the first content section. No outer Container, no
-           rounded frame, no dark bg — the iframe sits flush against
-           both viewport edges and the page bg shows through any
-           transparent letterbox. Responsive 4:3 aspect via
-           padding-top: 75%. */}
-      <section
-        className="reveal w-full"
-        aria-label="Brand Memory walkthrough video"
-      >
-        <div style={{ position: "relative", paddingTop: "75%" }}>
-          <iframe
-            src="https://player.vimeo.com/video/1201996722?badge=0&autopause=0&player_id=0&app_id=58479"
-            title="Brand Memory walkthrough"
-            loading="lazy"
-            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-            frameBorder="0"
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              border: 0,
-              display: "block",
-            }}
-          />
-        </div>
-      </section>
+      {/* ===== Vimeo walkthrough — sits between My Role and the
+           first content section, inside the same Container +
+           ProseColumn as everything else so it shares edges. No
+           dark plate behind the iframe (the page bg shows through
+           directly). Responsive 4:3 aspect via padding-top: 75%. */}
+      <Container className="reveal mt-12 md:mt-16">
+        <ProseColumn>
+          <div
+            style={{ position: "relative", paddingTop: "75%" }}
+            className="overflow-hidden rounded-2xl"
+          >
+            <iframe
+              src="https://player.vimeo.com/video/1201996722?badge=0&autopause=0&player_id=0&app_id=58479"
+              title="Brand Memory walkthrough"
+              loading="lazy"
+              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              frameBorder="0"
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                border: 0,
+                display: "block",
+              }}
+            />
+          </div>
+        </ProseColumn>
+      </Container>
 
       {/* ===== 01 · The problem ========================================= */}
       <section className="reveal py-24 md:py-36">
