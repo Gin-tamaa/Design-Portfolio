@@ -633,18 +633,28 @@ export default function ShopOSCaseStudy() {
             </Lead>
           </ProseColumn>
 
-          <ol className="mt-12 grid grid-cols-1 gap-x-10 gap-y-10 md:mt-16 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Approach cards. 1 col mobile → 2 cols sm → 4 cols lg.
+              CSS subgrid lines up the number row and the body row
+              across all four cards at lg so the texts share the
+              same top + bottom rails. Each card is bordered + padded
+              per the user's reference; tuned to the site's light
+              theme (Inter, ink #0a0a0a, secondary #525252, hairline
+              #E5E5E5). */}
+          <ol className="mt-12 grid grid-cols-1 gap-4 md:mt-16 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4 lg:grid-rows-[auto_1fr] lg:gap-6">
             {[
               "Modeled each agent on a real role: paid lead, CRM manager, creative director",
               "Built an internal MVP, ran it through our own team, each person testing the agent for the job they actually do",
               "Leaned hardest on CRM and sales, the people closest to users, to pressure-test which agents mattered",
               "Validated cheap: a vibe-coded MVP in front of onboarded brands first, the Figma version built in parallel as feedback came in",
             ].map((text, i) => (
-              <li key={i} className="flex flex-col">
+              <li
+                key={i}
+                className="flex flex-col gap-5 rounded-2xl border border-[#E5E5E5] bg-white p-6 md:p-7 lg:grid lg:grid-rows-subgrid lg:row-span-2 lg:gap-0"
+              >
                 <span className="text-[24px] font-medium leading-none tabular-nums text-[#0a0a0a] md:text-[28px]">
                   {i + 1}
                 </span>
-                <p className="mt-6 text-[15px] leading-[1.65] text-[#525252] md:text-[16px]">
+                <p className="text-[15px] leading-[1.65] text-[#525252] md:text-[16px]">
                   {text}
                 </p>
               </li>
