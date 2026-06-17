@@ -51,7 +51,7 @@ function Eyebrow({ children, dark = false }) {
 function SectionHeader({ children, className = "", dark = false }) {
   return (
     <h2
-      className={`cs-section mt-6 max-w-[32ch] ${dark ? "cs-on-dark" : ""} ${className}`}
+      className={`cs-section mt-6 ${dark ? "cs-on-dark" : ""} ${className}`}
     >
       {children}
     </h2>
