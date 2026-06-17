@@ -416,10 +416,11 @@ export default function BrandMemoryPage() {
               memory, on every single prompt.
             </p>
           </Prose>
-          {/* Sit at the full prose-col width so the demo, the caption,
-              and the body paragraph above share the same left and
-              right edges. */}
-          <figure className="mt-10 max-w-[var(--cs-prose-col)] md:mt-12">
+          {/* Demo + caption capped at 560px (the original tight
+              width) so the prompt input reads as a UI element, not
+              a page-wide billboard. Centered inside the prose
+              column. */}
+          <figure className="mx-auto mt-12 max-w-[560px] md:mt-14">
             <PromptInput />
             <figcaption className="mt-4 text-[13px] leading-[1.55] text-[#525252]">
               Toggle off: the brief that had to spell the whole brand
