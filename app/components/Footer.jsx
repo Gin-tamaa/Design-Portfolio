@@ -144,7 +144,7 @@ export default function Footer() {
           pxSize={3}
           speed={0.6}
           colorBack="#00000000"
-          colorFront="#eeeeee"
+          colorFront="#dddddd"
         />
       </div>
     </footer>
