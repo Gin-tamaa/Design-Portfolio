@@ -17,7 +17,7 @@ const path = require("node:path");
 
 const ROOT = path.resolve(__dirname, "..");
 const VOICES = ["_shared", "creative-head", "vibe-coder", "ai-tinkerer", "funny-side"];
-const PROJECTS = ["shopos"];
+const PROJECTS = ["shopos", "brand-memory"];
 
 const AGENTS = {};
 for (const v of VOICES) {
@@ -31,13 +31,22 @@ for (const p of PROJECTS) {
 
 // Per-project deep brief + guardrails. The brief is what the agent answers
 // FROM; the guardrails are what it must NOT claim, and OVERRIDE the brief
-// when they conflict. Same read pattern as everything else above.
+// when they conflict. Same read pattern as everything else above. One pair
+// per case-study chat surface — add a new pair when wiring up a new project.
 const SHOPOS_BRIEF = fs.readFileSync(
   path.join(ROOT, "content", "projects", "shopos.md"),
   "utf8"
 );
 const SHOPOS_GUARDRAILS = fs.readFileSync(
   path.join(ROOT, "content", "projects", "shopos.guardrails.md"),
+  "utf8"
+);
+const BRAND_MEMORY_BRIEF = fs.readFileSync(
+  path.join(ROOT, "content", "projects", "brand-memory.md"),
+  "utf8"
+);
+const BRAND_MEMORY_GUARDRAILS = fs.readFileSync(
+  path.join(ROOT, "content", "projects", "brand-memory.guardrails.md"),
   "utf8"
 );
 
@@ -56,10 +65,15 @@ const out = [
   "",
   `export const SHOPOS_GUARDRAILS = ${JSON.stringify(SHOPOS_GUARDRAILS)};`,
   "",
+  `export const BRAND_MEMORY_BRIEF = ${JSON.stringify(BRAND_MEMORY_BRIEF)};`,
+  "",
+  `export const BRAND_MEMORY_GUARDRAILS = ${JSON.stringify(BRAND_MEMORY_GUARDRAILS)};`,
+  "",
 ].join("\n");
 
 fs.writeFileSync(path.join(ROOT, "content", "bundle.js"), out);
 console.log(
   `Wrote content/bundle.js (${out.length} bytes, ${VOICES.length} voices, ` +
-    `${PROJECTS.length} projects, +SHOPOS_BRIEF +SHOPOS_GUARDRAILS)`
+    `${PROJECTS.length} projects, +SHOPOS_BRIEF +SHOPOS_GUARDRAILS ` +
+    `+BRAND_MEMORY_BRIEF +BRAND_MEMORY_GUARDRAILS)`
 );

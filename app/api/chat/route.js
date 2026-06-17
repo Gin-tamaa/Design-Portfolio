@@ -23,6 +23,8 @@ import {
   PROJECTS,
   SHOPOS_BRIEF,
   SHOPOS_GUARDRAILS,
+  BRAND_MEMORY_BRIEF,
+  BRAND_MEMORY_GUARDRAILS,
 } from "../../../content/bundle.js";
 
 export const runtime = "nodejs";
@@ -30,7 +32,20 @@ export const dynamic = "force-dynamic";
 
 const MODEL = "gpt-5.4-mini";
 
-const ALLOWED_PROJECTS = new Set(["shopos"]);
+// Per-project brief + guardrails lookup. Each entry is the exact pair the
+// system prompt is assembled from: the brief is what the agent answers
+// FROM, the guardrails are what it must NOT claim and OVERRIDE the brief
+// on conflict. To wire up a new case-study chat, add the project slug to
+// ALLOWED_PROJECTS and a corresponding entry here.
+const PROJECT_CONTENT = {
+  shopos: { brief: SHOPOS_BRIEF, guardrails: SHOPOS_GUARDRAILS },
+  "brand-memory": {
+    brief: BRAND_MEMORY_BRIEF,
+    guardrails: BRAND_MEMORY_GUARDRAILS,
+  },
+};
+
+const ALLOWED_PROJECTS = new Set(Object.keys(PROJECT_CONTENT));
 const VOICES = ["creative-head", "vibe-coder", "ai-tinkerer", "funny-side"];
 
 // ---- Rate limiter (sliding window, 40 req / hour, per IP) -----------------
@@ -40,7 +55,7 @@ if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) 
     redis: Redis.fromEnv(),
     limiter: Ratelimit.slidingWindow(40, "1 h"),
     analytics: false,
-    prefix: "chat-shopos",
+    prefix: "chat",
   });
 } else if (process.env.NODE_ENV !== "production") {
   // dev convenience — surface the missing config so it doesn't silently
@@ -167,10 +182,13 @@ export async function POST(request) {
     }
   }
 
-  // Resolve content from the build-time bundle (no fs / no I/O).
+  // Resolve content from the build-time bundle (no fs / no I/O). Brief +
+  // guardrails are looked up per project so /work/brand-memory hits the
+  // Brand Memory brief, /work/shopos hits the ShopOS one.
   const shared = AGENTS._shared;
-  const brief = SHOPOS_BRIEF;          // deep brief — what to answer FROM
-  const guardrails = SHOPOS_GUARDRAILS; // hard rules — what NOT to claim
+  const content = PROJECT_CONTENT[project];
+  const brief = content?.brief;             // deep brief, what to answer FROM
+  const guardrails = content?.guardrails;   // hard rules, what NOT to claim
   if (
     !shared ||
     !brief ||
