@@ -1,7 +1,7 @@
 import "./globals.css";
 import Nav from "./components/Nav";
 import SmoothScroll from "./components/SmoothScroll";
-import Footer from "./components/Footer";
+import ConnectFooter from "./components/ConnectFooter";
 
 export const metadata = {
   title: "Sumedh Kamble",
@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
         <Nav />
         <SmoothScroll />
         {children}
-        <Footer />
+        <ConnectFooter />
       </body>
     </html>
   );
