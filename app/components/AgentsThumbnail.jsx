@@ -120,15 +120,14 @@ export default function AgentsThumbnail() {
       </div>
 
       {/* Layer 4, agents PNG, rises from below. Sizing + positioning
-          live in globals.css under .agents-thumbnail .at-agents so
-          the .feed-card-visual img global rule can be overridden
-          with the right specificity. Anchored top: 44% to mirror
-          the hero's 332/760 ratio. */}
+          live in globals.css under .agents-thumbnail .at-agents:
+          full card width, anchored to the bottom, height: auto. The
+          image runs L→R edge to edge and any overflow clips at the
+          card bottom only — never the sides. */}
       <img
         src={AGENTS_SRC}
         alt="ShopOS Agents, AI workforce for commerce"
         className="at-agents pointer-events-none"
-        style={{ top: "44%" }}
         draggable={false}
       />
     </div>

@@ -212,17 +212,11 @@ body.shopos-hero.shopos-nav-solid header button {
   position: absolute;
   left: 0;
   right: 0;
-  margin: 0 auto;
-  width: 55%;
-  max-width: 560px;
+  bottom: 0;
+  width: 100%;
   height: auto;
   object-fit: contain;
   transition: none;
-}
-@container (max-width: 600px) {
-  .feed-card-visual .agents-thumbnail img.at-agents {
-    width: 70%;
-  }
 }
 
 /* ===== Agents thumbnail reveal (homepage Carousel card) =====
@@ -274,6 +268,28 @@ body.shopos-hero.shopos-nav-solid header button {
   .agents-thumbnail .at-brackets,
   .agents-thumbnail .at-agents {
     transform: translateY(0);
+  }
+}
+
+/* ===== Memory thumbnail reveal (homepage Carousel card) =====
+   Neural noise canvas already animates on its own; the wordmark
+   fades + drops a bit when the card enters the viewport. */
+.memory-thumbnail .mt-wordmark {
+  opacity: 0;
+  transform: translate(-50%, -42%);
+  transition: transform 620ms cubic-bezier(0.2, 0.8, 0.2, 1) 200ms,
+              opacity 620ms ease 200ms;
+  will-change: transform, opacity;
+}
+.memory-thumbnail.mt-revealed .mt-wordmark {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .memory-thumbnail .mt-wordmark {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    transition: none;
   }
 }
 

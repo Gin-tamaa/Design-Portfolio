@@ -10,6 +10,7 @@
 
 import Link from "next/link";
 import AgentsThumbnail from "./AgentsThumbnail";
+import MemoryThumbnail from "./MemoryThumbnail";
 
 const CARDS = [
   {
@@ -28,6 +29,7 @@ const CARDS = [
     title: "Brand Memory",
     href: "/work/brand-memory",
     img: null,
+    visual: "memory",
     placeholderBg: "linear-gradient(to bottom, #fafafa, #eeeeee)",
     alt: "Brand Memory — identity system",
   },
@@ -35,9 +37,9 @@ const CARDS = [
 
 function FeedCardInner({ project, year, title, img, alt, placeholderBg, visual }) {
   // `visual` lets a card swap the default placeholder/<img> for a
-  // bespoke composition (e.g. the ShopOS Agents thumbnail with its
-  // staged reveal). Falls back to img → placeholderBg.
-  const hasVisualComponent = visual === "agents";
+  // bespoke composition that mirrors its case-study hero. Falls
+  // back to img → placeholderBg.
+  const hasVisualComponent = visual === "agents" || visual === "memory";
   return (
     <article className="feed-card">
       <div className="feed-card-meta">
@@ -50,8 +52,10 @@ function FeedCardInner({ project, year, title, img, alt, placeholderBg, visual }
         className="feed-card-visual"
         style={img || hasVisualComponent ? undefined : { background: placeholderBg }}
       >
-        {hasVisualComponent ? (
+        {visual === "agents" ? (
           <AgentsThumbnail />
+        ) : visual === "memory" ? (
+          <MemoryThumbnail />
         ) : img ? (
           <img src={img} alt={alt || title} draggable={false} />
         ) : null}
