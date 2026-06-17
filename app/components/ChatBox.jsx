@@ -10,8 +10,16 @@
 // Both modes render the SAME visual pill: 28px radius, white bg, #E5E5E5 1px
 // border, 12px padding, 32×32 trailing CTA. Width is controlled by the
 // parent (max-w-[48rem] in our layout).
+//
+// The trailing action button uses the AI-input-with-loading treatment:
+// CornerRightUp icon at full opacity when there's input to send, 30%
+// when empty; while a response is streaming the icon is replaced with a
+// slow-spinning black square so it reads as "thinking".
+
+import { CornerRightUp } from "lucide-react";
 
 export function ArrowUpIcon({ size = 16 }) {
+  // Kept for any legacy callers; the chat composer uses CornerRightUp now.
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M12 19V5M5 12l7-7 7 7" />
@@ -95,9 +103,15 @@ export default function ChatBox({
           type="button"
           onClick={onStop}
           aria-label="Stop"
-          className="csc-ease inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[20px] bg-[#0A0A0A] text-white transition-opacity duration-200 hover:opacity-80"
+          className="csc-ease inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[20px] hover:bg-[#F3F3F2]"
         >
-          <SquareIcon size={12} />
+          <span
+            aria-hidden="true"
+            className="block h-4 w-4 rounded-sm bg-[#0a0a0a]"
+            style={{
+              animation: "csc-spin 3s linear infinite",
+            }}
+          />
         </button>
       ) : (
         <button
@@ -105,13 +119,13 @@ export default function ChatBox({
           onClick={onSend}
           disabled={!sendActive}
           aria-label="Send"
-          className={`csc-ease inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[20px] transition-colors duration-200 ${
+          className={`csc-ease inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-[20px] transition-opacity duration-200 ${
             sendActive
-              ? "bg-[#0A0A0A] text-white hover:opacity-80"
-              : "bg-[#F3F3F2] text-[#525252]"
+              ? "bg-[#F3F3F2] text-[#0a0a0a] opacity-100 hover:bg-[#E5E5E5]"
+              : "bg-[#F3F3F2] text-[#0a0a0a] opacity-30"
           }`}
         >
-          <ArrowUpIcon size={16} />
+          <CornerRightUp size={16} strokeWidth={2} />
         </button>
       )}
     </div>

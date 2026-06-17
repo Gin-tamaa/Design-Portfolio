@@ -271,6 +271,14 @@ body.shopos-hero.shopos-nav-solid header button {
   }
 }
 
+/* ===== Chat composer send-button spin (streaming state) =====
+   Slow 3s rotation of the small black square — matches the
+   ai-input-with-loading reference the user shared. */
+@keyframes csc-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
 /* ===== Memory thumbnail reveal (homepage Carousel card) =====
    Neural noise canvas already animates on its own; the wordmark
    fades + drops a bit when the card enters the viewport. */

@@ -25,6 +25,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import AgentAvatar, { CyclingAgentAvatar } from "./AgentAvatar";
+import { ShiningText } from "./ShiningText";
 
 /* ============================================================================
    Data
@@ -191,12 +192,23 @@ function CyclingText({ phrases, color, reducedMotion }) {
   const inlineStyle = {
     opacity: fading ? 0 : 1,
     transition: `opacity ${CROSSFADE}ms ease`,
-    ...(color ? { "--shimmer-accent": color } : {}),
   };
 
+  const phrase = phrases?.[idx] || "";
+
+  // Reduced motion → render the phrase as static text in the chosen
+  // persona accent (or ink), no gradient sweep.
+  if (reducedMotion) {
+    return (
+      <span style={{ color: color || "#0d0d0d", ...inlineStyle }}>
+        {phrase}
+      </span>
+    );
+  }
+
   return (
-    <span className="shimmer-thinking" style={inlineStyle}>
-      {phrases?.[idx] || ""}
+    <span style={inlineStyle}>
+      <ShiningText text={phrase} className="text-base font-medium" />
     </span>
   );
 }
