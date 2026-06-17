@@ -29,13 +29,27 @@ const AGENTS_SRC = "/images/agents-hero.png";
    Primitives
 ============================================================================ */
 
-// Shared case-study container. 1080px max-width with 24px mobile /
-// 40px desktop horizontal padding, centered. Tight enough that the
-// prose column and the full-width visuals both feel anchored to the
-// same column, not lost in a wide canvas.
+// Shared case-study container. 1408px max-width with 24px mobile
+// / 64px desktop padding, centered with mx-auto. Used as the
+// outer guardrail for every full-width block on the page (image
+// slots, gradient cards, Mission Control grids, etc.).
 function Container({ children, className = "" }) {
   return (
-    <div className={`mx-auto w-full max-w-[1080px] px-6 md:px-10 ${className}`}>
+    <div className={`mx-auto w-full max-w-[1408px] px-6 md:px-16 ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+// Centered narrow prose column. Use this inside Container around
+// any text content (eyebrow + headline + lead + body + bullet
+// lists) so the prose sits at a comfortable reading width centered
+// inside the wider canvas, instead of being stranded on the left.
+// Full-bleed visuals (image slots, gradient cards) stay outside
+// the ProseColumn so they use the full Container width.
+function ProseColumn({ children, className = "" }) {
+  return (
+    <div className={`mx-auto max-w-[var(--cs-prose-col)] ${className}`}>
       {children}
     </div>
   );
@@ -396,19 +410,21 @@ export default function ShopOSCaseStudy() {
            Type scale untouched: cs-eyebrow / cs-thesis / cs-lede are the
            same classes used previously. */}
       <Container className="reveal pt-16 md:pt-20">
-        <p className="cs-eyebrow">
-          ShopOS &middot; &ldquo;Mission Control&rdquo; &middot; Research
-          &middot; Product Design &middot; Frontend &middot; Mar 2026
-          &ndash; Present
-        </p>
-        <h1 className="cs-thesis mt-4 max-w-[var(--cs-prose-col)]">
-          From wearing eight hats to directing eight agents
-        </h1>
-        <p className="cs-lede mt-6 max-w-[var(--cs-prose-col)]">
-          How an under-resourced brand went from doing every job by hand
-          to directing a department of named AI agents that hand work to
-          each other in real time.
-        </p>
+        <ProseColumn>
+          <p className="cs-eyebrow">
+            ShopOS &middot; &ldquo;Mission Control&rdquo; &middot;
+            Research &middot; Product Design &middot; Frontend &middot;
+            Mar 2026 &ndash; Present
+          </p>
+          <h1 className="cs-thesis mt-4">
+            From wearing eight hats to directing eight agents
+          </h1>
+          <p className="cs-lede mt-6">
+            How an under-resourced brand went from doing every job by
+            hand to directing a department of named AI agents that hand
+            work to each other in real time.
+          </p>
+        </ProseColumn>
       </Container>
 
       {/* ===== Agents fan-out thumbnail ====================================
@@ -425,8 +441,9 @@ export default function ShopOSCaseStudy() {
            definition grid (eyebrow label left, prose right) so it reads
            as a structured abstract, not a body section. */}
       <Container className="reveal pt-20 md:pt-28">
-        <p className="cs-eyebrow">TL;DR</p>
-        <dl className="mt-8 grid grid-cols-1 gap-y-8 md:grid-cols-[160px_1fr] md:gap-x-10">
+        <ProseColumn>
+          <p className="cs-eyebrow">TL;DR</p>
+          <dl className="mt-8 grid grid-cols-1 gap-y-8 md:grid-cols-[160px_1fr] md:gap-x-10">
           <dt className="cs-eyebrow md:pt-1">Challenge</dt>
           <dd className="cs-body max-w-[var(--cs-prose-col)]">
             A brand had AI that could write a caption or fake a product
@@ -457,6 +474,7 @@ export default function ShopOSCaseStudy() {
             built to near-production fidelity.
           </dd>
         </dl>
+        </ProseColumn>
       </Container>
 
       {/* ===== My role + Timeline / Team / Tools =========================
@@ -465,7 +483,7 @@ export default function ShopOSCaseStudy() {
            versus co-created versus guided). The thinner Timeline / Team
            / Tools triplet sits in a 3-up rail below it. */}
       <Container className="reveal pt-16 md:pt-20">
-        <div className="max-w-[var(--cs-prose-col)]">
+        <ProseColumn>
           <p className="cs-eyebrow">My role</p>
           <p className="cs-body mt-3">
             <em>Owned:</em> research loop, end-to-end product design, the
@@ -474,23 +492,23 @@ export default function ShopOSCaseStudy() {
             <em>Co-created:</em> the agent roster and what each agent
             owns. <em>Guided:</em> production handoff with engineers.
           </p>
-        </div>
 
-        <dl
-          className="mt-10 grid grid-cols-1 gap-x-8 gap-y-10 md:mt-12 md:grid-cols-3 md:gap-x-10"
-          style={{ fontFamily: "Inter, sans-serif" }}
-        >
-          {[
-            { k: "Timeline", v: "Mar 2026 – Present" },
-            { k: "Team", v: "Founding team + engineers" },
-            { k: "Tools", v: "Figma, Cursor, Claude Code" },
-          ].map(({ k, v }) => (
-            <div key={k}>
-              <dt className="cs-eyebrow">{k}</dt>
-              <dd className="cs-meta-value mt-3">{v}</dd>
-            </div>
-          ))}
-        </dl>
+          <dl
+            className="mt-10 grid grid-cols-1 gap-x-8 gap-y-10 md:mt-12 md:grid-cols-3 md:gap-x-10"
+            style={{ fontFamily: "Inter, sans-serif" }}
+          >
+            {[
+              { k: "Timeline", v: "Mar 2026 – Present" },
+              { k: "Team", v: "Founding team + engineers" },
+              { k: "Tools", v: "Figma, Cursor, Claude Code" },
+            ].map(({ k, v }) => (
+              <div key={k}>
+                <dt className="cs-eyebrow">{k}</dt>
+                <dd className="cs-meta-value mt-3">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </ProseColumn>
       </Container>
 
       {/* ===== 01 · A brand running a store... ===========================
@@ -499,34 +517,38 @@ export default function ShopOSCaseStudy() {
            are; it lives in this section and is left untouched. */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>Context</Eyebrow>
-          <SectionHeader>
-            A brand running a store is running eight jobs at once
-          </SectionHeader>
-          <Prose className="mt-12">
-            <p>
-              By 2026, a brand had AI that could write a caption or
-              generate a product shot. Useful, but it didn&rsquo;t run
-              the store. Someone was still on SEO, on paid, on email,
-              watching the numbers, answering reviews. Every hat worn at
-              once, with no way to watch it all.
-            </p>
-            <p>
-              <em>
-                Launch email &middot; product shot &middot; paid campaign
-                &middot; yesterday&rsquo;s ROAS &middot; caption &middot;
-                analytics &middot; customer replies &middot; video script
-                &middot; SEO audit &middot; social post &middot; restock
-                alerts &middot; newsletter.
-              </em>
-            </p>
-            <p>
-              Then agents changed what was possible. Not another tool to
-              open, but something that could own a function and run it
-              around the clock. The opening wasn&rsquo;t a better image
-              generator. It was the whole store, covered.
-            </p>
-          </Prose>
+          <ProseColumn>
+            <Eyebrow>Context</Eyebrow>
+            <SectionHeader>
+              A brand running a store is running eight jobs at once
+            </SectionHeader>
+            <Prose className="mt-12">
+              <p>
+                By 2026, a brand had AI that could write a caption or
+                generate a product shot. Useful, but it didn&rsquo;t
+                run the store. Someone was still on SEO, on paid, on
+                email, watching the numbers, answering reviews. Every
+                hat worn at once, with no way to watch it all.
+              </p>
+              <p>
+                <em>
+                  Launch email &middot; product shot &middot; paid
+                  campaign &middot; yesterday&rsquo;s ROAS &middot;
+                  caption &middot; analytics &middot; customer replies
+                  &middot; video script &middot; SEO audit &middot;
+                  social post &middot; restock alerts &middot;
+                  newsletter.
+                </em>
+              </p>
+              <p>
+                Then agents changed what was possible. Not another tool
+                to open, but something that could own a function and
+                run it around the clock. The opening wasn&rsquo;t a
+                better image generator. It was the whole store,
+                covered.
+              </p>
+            </Prose>
+          </ProseColumn>
 
           {/* Existing TooManyTasks thumbnail, kept in its current
               section, untouched. */}
@@ -599,15 +621,18 @@ export default function ShopOSCaseStudy() {
            selectable. */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>The approach</Eyebrow>
-          <SectionHeader>
-            We didn&rsquo;t invent the team. We modeled it on our own.
-          </SectionHeader>
-          <Lead>
-            The roles already existed in our building. I built the team
-            on people we had, then pressure-tested it on the ones closest
-            to the customer.
-          </Lead>
+          <ProseColumn>
+            <Eyebrow>The approach</Eyebrow>
+            <SectionHeader>
+              We didn&rsquo;t invent the team. We modeled it on our
+              own.
+            </SectionHeader>
+            <Lead>
+              The roles already existed in our building. I built the
+              team on people we had, then pressure-tested it on the
+              ones closest to the customer.
+            </Lead>
+          </ProseColumn>
 
           <ol className="mt-12 grid grid-cols-1 gap-x-10 gap-y-10 md:mt-16 sm:grid-cols-2 lg:grid-cols-4">
             {[
@@ -754,19 +779,23 @@ export default function ShopOSCaseStudy() {
            header, tight bullet stack, ImageSlot. */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>Meet the team</Eyebrow>
-          <SectionHeader>First, you meet your team</SectionHeader>
-          <Lead>
-            Mission Control opens on the team, not a prompt box. Showing
-            a team took three iterations, each one killing the
-            last&rsquo;s confusion.
-          </Lead>
+          <ProseColumn>
+            <Eyebrow>Meet the team</Eyebrow>
+            <SectionHeader>First, you meet your team</SectionHeader>
+            <Lead>
+              Mission Control opens on the team, not a prompt box.
+              Showing a team took three iterations, each one killing
+              the last&rsquo;s confusion.
+            </Lead>
+          </ProseColumn>
 
           {/* ITERATION 01: Kanban MVP -> what not to build. */}
           <div className="mt-16 md:mt-20">
-            <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
-              Version <span className="tabular-nums">1</span> - Kanban
-            </h3>
+            <ProseColumn>
+              <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
+                Version <span className="tabular-nums">1</span> - Kanban
+              </h3>
+            </ProseColumn>
             <div className="mt-10 md:mt-12">
               <div className="overflow-hidden rounded-2xl">
                 <img
@@ -791,10 +820,12 @@ export default function ShopOSCaseStudy() {
               right-side callouts or the bottom dots to lock onto
               a frame. */}
           <div className="mt-20 md:mt-24">
-            <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
-              Version <span className="tabular-nums">2</span> - Cards
-              view
-            </h3>
+            <ProseColumn>
+              <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
+                Version <span className="tabular-nums">2</span> - Cards
+                view
+              </h3>
+            </ProseColumn>
             <div className="mt-10 md:mt-12">
               <CardsVersionSwitcher />
             </div>
@@ -805,9 +836,12 @@ export default function ShopOSCaseStudy() {
               glass-pill callouts on the left of the composition, so
               the standalone bullet list above is omitted. */}
           <div className="mt-20 md:mt-24">
-            <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
-              Version <span className="tabular-nums">3</span> - Org view
-            </h3>
+            <ProseColumn>
+              <h3 className="text-[18px] font-semibold leading-tight md:text-[20px]">
+                Version <span className="tabular-nums">3</span> - Org
+                view
+              </h3>
+            </ProseColumn>
             <div className="mt-10 md:mt-12">
               <div className="overflow-hidden rounded-2xl">
                 <img
@@ -829,20 +863,22 @@ export default function ShopOSCaseStudy() {
            Kept as prose per spec. No visual slot. */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>The honest tradeoff</Eyebrow>
-          <SectionHeader>The tradeoff I&rsquo;d redo</SectionHeader>
-          <Prose className="mt-12">
-            <p>
-              I went back and forth on the org view. A lifecycle funnel
-              is a heavy metaphor for something that should feel alive,
-              and I worried it read too literal. I kept it because the
-              comprehension win was real and measured: people understood
-              the model instantly with it, and stumbled without it. I
-              chose what taught users fastest over what I found most
-              elegant. I&rsquo;d keep the hierarchy and keep refining
-              how it&rsquo;s drawn.
-            </p>
-          </Prose>
+          <ProseColumn>
+            <Eyebrow>The honest tradeoff</Eyebrow>
+            <SectionHeader>The tradeoff I&rsquo;d redo</SectionHeader>
+            <Prose className="mt-12">
+              <p>
+                I went back and forth on the org view. A lifecycle
+                funnel is a heavy metaphor for something that should
+                feel alive, and I worried it read too literal. I kept
+                it because the comprehension win was real and
+                measured: people understood the model instantly with
+                it, and stumbled without it. I chose what taught users
+                fastest over what I found most elegant. I&rsquo;d keep
+                the hierarchy and keep refining how it&rsquo;s drawn.
+              </p>
+            </Prose>
+          </ProseColumn>
         </Container>
       </section>
 
@@ -856,14 +892,16 @@ export default function ShopOSCaseStudy() {
            instead. */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>Make it yours</Eyebrow>
-          <SectionHeader>
-            Then you open an agent, and make it yours
-          </SectionHeader>
-          <Lead>
-            Click any agent and it expands. This is where a stock agent
-            becomes staff.
-          </Lead>
+          <ProseColumn>
+            <Eyebrow>Make it yours</Eyebrow>
+            <SectionHeader>
+              Then you open an agent, and make it yours
+            </SectionHeader>
+            <Lead>
+              Click any agent and it expands. This is where a stock
+              agent becomes staff.
+            </Lead>
+          </ProseColumn>
 
           <div className="mt-10 grid grid-cols-1 gap-6 md:mt-12 md:grid-cols-2">
             <div className="overflow-hidden rounded-2xl">
@@ -916,12 +954,14 @@ export default function ShopOSCaseStudy() {
            ~1.5MB it would be if I had pasted the whole Figma frame. */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>Briefing</Eyebrow>
-          <SectionHeader>Two doors into one team</SectionHeader>
-          <Lead>
-            Same engine, two entry points. You brief the way your head
-            already works.
-          </Lead>
+          <ProseColumn>
+            <Eyebrow>Briefing</Eyebrow>
+            <SectionHeader>Two doors into one team</SectionHeader>
+            <Lead>
+              Same engine, two entry points. You brief the way your
+              head already works.
+            </Lead>
+          </ProseColumn>
 
           <div className="mt-12 grid grid-cols-1 gap-6 md:mt-16 md:grid-cols-2">
             {/* LEFT card: Chat / Cowork */}
@@ -1017,12 +1057,14 @@ export default function ShopOSCaseStudy() {
            photographic element, not a UI primitive. */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>Watching</Eyebrow>
-          <SectionHeader>Then you watch the team think</SectionHeader>
-          <Lead>
-            Legible Orchestration, made into pixels. Assign a goal and
-            you get a window, not a spinner.
-          </Lead>
+          <ProseColumn>
+            <Eyebrow>Watching</Eyebrow>
+            <SectionHeader>Then you watch the team think</SectionHeader>
+            <Lead>
+              Legible Orchestration, made into pixels. Assign a goal
+              and you get a window, not a spinner.
+            </Lead>
+          </ProseColumn>
 
           <div className="mt-12 grid grid-cols-1 gap-5 md:mt-16 md:auto-rows-fr md:grid-cols-2 md:gap-6">
             {/* Card 1, Agents join in */}
@@ -1191,15 +1233,18 @@ export default function ShopOSCaseStudy() {
            and buttons are real components — no baked screenshot. */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>Mission Control</Eyebrow>
-          <SectionHeader>
-            What needs you, in 60 seconds instead of six tabs
-          </SectionHeader>
-          <Lead>
-            Same surface, scrolled down. Above this sits the org view
-            you already met; below it, Mission Control does the one
-            job a tab-crawl never could: tell you what needs a human.
-          </Lead>
+          <ProseColumn>
+            <Eyebrow>Mission Control</Eyebrow>
+            <SectionHeader>
+              What needs you, in 60 seconds instead of six tabs
+            </SectionHeader>
+            <Lead>
+              Same surface, scrolled down. Above this sits the org
+              view you already met; below it, Mission Control does
+              the one job a tab-crawl never could: tell you what needs
+              a human.
+            </Lead>
+          </ProseColumn>
 
           <div className="mt-12 grid grid-cols-1 gap-6 md:mt-16 md:grid-cols-2">
             {/* LEFT card — Needs Attention. Heading + description live
@@ -1259,25 +1304,27 @@ export default function ShopOSCaseStudy() {
            Scaffolded: italic lead + 3-bullet stack + ImageSlot. */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>What shipped</Eyebrow>
-          <SectionHeader>What shipped</SectionHeader>
-          <Lead>
-            Eight agents running real store work today, live with 10+
-            enterprise brands. Designed end to end, frontend built
-            across the full surface.
-          </Lead>
-          <ul className="mt-8 space-y-3 max-w-[var(--cs-prose-col)]">
-            <Bullet>
-              Onboarding, agent setup, the org view, the agent panels
-            </Bullet>
-            <Bullet>
-              Cowork, the multi-agent thread, the Kanban board
-            </Bullet>
-            <Bullet>
-              Needs Attention and Activity, every state to
-              near-production fidelity
-            </Bullet>
-          </ul>
+          <ProseColumn>
+            <Eyebrow>What shipped</Eyebrow>
+            <SectionHeader>What shipped</SectionHeader>
+            <Lead>
+              Eight agents running real store work today, live with
+              10+ enterprise brands. Designed end to end, frontend
+              built across the full surface.
+            </Lead>
+            <ul className="mt-8 space-y-3">
+              <Bullet>
+                Onboarding, agent setup, the org view, the agent panels
+              </Bullet>
+              <Bullet>
+                Cowork, the multi-agent thread, the Kanban board
+              </Bullet>
+              <Bullet>
+                Needs Attention and Activity, every state to
+                near-production fidelity
+              </Bullet>
+            </ul>
+          </ProseColumn>
 
           <div className="mt-16 md:mt-20">
             <ImageSlot caption="Shipped surfaces: onboarding, agent setup, org view, agent panel, Cowork, Kanban, Mission Control." />
@@ -1293,7 +1340,7 @@ export default function ShopOSCaseStudy() {
            placeholders have been removed. */}
       <section className="reveal pb-24 pt-10 md:pb-36 md:pt-14">
         <Container>
-          <div className="rounded-3xl bg-[#0a0a0a] px-8 py-16 text-white md:px-14 md:py-20">
+          <div className="mx-auto max-w-[var(--cs-prose-col)] rounded-3xl bg-[#0a0a0a] px-8 py-16 text-white md:px-14 md:py-20">
             <Eyebrow dark>Proof</Eyebrow>
             <h2 className="cs-section cs-on-dark mt-6">
               What we&rsquo;re measuring, live and honest about it
@@ -1389,6 +1436,7 @@ export default function ShopOSCaseStudy() {
            "Say hello" CTA pointing at /about#contact. */}
       <section className="reveal py-20 md:py-28">
         <Container>
+          <ProseColumn>
           <Prose>
             <p>
               The roster shipped as designed, and runs real stores today.
@@ -1410,6 +1458,7 @@ export default function ShopOSCaseStudy() {
               and I&rsquo;ll walk you through it.
             </p>
           </Prose>
+          </ProseColumn>
         </Container>
       </section>
 

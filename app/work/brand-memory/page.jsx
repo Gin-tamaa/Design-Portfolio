@@ -19,13 +19,24 @@ import NeuralNoise from "./NeuralNoise";
    it here.
 ============================================================================ */
 
-// Shared case-study container. 1080px max-width with 24px mobile /
-// 40px desktop horizontal padding, centered. Tight enough that the
-// prose column and the full-width visuals both feel anchored to the
-// same column, not lost in a wide canvas.
+// Shared case-study container. 1408px max-width with 24px mobile
+// / 64px desktop padding, centered with mx-auto. Used as the outer
+// guardrail for every full-width block.
 function Container({ children, className = "" }) {
   return (
-    <div className={`mx-auto w-full max-w-[1080px] px-6 md:px-10 ${className}`}>
+    <div className={`mx-auto w-full max-w-[1408px] px-6 md:px-16 ${className}`}>
+      {children}
+    </div>
+  );
+}
+
+// Centered narrow prose column for any text content (eyebrow +
+// headline + lead + body + bullets). Full-bleed visuals (image
+// slots, gradient cards) stay outside this so they use the full
+// Container width.
+function ProseColumn({ children, className = "" }) {
+  return (
+    <div className={`mx-auto max-w-[var(--cs-prose-col)] ${className}`}>
       {children}
     </div>
   );
@@ -309,23 +320,29 @@ export default function BrandMemoryPage() {
 
       {/* ===== TOP, kicker + H1 + lede =================================== */}
       <Container className="reveal pt-16 md:pt-20">
-        <p className="cs-eyebrow">
-          ShopOS &middot; &ldquo;Brand Memory&rdquo; &middot; Product Design
-        </p>
-        <h1 className="cs-thesis mt-4 max-w-[var(--cs-prose-col)]">
-          Teaching AI to remember a brand, so no one explains it twice
-        </h1>
-        <p className="cs-lede mt-6 max-w-[var(--cs-prose-col)]">
-          How we built a memory that holds a brand&rsquo;s look, voice,
-          rules, and the decisions that actually worked, so every
-          generation comes out on-brand without re-briefing the model.
-        </p>
+        <ProseColumn>
+          <p className="cs-eyebrow">
+            ShopOS &middot; &ldquo;Brand Memory&rdquo; &middot;
+            Product Design
+          </p>
+          <h1 className="cs-thesis mt-4">
+            Teaching AI to remember a brand, so no one explains it
+            twice
+          </h1>
+          <p className="cs-lede mt-6">
+            How we built a memory that holds a brand&rsquo;s look,
+            voice, rules, and the decisions that actually worked, so
+            every generation comes out on-brand without re-briefing
+            the model.
+          </p>
+        </ProseColumn>
       </Container>
 
       {/* ===== TL;DR ==================================================== */}
       <Container className="reveal pt-20 md:pt-28">
-        <p className="cs-eyebrow">TL;DR</p>
-        <dl className="mt-8 grid grid-cols-1 gap-y-8 md:grid-cols-[160px_1fr] md:gap-x-10">
+        <ProseColumn>
+          <p className="cs-eyebrow">TL;DR</p>
+          <dl className="mt-8 grid grid-cols-1 gap-y-8 md:grid-cols-[160px_1fr] md:gap-x-10">
           <dt className="cs-eyebrow md:pt-1">Challenge</dt>
           <dd className="cs-body max-w-[var(--cs-prose-col)]">
             Generative AI could make a striking shot, never a branded
@@ -354,11 +371,12 @@ export default function BrandMemoryPage() {
             Live in production, onboarding real brands.
           </dd>
         </dl>
+        </ProseColumn>
       </Container>
 
       {/* ===== My role + Team / Tools =================================== */}
       <Container className="reveal pt-16 md:pt-20">
-        <div className="max-w-[var(--cs-prose-col)]">
+        <ProseColumn>
           <p className="cs-eyebrow">My role</p>
           <p className="cs-body mt-3">
             <em>Owned:</em> problem framing (reframing generation into
@@ -368,49 +386,49 @@ export default function BrandMemoryPage() {
             about how it shipped, the seam between design intent and
             production code. <em>Built by engineering.</em>
           </p>
-        </div>
 
-        <dl
-          className="mt-10 grid grid-cols-1 gap-x-8 gap-y-10 md:mt-12 md:grid-cols-2 md:gap-x-10"
-          style={{ fontFamily: "Inter, sans-serif" }}
-        >
-          {[
-            { k: "Team", v: "ShopOS product team + engineers" },
-            { k: "Tools", v: "Figma" },
-          ].map(({ k, v }) => (
-            <div key={k}>
-              <dt className="cs-eyebrow">{k}</dt>
-              <dd className="cs-meta-value mt-3">{v}</dd>
-            </div>
-          ))}
-        </dl>
+          <dl
+            className="mt-10 grid grid-cols-1 gap-x-8 gap-y-10 md:mt-12 md:grid-cols-2 md:gap-x-10"
+            style={{ fontFamily: "Inter, sans-serif" }}
+          >
+            {[
+              { k: "Team", v: "ShopOS product team + engineers" },
+              { k: "Tools", v: "Figma" },
+            ].map(({ k, v }) => (
+              <div key={k}>
+                <dt className="cs-eyebrow">{k}</dt>
+                <dd className="cs-meta-value mt-3">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </ProseColumn>
       </Container>
 
       {/* ===== 01 · The problem ========================================= */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>The problem</Eyebrow>
-          <SectionHeader>
-            Every generation meant re-briefing the brand from scratch.
-          </SectionHeader>
-          <Lead>
-            Generative AI could produce a striking shot, but never a
-            branded one.
-          </Lead>
-          <Prose className="mt-8">
-            <p>
-              With no memory of the brand, every prompt had to spell
-              out the whole thing: the palette, the voice, the rules.
-              On average it took several tedious attempts before a
-              generation lined up with the guidelines. The model had
-              no idea who the brand was, so the designer became its
-              memory, on every single prompt.
-            </p>
-          </Prose>
-          {/* Demo + caption capped at 560px (the original tight
-              width) so the prompt input reads as a UI element, not
-              a page-wide billboard. Centered inside the prose
-              column. */}
+          <ProseColumn>
+            <Eyebrow>The problem</Eyebrow>
+            <SectionHeader>
+              Every generation meant re-briefing the brand from
+              scratch.
+            </SectionHeader>
+            <Lead>
+              Generative AI could produce a striking shot, but never a
+              branded one.
+            </Lead>
+            <Prose className="mt-8">
+              <p>
+                With no memory of the brand, every prompt had to spell
+                out the whole thing: the palette, the voice, the
+                rules. On average it took several tedious attempts
+                before a generation lined up with the guidelines. The
+                model had no idea who the brand was, so the designer
+                became its memory, on every single prompt.
+              </p>
+            </Prose>
+          </ProseColumn>
+          {/* PromptInput kept at 560 centered (user preference). */}
           <figure className="mx-auto mt-12 max-w-[560px] md:mt-14">
             <PromptInput />
             <figcaption className="mt-4 text-[13px] leading-[1.55] text-[#525252]">
@@ -425,50 +443,56 @@ export default function BrandMemoryPage() {
       {/* ===== 02 · The reframe ========================================= */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>The reframe</Eyebrow>
-          <SectionHeader>
-            This wasn&rsquo;t a generation problem. It was a memory
-            problem.
-          </SectionHeader>
-          <Lead>
-            Most AI products ask how to generate better outputs. This
-            one asked something else: how do you design a system that
-            remembers?
-          </Lead>
-          <Prose className="mt-8">
-            <p>
-              Give the model a memory and one line is enough. But the
-              deeper insight came later: a brand&rsquo;s memory
-              isn&rsquo;t its style guide, it&rsquo;s the accumulated
-              record of its decisions, which image worked, which word
-              got killed, and why. Consumer platforms compound
-              behavioral traces: clicks, watches, scrolls. Brands
-              compound <strong>decision traces</strong>. Build a memory
-              that captures those, and you stop generating merely
-              on-brand and start generating what works.
-            </p>
-          </Prose>
+          <ProseColumn>
+            <Eyebrow>The reframe</Eyebrow>
+            <SectionHeader>
+              This wasn&rsquo;t a generation problem. It was a memory
+              problem.
+            </SectionHeader>
+            <Lead>
+              Most AI products ask how to generate better outputs.
+              This one asked something else: how do you design a
+              system that remembers?
+            </Lead>
+            <Prose className="mt-8">
+              <p>
+                Give the model a memory and one line is enough. But
+                the deeper insight came later: a brand&rsquo;s memory
+                isn&rsquo;t its style guide, it&rsquo;s the
+                accumulated record of its decisions, which image
+                worked, which word got killed, and why. Consumer
+                platforms compound behavioral traces: clicks, watches,
+                scrolls. Brands compound{" "}
+                <strong>decision traces</strong>. Build a memory that
+                captures those, and you stop generating merely
+                on-brand and start generating what works.
+              </p>
+            </Prose>
+          </ProseColumn>
         </Container>
       </section>
 
       {/* ===== 03 · Ideation ============================================ */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>Ideation</Eyebrow>
-          <SectionHeader>
-            First, the memory lived on a whiteboard.
-          </SectionHeader>
-          <Prose className="mt-12">
-            <p>
-              Before Brand Memory was a context graph, it was a context
-              wall. We kept asking the same question in louder ink:
-              what does a brand actually remember, and how would a
-              model read it back? The same idea got drawn five ways,
-              and four got crossed out. The markers didn&rsquo;t
-              survive the week. The thinking did. The arrows still
-              standing when the caps ran dry became Phase 01.
-            </p>
-          </Prose>
+          <ProseColumn>
+            <Eyebrow>Ideation</Eyebrow>
+            <SectionHeader>
+              First, the memory lived on a whiteboard.
+            </SectionHeader>
+            <Prose className="mt-12">
+              <p>
+                Before Brand Memory was a context graph, it was a
+                context wall. We kept asking the same question in
+                louder ink: what does a brand actually remember, and
+                how would a model read it back? The same idea got
+                drawn five ways, and four got crossed out. The markers
+                didn&rsquo;t survive the week. The thinking did. The
+                arrows still standing when the caps ran dry became
+                Phase 01.
+              </p>
+            </Prose>
+          </ProseColumn>
           <div className="mt-16 md:mt-20">
             <ImageSlot caption="The whiteboard: the whole brand-memory flow worked out on a board." />
           </div>
@@ -478,28 +502,30 @@ export default function BrandMemoryPage() {
       {/* ===== 04 · Phase 01 ============================================ */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>Phase 01</Eyebrow>
-          <SectionHeader>
-            Paste a link, it learns the whole brand.
-          </SectionHeader>
-          <Lead>
-            A brand already lives on its website, so we let it read
-            from there.
-          </Lead>
-          <ul className="mt-8 max-w-[var(--cs-prose-col)] space-y-3">
-            <Bullet>
-              Paste one URL; it studies the site the way a sharp new
-              designer would
-            </Bullet>
-            <Bullet>
-              Picks up the look, the voice, and the rules, with nothing
-              briefed by hand
-            </Bullet>
-            <Bullet>
-              Everything a model needs to build for the brand, captured
-              automatically from one link
-            </Bullet>
-          </ul>
+          <ProseColumn>
+            <Eyebrow>Phase 01</Eyebrow>
+            <SectionHeader>
+              Paste a link, it learns the whole brand.
+            </SectionHeader>
+            <Lead>
+              A brand already lives on its website, so we let it read
+              from there.
+            </Lead>
+            <ul className="mt-8 space-y-3">
+              <Bullet>
+                Paste one URL; it studies the site the way a sharp new
+                designer would
+              </Bullet>
+              <Bullet>
+                Picks up the look, the voice, and the rules, with
+                nothing briefed by hand
+              </Bullet>
+              <Bullet>
+                Everything a model needs to build for the brand,
+                captured automatically from one link
+              </Bullet>
+            </ul>
+          </ProseColumn>
           <div className="mt-16 md:mt-20">
             <ImageSlot caption="Onboarding: from brand URL to structured Brand DNA." />
           </div>
@@ -509,25 +535,30 @@ export default function BrandMemoryPage() {
       {/* ===== 05 · Phase 02 ============================================ */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>Phase 02</Eyebrow>
-          <SectionHeader>
-            A moodboard, for who the brand wants to be this season.
-          </SectionHeader>
-          <Lead>
-            Brand DNA holds what a brand always is. A moodboard holds
-            who it wants to be this campaign.
-          </Lead>
-          <ul className="mt-8 max-w-[var(--cs-prose-col)] space-y-3">
-            <Bullet>Brand DNA is the long-term memory, always on</Bullet>
-            <Bullet>
-              A moodboard is a child memory: a focused layer a brand
-              assembles for a launch or a drop
-            </Bullet>
-            <Bullet>
-              The system reads it on top of the DNA, so the generation
-              comes out specific to the moment, not just on-brand
-            </Bullet>
-          </ul>
+          <ProseColumn>
+            <Eyebrow>Phase 02</Eyebrow>
+            <SectionHeader>
+              A moodboard, for who the brand wants to be this season.
+            </SectionHeader>
+            <Lead>
+              Brand DNA holds what a brand always is. A moodboard
+              holds who it wants to be this campaign.
+            </Lead>
+            <ul className="mt-8 space-y-3">
+              <Bullet>
+                Brand DNA is the long-term memory, always on
+              </Bullet>
+              <Bullet>
+                A moodboard is a child memory: a focused layer a brand
+                assembles for a launch or a drop
+              </Bullet>
+              <Bullet>
+                The system reads it on top of the DNA, so the
+                generation comes out specific to the moment, not just
+                on-brand
+              </Bullet>
+            </ul>
+          </ProseColumn>
           <div className="mt-16 md:mt-20">
             <ImageSlot caption="Moodboard: surreal minimal set pieces turned into structured visual context." />
           </div>
@@ -537,19 +568,23 @@ export default function BrandMemoryPage() {
       {/* ===== 06 · The redesign ======================================== */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>The redesign</Eyebrow>
-          <SectionHeader>
-            From a tool that worked to one a brand team wanted to live
-            in.
-          </SectionHeader>
-          <Lead>v1 worked. This version made people want to use it.</Lead>
-          <ul className="mt-8 max-w-[var(--cs-prose-col)] space-y-3">
-            <Bullet>Rebuilt the platform in dark mode</Bullet>
-            <Bullet>
-              Gave brands moodboards as a flexible child memory
-            </Bullet>
-            <Bullet>Cleared the navigation out of the way</Bullet>
-          </ul>
+          <ProseColumn>
+            <Eyebrow>The redesign</Eyebrow>
+            <SectionHeader>
+              From a tool that worked to one a brand team wanted to
+              live in.
+            </SectionHeader>
+            <Lead>
+              v1 worked. This version made people want to use it.
+            </Lead>
+            <ul className="mt-8 space-y-3">
+              <Bullet>Rebuilt the platform in dark mode</Bullet>
+              <Bullet>
+                Gave brands moodboards as a flexible child memory
+              </Bullet>
+              <Bullet>Cleared the navigation out of the way</Bullet>
+            </ul>
+          </ProseColumn>
           <div className="mt-16 md:mt-20">
             <ImageSlot caption="The redesign: dark by default, moodboards, cleaner navigation." />
           </div>
@@ -559,30 +594,33 @@ export default function BrandMemoryPage() {
       {/* ===== 07 · Phase 03 ============================================ */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>Phase 03</Eyebrow>
-          <SectionHeader>Memory that learns what works.</SectionHeader>
-          <Lead>
-            Then we stopped treating memory as a fixed profile.
-          </Lead>
+          <ProseColumn>
+            <Eyebrow>Phase 03</Eyebrow>
+            <SectionHeader>Memory that learns what works.</SectionHeader>
+            <Lead>
+              Then we stopped treating memory as a fixed profile.
+            </Lead>
 
-          <DecisionContrast
-            rejected="A static brand profile, set once at onboarding. Accurate on day one, stale by the next campaign, and blind to whether anything it guided actually worked."
-            chosen="A living memory fed by every interaction. Approvals, edits, rejections, and performance all refine it, so it holds not just what is on-brand but what works for the business."
-          />
+            <DecisionContrast
+              rejected="A static brand profile, set once at onboarding. Accurate on day one, stale by the next campaign, and blind to whether anything it guided actually worked."
+              chosen="A living memory fed by every interaction. Approvals, edits, rejections, and performance all refine it, so it holds not just what is on-brand but what works for the business."
+            />
 
-          <ul className="mt-10 max-w-[var(--cs-prose-col)] space-y-3">
-            <Bullet>An approval says an output worked</Bullet>
-            <Bullet>An edit shows how the brand thinks</Bullet>
-            <Bullet>A rejection says what to stop generating</Bullet>
-          </ul>
+            <ul className="mt-10 space-y-3">
+              <Bullet>An approval says an output worked</Bullet>
+              <Bullet>An edit shows how the brand thinks</Bullet>
+              <Bullet>A rejection says what to stop generating</Bullet>
+            </ul>
 
-          <Prose className="mt-8">
-            <p>
-              The memory weights all of it, so over time it reads less
-              like a style guide and more like a record of what gets
-              results, the knowledge an agent pulls before it acts.
-            </p>
-          </Prose>
+            <Prose className="mt-8">
+              <p>
+                The memory weights all of it, so over time it reads
+                less like a style guide and more like a record of
+                what gets results, the knowledge an agent pulls
+                before it acts.
+              </p>
+            </Prose>
+          </ProseColumn>
 
           <div className="mt-16 md:mt-20">
             <ImageSlot caption="The feedback loop: approved and rejected outputs feeding back into a memory entry, with provenance for what was learned and when." />
@@ -593,28 +631,32 @@ export default function BrandMemoryPage() {
       {/* ===== 08 · Phase 04, live today ================================ */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>Phase 04, live today</Eyebrow>
-          <SectionHeader>One shared memory for every agent.</SectionHeader>
-          <Lead>
-            Then the ShopOS agents arrived, and memory became the thing
-            they read first.
-          </Lead>
+          <ProseColumn>
+            <Eyebrow>Phase 04, live today</Eyebrow>
+            <SectionHeader>
+              One shared memory for every agent.
+            </SectionHeader>
+            <Lead>
+              Then the ShopOS agents arrived, and memory became the
+              thing they read first.
+            </Lead>
 
-          <DecisionContrast
-            rejected="Independent agents, each holding its own context. They would drift apart and duplicate the same brand knowledge."
-            chosen="Every agent reads from and writes back to one context graph, a single source of truth for organizational intelligence."
-          />
+            <DecisionContrast
+              rejected="Independent agents, each holding its own context. They would drift apart and duplicate the same brand knowledge."
+              chosen="Every agent reads from and writes back to one context graph, a single source of truth for organizational intelligence."
+            />
 
-          <ul className="mt-10 max-w-[var(--cs-prose-col)] space-y-3">
-            <Bullet>
-              Design, copy, strategy, research, all reading from and
-              writing back to one graph
-            </Bullet>
-            <Bullet>
-              Less about guiding one generation, more about what works
-              and what the business gets out of it
-            </Bullet>
-          </ul>
+            <ul className="mt-10 space-y-3">
+              <Bullet>
+                Design, copy, strategy, research, all reading from and
+                writing back to one graph
+              </Bullet>
+              <Bullet>
+                Less about guiding one generation, more about what
+                works and what the business gets out of it
+              </Bullet>
+            </ul>
+          </ProseColumn>
 
           <div className="mt-16 md:mt-20">
             <ImageSlot caption='Agent layer: an agent at work with a "context retrieved from memory" panel.' />
@@ -625,24 +667,27 @@ export default function BrandMemoryPage() {
       {/* ===== 09 · One brand, end to end =============================== */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>One brand, end to end</Eyebrow>
-          <SectionHeader>
-            Extraction to on-brand output, no one re-explains a thing.
-          </SectionHeader>
-          <ul className="mt-12 max-w-[var(--cs-prose-col)] space-y-3">
-            <Bullet>
-              Brand DNA extracted automatically: personality, tone,
-              visual style, color system, audience
-            </Bullet>
-            <Bullet>
-              A moodboard turned into structured visual context the
-              system can act on
-            </Bullet>
-            <Bullet>
-              A generation that comes out on-brand with no manual
-              context supplied
-            </Bullet>
-          </ul>
+          <ProseColumn>
+            <Eyebrow>One brand, end to end</Eyebrow>
+            <SectionHeader>
+              Extraction to on-brand output, no one re-explains a
+              thing.
+            </SectionHeader>
+            <ul className="mt-12 space-y-3">
+              <Bullet>
+                Brand DNA extracted automatically: personality, tone,
+                visual style, color system, audience
+              </Bullet>
+              <Bullet>
+                A moodboard turned into structured visual context the
+                system can act on
+              </Bullet>
+              <Bullet>
+                A generation that comes out on-brand with no manual
+                context supplied
+              </Bullet>
+            </ul>
+          </ProseColumn>
 
           <div className="mt-16 grid grid-cols-1 gap-6 md:mt-20 md:grid-cols-3">
             <ImageSlot caption="Brand DNA, extracted." />
@@ -655,19 +700,25 @@ export default function BrandMemoryPage() {
       {/* ===== 10 · What shipped ======================================== */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>What shipped</Eyebrow>
-          <SectionHeader>Live, and onboarding real brands.</SectionHeader>
-          <Lead>
-            The shipped product is a single brand&rsquo;s memory,
-            working end to end.
-          </Lead>
-          <ul className="mt-8 max-w-[var(--cs-prose-col)] space-y-3">
-            <Bullet>
-              Brand DNA extraction from a URL, moodboards as child
-              memory, the feedback loop, and one shared agent graph
-            </Bullet>
-            <Bullet>In production today, onboarding real brands</Bullet>
-          </ul>
+          <ProseColumn>
+            <Eyebrow>What shipped</Eyebrow>
+            <SectionHeader>
+              Live, and onboarding real brands.
+            </SectionHeader>
+            <Lead>
+              The shipped product is a single brand&rsquo;s memory,
+              working end to end.
+            </Lead>
+            <ul className="mt-8 space-y-3">
+              <Bullet>
+                Brand DNA extraction from a URL, moodboards as child
+                memory, the feedback loop, and one shared agent graph
+              </Bullet>
+              <Bullet>
+                In production today, onboarding real brands
+              </Bullet>
+            </ul>
+          </ProseColumn>
 
           <div className="mt-16 md:mt-20">
             <ImageSlot caption="Shipped: the brand-memory flow end to end." />
@@ -678,38 +729,44 @@ export default function BrandMemoryPage() {
       {/* ===== 11 · Proof =============================================== */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>Proof</Eyebrow>
-          <SectionHeader>By the numbers.</SectionHeader>
-          <Lead>Honest about what is measured today.</Lead>
-          <ul className="mt-8 max-w-[var(--cs-prose-col)] space-y-3">
-            <Bullet>Live in production, onboarding brands</Bullet>
-          </ul>
+          <ProseColumn>
+            <Eyebrow>Proof</Eyebrow>
+            <SectionHeader>By the numbers.</SectionHeader>
+            <Lead>Honest about what is measured today.</Lead>
+            <ul className="mt-8 space-y-3">
+              <Bullet>Live in production, onboarding brands</Bullet>
+            </ul>
+          </ProseColumn>
         </Container>
       </section>
 
       {/* ===== 12 · Where it's going ==================================== */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <Eyebrow>Where it&rsquo;s going</Eyebrow>
-          <SectionHeader>
-            Each brand memory is a node. Connect them.
-          </SectionHeader>
-          <Lead>
-            Direction, not yet built, labeled honestly so the shipped
-            work stands on its own.
-          </Lead>
-          <ul className="mt-8 max-w-[var(--cs-prose-col)] space-y-3">
-            <Bullet>The shipped product is one brand&rsquo;s memory</Bullet>
-            <Bullet>
-              The architecture points further: individual context graphs
-              networked into a larger intelligence layer that surfaces
-              patterns no single brand could see
-            </Bullet>
-            <Bullet>
-              A continuously evolving &ldquo;super memory&rdquo; for
-              autonomous agents
-            </Bullet>
-          </ul>
+          <ProseColumn>
+            <Eyebrow>Where it&rsquo;s going</Eyebrow>
+            <SectionHeader>
+              Each brand memory is a node. Connect them.
+            </SectionHeader>
+            <Lead>
+              Direction, not yet built, labeled honestly so the
+              shipped work stands on its own.
+            </Lead>
+            <ul className="mt-8 space-y-3">
+              <Bullet>
+                The shipped product is one brand&rsquo;s memory
+              </Bullet>
+              <Bullet>
+                The architecture points further: individual context
+                graphs networked into a larger intelligence layer
+                that surfaces patterns no single brand could see
+              </Bullet>
+              <Bullet>
+                A continuously evolving &ldquo;super memory&rdquo; for
+                autonomous agents
+              </Bullet>
+            </ul>
+          </ProseColumn>
 
           <div className="mt-16 md:mt-20">
             <ImageSlot caption="The arc: Prompting → Context → Memory → Context Graph → Agentic Intelligence → Networked Graphs → Super Memory. Filled is shipped, outlined is roadmap." />
@@ -720,25 +777,27 @@ export default function BrandMemoryPage() {
       {/* ===== Closing paragraph + CTA =================================== */}
       <section className="reveal py-20 md:py-28">
         <Container>
-          <Prose>
-            <p>
-              Most AI products ask how to generate better outputs. This
-              one asked how to remember, and that question turned a
-              generation tool into a foundation for organizational
-              intelligence. The moat is not the model. The moat is the
-              memory.
-            </p>
-            <p>
-              Want to see a brand move through it end to end?{" "}
-              <Link
-                href="/about#contact"
-                className="underline decoration-[#0a0a0a]/40 underline-offset-[5px] transition-colors hover:decoration-[#0a0a0a]"
-              >
-                Say hello
-              </Link>
-              .
-            </p>
-          </Prose>
+          <ProseColumn>
+            <Prose>
+              <p>
+                Most AI products ask how to generate better outputs.
+                This one asked how to remember, and that question
+                turned a generation tool into a foundation for
+                organizational intelligence. The moat is not the
+                model. The moat is the memory.
+              </p>
+              <p>
+                Want to see a brand move through it end to end?{" "}
+                <Link
+                  href="/about#contact"
+                  className="underline decoration-[#0a0a0a]/40 underline-offset-[5px] transition-colors hover:decoration-[#0a0a0a]"
+                >
+                  Say hello
+                </Link>
+                .
+              </p>
+            </Prose>
+          </ProseColumn>
         </Container>
       </section>
 
