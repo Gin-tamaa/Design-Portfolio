@@ -10,6 +10,7 @@
 // platform is a one-line edit.
 
 import Link from "next/link";
+import DitheringShader from "./DitheringShader";
 
 const RESUME_URL =
   "https://drive.google.com/file/d/1YDaJC0uXaVJeEifMTljxjJ_GUZcG4RHg/view";
@@ -136,6 +137,26 @@ export default function Footer() {
             &copy; 2026 Sumedh Kamble
           </p>
         </div>
+      </div>
+
+      {/* Pink dithering wave, bleeds from the bottom edge of the
+          footer. Transparent bg (#00000000) so only the pink dots
+          land on top of the page surface — no black plate. The
+          wave shape rises into view as the user scrolls to the
+          page bottom. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none relative w-full"
+        style={{ height: "clamp(160px, 22vh, 240px)" }}
+      >
+        <DitheringShader
+          shape="wave"
+          type="8x8"
+          pxSize={3}
+          speed={0.6}
+          colorBack="#00000000"
+          colorFront="#ec4899"
+        />
       </div>
     </footer>
   );
