@@ -136,7 +136,7 @@ export default function Footer() {
       <div
         aria-hidden="true"
         className="pointer-events-none relative w-full"
-        style={{ height: "clamp(160px, 22vh, 240px)" }}
+        style={{ height: "clamp(120px, 16vh, 180px)" }}
       >
         <DitheringShader
           shape="wave"
