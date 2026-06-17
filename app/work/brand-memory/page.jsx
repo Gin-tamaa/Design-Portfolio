@@ -30,13 +30,12 @@ function Container({ children, className = "" }) {
   );
 }
 
-// Centered narrow prose column for any text content (eyebrow +
-// headline + lead + body + bullets). Full-bleed visuals (image
-// slots, gradient cards) stay outside this so they use the full
-// Container width.
+// Narrow prose column for text content. LEFT-ALIGNED inside the
+// wider Container so the prose shares its left edge with every
+// full-width visual below.
 function ProseColumn({ children, className = "" }) {
   return (
-    <div className={`mx-auto max-w-[var(--cs-prose-col)] ${className}`}>
+    <div className={`max-w-[var(--cs-prose-col)] ${className}`}>
       {children}
     </div>
   );

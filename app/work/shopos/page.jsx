@@ -41,15 +41,14 @@ function Container({ children, className = "" }) {
   );
 }
 
-// Centered narrow prose column. Use this inside Container around
-// any text content (eyebrow + headline + lead + body + bullet
-// lists) so the prose sits at a comfortable reading width centered
-// inside the wider canvas, instead of being stranded on the left.
-// Full-bleed visuals (image slots, gradient cards) stay outside
-// the ProseColumn so they use the full Container width.
+// Narrow prose column for text content (eyebrow + headline + lead
+// + body + bullet lists). LEFT-ALIGNED inside the wider Container
+// so the text shares its left edge with every full-width visual
+// below — eyebrow, H2, lead, body, h3, kanban image, gradient
+// cards, grids all snap to the same left margin.
 function ProseColumn({ children, className = "" }) {
   return (
-    <div className={`mx-auto max-w-[var(--cs-prose-col)] ${className}`}>
+    <div className={`max-w-[var(--cs-prose-col)] ${className}`}>
       {children}
     </div>
   );
