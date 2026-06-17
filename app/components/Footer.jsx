@@ -19,10 +19,8 @@ const RESUME_URL =
 const EMAIL = "kamblesumedh39@gmail.com";
 
 const NAV_LINKS = [
-  { label: "Work",    href: "/work",          external: false },
-  { label: "About",   href: "/about",         external: false },
-  { label: "Contact", href: "/about#contact", external: false },
-  { label: "Résumé",  href: RESUME_URL,       external: true  },
+  { label: "About",  href: "/about",   external: false },
+  { label: "Résumé", href: RESUME_URL, external: true  },
 ];
 
 function FooterLink({ link }) {
