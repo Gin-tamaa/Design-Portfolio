@@ -29,9 +29,13 @@ const AGENTS_SRC = "/images/agents-hero.png";
    Primitives
 ============================================================================ */
 
+// Shared case-study container. 1408px max-width (matches the
+// spec the user pinned), 24px horizontal padding on mobile, 64px
+// on md+ — centered with mx-auto. Use this for every full-width
+// block in the page so the left/right edge stays consistent.
 function Container({ children, className = "" }) {
   return (
-    <div className={`mx-auto w-full max-w-[1080px] px-6 md:px-10 ${className}`}>
+    <div className={`mx-auto w-full max-w-[1408px] px-6 md:px-16 ${className}`}>
       {children}
     </div>
   );
