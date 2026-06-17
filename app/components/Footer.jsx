@@ -54,7 +54,7 @@ function FooterLink({ link }) {
 
 export default function Footer() {
   return (
-    <footer role="contentinfo" className="bg-white">
+    <footer role="contentinfo" className="border-t border-[#eeeeee] bg-white">
       <div className="mx-auto w-full max-w-[1400px] px-6 pt-14 md:px-10 md:pt-16">
         <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-12 md:gap-10">
           {/* Left, friendly greeting + mailto */}
