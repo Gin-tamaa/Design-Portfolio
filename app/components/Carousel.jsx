@@ -1,3 +1,5 @@
+"use client";
+
 // Home feed — clean stacked project cards. Figma node 64:444.
 //
 // Each card: small meta line (project · year) → big Inter Semi-Bold title →
@@ -7,8 +9,14 @@
 //
 // `.feed-card` is observed by the homepage's IntersectionObserver for the
 // scroll-reveal entrance.
+//
+// Click → open: the card scales up just-enough (~1.06) and dims its
+// neighbours before pushing the route. Reads as "this card is opening
+// in your face" without committing to a full shared-element transition.
 
+import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import AgentsThumbnail from "./AgentsThumbnail";
 import MemoryThumbnail from "./MemoryThumbnail";
 
@@ -64,10 +72,27 @@ function FeedCardInner({ project, year, title, img, alt, placeholderBg, visual }
   );
 }
 
-function FeedCard(props) {
+function FeedCard({ openingHref, onOpen, ...props }) {
+  const isOpening = !!openingHref;
+  const isThisOpening = openingHref === props.href;
+  const isDimmed = isOpening && !isThisOpening;
+
   if (props.href) {
+    const handleClick = (e) => {
+      // Honor cmd/ctrl/middle-click for "open in new tab"
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+      e.preventDefault();
+      onOpen(props.href);
+    };
     return (
-      <Link href={props.href} className="feed-card-link" aria-label={props.title}>
+      <Link
+        href={props.href}
+        className={`feed-card-link ${isThisOpening ? "is-opening" : ""} ${
+          isDimmed ? "is-dimmed" : ""
+        }`}
+        aria-label={props.title}
+        onClick={handleClick}
+      >
         <FeedCardInner {...props} />
       </Link>
     );
@@ -75,11 +100,36 @@ function FeedCard(props) {
   return <FeedCardInner {...props} />;
 }
 
+// How long the open animation runs before the route actually changes.
+// Long enough to read as "the card grew into focus", short enough not
+// to feel like a delay. Reduced motion skips it entirely.
+const OPEN_DURATION_MS = 360;
+
 export default function Carousel() {
+  const router = useRouter();
+  const [openingHref, setOpeningHref] = useState(null);
+
+  const handleOpen = (href) => {
+    const reduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      router.push(href);
+      return;
+    }
+    setOpeningHref(href);
+    window.setTimeout(() => router.push(href), OPEN_DURATION_MS);
+  };
+
   return (
     <section className="feed">
       {CARDS.map((card) => (
-        <FeedCard key={card.title} {...card} />
+        <FeedCard
+          key={card.title}
+          {...card}
+          openingHref={openingHref}
+          onOpen={handleOpen}
+        />
       ))}
     </section>
   );

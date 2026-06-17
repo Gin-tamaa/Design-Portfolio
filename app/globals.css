@@ -271,6 +271,50 @@ body.shopos-hero.shopos-nav-solid header button {
   }
 }
 
+/* ===== Carousel card open-on-click =====
+   On click, the chosen card grows into focus (~6%) with a brighter
+   shadow, and its neighbours dim + shrink slightly. Holds for
+   OPEN_DURATION_MS (see Carousel.jsx) before the route changes,
+   so the user sees the card lift before the case study mounts. */
+.feed-card-link {
+  display: block;
+  transition:
+    transform 360ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 360ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    filter 360ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+.feed-card-link.is-opening {
+  transform: scale(1.06);
+  z-index: 5;
+  position: relative;
+  filter: drop-shadow(0 22px 48px rgba(0, 0, 0, 0.15));
+}
+.feed-card-link.is-opening .feed-card-visual {
+  transform: scale(1.02);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
+}
+.feed-card-link.is-dimmed {
+  transform: scale(0.985);
+  opacity: 0.55;
+  filter: blur(0.5px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .feed-card-link,
+  .feed-card-link.is-opening,
+  .feed-card-link.is-dimmed {
+    transform: none;
+    transition: none;
+    opacity: 1;
+    filter: none;
+  }
+  .feed-card-link.is-opening .feed-card-visual {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
 /* ===== Chat composer send-button spin (streaming state) =====
    Slow 3s rotation of the small black square — matches the
    ai-input-with-loading reference the user shared. */
