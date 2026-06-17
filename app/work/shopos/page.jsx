@@ -757,7 +757,7 @@ export default function ShopOSCaseStudy() {
                 className="md:col-span-7 overflow-hidden rounded-3xl"
                 style={{
                   background:
-                    "linear-gradient(160deg, #d6ece4 0%, #b8d8cd 40%, #93c0bb 75%, #79afb4 100%)",
+                    "linear-gradient(137.67deg, #026DDB 0%, #4EEEC2 100%)",
                 }}
               >
                 <ul className="flex min-h-[420px] flex-col items-center justify-between gap-8 px-8 py-14 md:min-h-[520px] md:gap-10 md:px-10 md:py-20">
