@@ -29,14 +29,12 @@ const AGENTS_SRC = "/images/agents-hero.png";
    Primitives
 ============================================================================ */
 
-// Shared case-study container. Narrow centred reading column for
-// every body section beneath the hero — 720px max width, 24px
-// mobile / 32px desktop padding, mx-auto so the side gutters on
-// wide screens are equal. The hero is rendered OUTSIDE Container
-// so it stays full-bleed; everything else passes through here.
+// Shared case-study container. 1408px max-width with 24px mobile
+// / 64px desktop padding, centered with mx-auto. Outer guardrail
+// for every full-width block beneath the hero.
 function Container({ children, className = "" }) {
   return (
-    <div className={`mx-auto w-full max-w-[720px] px-6 md:px-8 ${className}`}>
+    <div className={`mx-auto w-full max-w-[1408px] px-6 md:px-16 ${className}`}>
       {children}
     </div>
   );

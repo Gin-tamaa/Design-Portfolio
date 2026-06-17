@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -20,27 +20,10 @@ const LINKS = [
 
 // Lives in app/layout.jsx so every route has a path home + visible nav.
 // Mobile (<768px): hamburger toggles a stacked dropdown panel below the bar.
-//
-// Scroll behaviour: above SCROLL_COLLAPSE_PX the nav reads as a full-width
-// translucent bar (default state). Past that threshold the inner container
-// morphs into a centered floating pill — narrower, rounded, with a soft
-// shadow. The outer header stays fixed at top:0; only the inner wrapper
-// transitions, so the position never jumps.
-const SCROLL_COLLAPSE_PX = 80;
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname() || "/";
-
-  useEffect(() => {
-    const onScroll = () => {
-      setCollapsed(window.scrollY > SCROLL_COLLAPSE_PX);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   const isActive = (href) => {
     // strip hash for comparison so /about#contact never reads as active
@@ -91,83 +74,53 @@ export default function Nav() {
 
   return (
     <>
-      {/* Outer header is the fixed positioning anchor. The inner
-          wrapper morphs between a full-width bar and a centered
-          pill — width / radius / shadow / top offset all animate
-          via a single transition. */}
-      <header
-        className="pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center"
-        aria-label="Primary header"
-      >
-        <div
-          className={[
-            "pointer-events-auto h-16 transition-all duration-[420ms] ease-[cubic-bezier(0.4,0,0.2,1)] will-change-[max-width,margin,border-radius,box-shadow]",
-            "bg-white/70 backdrop-blur-md",
-            collapsed
-              ? "mt-3 w-[calc(100%-1.5rem)] max-w-[640px] rounded-full shadow-[0_8px_28px_-12px_rgba(0,0,0,0.18)] md:mt-4 md:w-[calc(100%-2.5rem)]"
-              : "mt-0 w-full max-w-none rounded-none shadow-none",
-          ].join(" ")}
-        >
-          <div
-            className={[
-              "flex h-full items-center justify-between transition-[padding] duration-[420ms] ease-[cubic-bezier(0.4,0,0.2,1)]",
-              collapsed ? "px-5 md:px-6" : "mx-auto max-w-[1400px] px-6 md:px-10",
-            ].join(" ")}
+      <header className="fixed inset-x-0 top-0 z-40 h-16 bg-white/70 backdrop-blur-md">
+        <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-6 md:px-10">
+          <Link
+            href="/"
+            onClick={() => setOpen(false)}
+            aria-label="Sumedh Kamble — home"
+            className="text-[18px] font-semibold tracking-[-0.02em] text-[#0a0a0a] transition-colors hover:text-[#525252]"
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
-            {/* Wordmark — home */}
-            <Link
-              href="/"
-              onClick={() => setOpen(false)}
-              aria-label="Sumedh Kamble — home"
-              className="text-[18px] font-semibold tracking-[-0.02em] text-[#0a0a0a] transition-colors hover:text-[#525252]"
-              style={{ fontFamily: "Inter, sans-serif" }}
-            >
-              S&mdash;K
-            </Link>
+            S&mdash;K
+          </Link>
 
-            {/* Desktop links */}
-            <nav
-              className="hidden items-center md:flex"
-              style={{ gap: 28 }}
-              aria-label="Primary"
-            >
-              {LINKS.map((link) =>
-                renderLink(link, "text-[14px] tracking-[0.02em] transition-colors")
+          <nav className="hidden items-center md:flex" style={{ gap: 28 }} aria-label="Primary">
+            {LINKS.map((link) =>
+              renderLink(link, "text-[14px] tracking-[0.02em] transition-colors")
+            )}
+          </nav>
+
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="nav-mobile-panel"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-md text-[#0a0a0a] transition-colors hover:bg-black/[0.04] md:hidden"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              {open ? (
+                <path
+                  d="M6 6l12 12M6 18L18 6"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                />
+              ) : (
+                <path
+                  d="M4 7h16M4 12h16M4 17h16"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                />
               )}
-            </nav>
-
-            {/* Hamburger — mobile only */}
-            <button
-              type="button"
-              onClick={() => setOpen((v) => !v)}
-              aria-label={open ? "Close menu" : "Open menu"}
-              aria-expanded={open}
-              aria-controls="nav-mobile-panel"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-md text-[#0a0a0a] transition-colors hover:bg-black/[0.04] md:hidden"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                {open ? (
-                  <path
-                    d="M6 6l12 12M6 18L18 6"
-                    stroke="currentColor"
-                    strokeWidth="1.75"
-                    strokeLinecap="round"
-                  />
-                ) : (
-                  <path
-                    d="M4 7h16M4 12h16M4 17h16"
-                    stroke="currentColor"
-                    strokeWidth="1.75"
-                    strokeLinecap="round"
-                  />
-                )}
-              </svg>
-            </button>
-          </div>
+            </svg>
+          </button>
         </div>
       </header>
 
-      {/* Mobile dropdown panel */}
       {open ? (
         <div
           id="nav-mobile-panel"
