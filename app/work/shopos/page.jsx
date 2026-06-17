@@ -1339,7 +1339,7 @@ export default function ShopOSCaseStudy() {
            placeholders have been removed. */}
       <section className="reveal pb-24 pt-10 md:pb-36 md:pt-14">
         <Container>
-          <div className="mx-auto max-w-[var(--cs-prose-col)] rounded-3xl bg-[#0a0a0a] px-8 py-16 text-white md:px-14 md:py-20">
+          <div className="rounded-3xl bg-[#0a0a0a] px-8 py-16 text-white md:px-14 md:py-20">
             <Eyebrow dark>Proof</Eyebrow>
             <h2 className="cs-section cs-on-dark mt-6">
               What we&rsquo;re measuring, live and honest about it
