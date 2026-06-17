@@ -12,9 +12,7 @@ const RESUME_URL = "https://drive.google.com/file/d/1YDaJC0uXaVJeEifMTljxjJ_GUZc
 // instead of a Next.js <Link>. Hash-anchored items keep using <Link> so the
 // router resolves the hash inside the destination page (/about#contact).
 const LINKS = [
-  { href: "/work",            label: "Work" },
   { href: "/about",           label: "About" },
-  { href: "/about#contact",   label: "Contact" },
   { href: RESUME_URL,         label: "Resume", external: true },
 ];
 
