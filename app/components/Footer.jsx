@@ -130,10 +130,9 @@ export default function Footer() {
 
       </div>
 
-      {/* Pink dithering wave, bleeds from the bottom edge of the
-          footer. Transparent bg (#00000000) so only the pink dots
-          land on the white surface — no black plate. Lighter
-          pink (#f472b6 ~ tailwind pink-400) per user feedback. */}
+      {/* Very-light-grey dithering wave, bleeds from the bottom
+          edge of the footer. Transparent bg (#00000000) so only the
+          grey dots land on the white surface — no black plate. */}
       <div
         aria-hidden="true"
         className="pointer-events-none relative w-full"
@@ -145,7 +144,7 @@ export default function Footer() {
           pxSize={3}
           speed={0.6}
           colorBack="#00000000"
-          colorFront="#f472b6"
+          colorFront="#eeeeee"
         />
       </div>
     </footer>
