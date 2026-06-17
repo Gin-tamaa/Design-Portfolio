@@ -276,20 +276,7 @@ export default function BrandMemoryPage() {
         {/* Layer 1, WebGL neural-noise bg (animates on its own) */}
         <NeuralNoise />
 
-        {/* Layer 2, brackets (parallax 0.50), 4 corners */}
-        <div
-          ref={bracketsRef}
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 will-change-transform"
-          style={{ color: "rgba(10, 10, 10, 0.55)" }}
-        >
-          <Bracket pos="tl" className="top-[17.2%] left-[23.75%]" />
-          <Bracket pos="tr" className="top-[17.2%] right-[23.75%]" />
-          <Bracket pos="bl" className="top-[50.1%] left-[23.75%]" />
-          <Bracket pos="br" className="top-[50.1%] right-[23.75%]" />
-        </div>
-
-        {/* Layer 3, wordmark "Memory" (parallax 0.55, fades) */}
+        {/* Layer 2, wordmark "Memory" (parallax 0.55, fades) */}
         <h1
           ref={wordmarkRef}
           className="absolute left-1/2 will-change-transform"

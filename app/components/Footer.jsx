@@ -128,26 +128,17 @@ export default function Footer() {
           </nav>
         </div>
 
-        {/* Copyright — its own line at the bottom */}
-        <div className="mt-16 border-t border-black/10 pt-6 md:mt-20">
-          <p
-            className="text-[13px] tracking-[0.01em] text-[#525252]"
-            style={{ fontFamily: "Inter, sans-serif" }}
-          >
-            &copy; 2026 Sumedh Kamble
-          </p>
-        </div>
       </div>
 
       {/* Pink dithering wave, bleeds from the bottom edge of the
-          footer. Transparent bg (#00000000) so only the pink dots
-          land on top of the page surface — no black plate. The
-          wave shape rises into view as the user scrolls to the
-          page bottom. */}
+          footer. Taller canvas pushes the wave further up the
+          page, transparent bg (#00000000) so only the pink dots
+          land on the white surface — no black plate. Lighter
+          pink (#f472b6 ~ tailwind pink-400) per user feedback. */}
       <div
         aria-hidden="true"
         className="pointer-events-none relative w-full"
-        style={{ height: "clamp(160px, 22vh, 240px)" }}
+        style={{ height: "clamp(300px, 42vh, 460px)" }}
       >
         <DitheringShader
           shape="wave"
@@ -155,7 +146,7 @@ export default function Footer() {
           pxSize={3}
           speed={0.6}
           colorBack="#00000000"
-          colorFront="#ec4899"
+          colorFront="#f472b6"
         />
       </div>
     </footer>
