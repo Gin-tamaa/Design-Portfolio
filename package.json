@@ -11,6 +11,7 @@
     "prebuild": "node scripts/generate-content-bundle.js"
   },
   "dependencies": {
+    "@paper-design/shaders-react": "^0.0.76",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
     "framer-motion": "^11.3.19",

@@ -19,6 +19,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import AgentsThumbnail from "./AgentsThumbnail";
 import MemoryThumbnail from "./MemoryThumbnail";
+import DreamCallThumbnail from "./DreamCallThumbnail";
 
 const CARDS = [
   {
@@ -45,15 +46,15 @@ const CARDS = [
     // External link out to the DreamCall Figma prototype (new tab). No
     // /work/dreamcall route and no chat wiring — thumbnail only. The sub
     // copy rides in the meta line (no year), DreamCall stays the title.
-    // Visual is left empty so the default #f6f6f6 placeholder shows until
-    // an export PNG is dropped in later.
+    // Visual mirrors the Memory thumbnail: animated grain gradient (purple)
+    // with a centered "DreamCall" wordmark.
     project: "A net-new monetisation feature for a 100M-download app",
     year: null,
     title: "DreamCall",
     href: "https://www.figma.com/proto/rVZrlv1O9JKBFDgwjzkzVI/Presentation-DreamCall?node-id=1-106&page-id=0%3A1&starting-point-node-id=1%3A106&scaling=scale-down&content-scaling=fixed&t=yAtRqUnjpQIAIi4z-1",
     external: true,
     img: null,
-    visual: null,
+    visual: "dreamcall",
     alt: "DreamCall",
   },
 ];
@@ -62,7 +63,8 @@ function FeedCardInner({ project, year, title, img, alt, placeholderBg, visual }
   // `visual` lets a card swap the default placeholder/<img> for a
   // bespoke composition that mirrors its case-study hero. Falls
   // back to img → placeholderBg.
-  const hasVisualComponent = visual === "agents" || visual === "memory";
+  const hasVisualComponent =
+    visual === "agents" || visual === "memory" || visual === "dreamcall";
   return (
     <article className="feed-card">
       <div className="feed-card-meta">
@@ -83,6 +85,8 @@ function FeedCardInner({ project, year, title, img, alt, placeholderBg, visual }
           <AgentsThumbnail />
         ) : visual === "memory" ? (
           <MemoryThumbnail />
+        ) : visual === "dreamcall" ? (
+          <DreamCallThumbnail />
         ) : img ? (
           <img src={img} alt={alt || title} draggable={false} />
         ) : null}
