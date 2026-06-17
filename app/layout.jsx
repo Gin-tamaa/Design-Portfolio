@@ -5,6 +5,14 @@ import Footer from "./components/Footer";
 
 export const metadata = {
   title: "Sumedh Kamble",
+  // Favicon adapts to the browser/OS theme: black mark on light UI,
+  // white mark on dark UI. Both are the same monogram, recolored.
+  icons: {
+    icon: [
+      { url: "/logo-black.svg", media: "(prefers-color-scheme: light)" },
+      { url: "/logo-white.svg", media: "(prefers-color-scheme: dark)" },
+    ],
+  },
 };
 
 export default function RootLayout({ children }) {

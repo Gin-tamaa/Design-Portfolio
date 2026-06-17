@@ -213,11 +213,23 @@ export default function BrandMemoryPage() {
     const reduced = mediaQuery.matches;
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
 
+    // Mark the body so the global Nav goes seamless over the hero
+    // (transparent, no backdrop) and solidifies past it.
+    document.body.classList.add("brand-memory-hero");
+
     let rafId = null;
+    let solid = false;
 
     const update = () => {
       const y = window.scrollY;
       const heroH = heroRef.current?.offsetHeight || 760;
+      const navThreshold = heroH - 90;
+
+      const shouldBeSolid = y > navThreshold;
+      if (shouldBeSolid !== solid) {
+        solid = shouldBeSolid;
+        document.body.classList.toggle("brand-memory-nav-solid", solid);
+      }
 
       if (!reduced && y < heroH) {
         const mult = isMobile ? 0.5 : 1;
@@ -265,6 +277,7 @@ export default function BrandMemoryPage() {
     }
 
     return () => {
+      document.body.classList.remove("brand-memory-hero", "brand-memory-nav-solid");
       window.removeEventListener("scroll", onScroll);
       if (rafId !== null) cancelAnimationFrame(rafId);
       if (observer) observer.disconnect();

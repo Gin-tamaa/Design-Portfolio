@@ -703,7 +703,7 @@ function AssistantMessage({ msg, spacing, streamingId }) {
       <div className="csc-chip-in mb-2 flex items-center gap-2">
         <AgentAvatar persona={msg.persona || "creative-head"} size={20} />
         <span
-          className="text-[12px] leading-[16px] text-[#525252]"
+          className="text-[14px] leading-[20px] text-[#525252]"
           style={{ fontFamily: "Inter, sans-serif" }}
         >
           {p.short} · {msg.domain}

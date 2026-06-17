@@ -40,6 +40,31 @@ body.shopos-hero.shopos-nav-solid header button {
   color: #0a0a0a;
 }
 
+/* ===== Brand Memory case-study nav override =====
+   Same seamless treatment as ShopOS: kill the 64px top padding so the
+   white hero extends behind the fixed nav and the bar blends in. The
+   page bg is white throughout, so the nav text stays black in both
+   states — only the bar's background/border transition on scroll.
+   Driven from brand-memory/page.jsx; Nav.jsx is untouched. */
+body.brand-memory-hero { padding-top: 0 !important; }
+
+body.brand-memory-hero header {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom-color: transparent;
+  transition:
+    background 0.3s ease,
+    backdrop-filter 0.3s ease,
+    border-bottom-color 0.3s ease;
+}
+body.brand-memory-hero.brand-memory-nav-solid header {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border-bottom-color: #e5e5e5;
+}
+
 /* CaseStudyChat typing-indicator dots */
 @keyframes csc-dot {
   0%, 80%, 100% { transform: translateY(0); opacity: 0.35; }
