@@ -19,11 +19,14 @@
 
 import { useEffect, useRef } from "react";
 
-const COLOR = "#FFFFFF";
-const HIT_COLOR = "#333333";
-const BACKGROUND_COLOR = "#000000";
-const BALL_COLOR = "#FFFFFF";
-const PADDLE_COLOR = "#FFFFFF";
+// Light-theme palette. Pixel bricks render near-black on a white
+// surface; hit bricks fade to a light grey rather than disappearing
+// outright, so the wall reads as eroding instead of vanishing.
+const COLOR = "#0a0a0a";
+const HIT_COLOR = "#E5E5E5";
+const BACKGROUND_COLOR = "#FFFFFF";
+const BALL_COLOR = "#0a0a0a";
+const PADDLE_COLOR = "#0a0a0a";
 const LETTER_SPACING = 1;
 const WORD_SPACING = 3;
 
@@ -154,29 +157,23 @@ export default function ConnectFooter() {
     };
 
     const initializeGame = () => {
-      const scale = scaleRef.current;
-      const LARGE_PIXEL_SIZE = 8 * scale;
-      const SMALL_PIXEL_SIZE = 4 * scale;
-      const ICON_PIXEL_SIZE = 5 * scale;
-      const BALL_SPEED = 6 * scale;
+      // Size everything relative to the footer HEIGHT so the wall
+      // never blows up wider than the section. The big word ends up
+      // around 22% of footer height, the small word about half of
+      // that, and the icons match the small word's pixel size.
+      const adjLarge = Math.max(6, Math.round(canvas.height * 0.045));
+      const adjSmall = Math.max(3, Math.round(adjLarge * 0.5));
+      const adjIcon = Math.max(3, Math.round(adjLarge * 0.55));
+      const BALL_SPEED = Math.max(3, Math.round(adjLarge * 0.55));
 
       pixelsRef.current = [];
       const words = ["LETS", "CONNECT"];
 
-      const totalWidthLarge = calculateWordWidth(words[0], LARGE_PIXEL_SIZE);
-      const totalWidthSmall = calculateWordWidth(words[1], SMALL_PIXEL_SIZE);
-      const totalWordsWidth = Math.max(totalWidthLarge, totalWidthSmall);
-      const scaleFactor = Math.max(0.8, (canvas.width * 0.7) / totalWordsWidth);
-
-      const adjLarge = LARGE_PIXEL_SIZE * scaleFactor;
-      const adjSmall = SMALL_PIXEL_SIZE * scaleFactor;
-      const adjIcon = ICON_PIXEL_SIZE * scaleFactor;
-
       const largeTextHeight = 5 * adjLarge;
       const smallTextHeight = 5 * adjSmall;
       const iconRowHeight = 8 * adjIcon;
-      const gapWordsBlock = 4 * adjLarge;
-      const gapIconsBlock = 6 * adjLarge;
+      const gapWordsBlock = Math.round(adjLarge * 2.2);
+      const gapIconsBlock = Math.round(adjLarge * 2.8);
       const totalHeight =
         largeTextHeight +
         gapWordsBlock +
@@ -184,7 +181,7 @@ export default function ConnectFooter() {
         gapIconsBlock +
         iconRowHeight;
 
-      let cursorY = (canvas.height - totalHeight) / 2;
+      let cursorY = Math.max(adjLarge, (canvas.height - totalHeight) / 2);
 
       const drawWord = (word, pixelSize) => {
         const totalWidth = calculateWordWidth(word, pixelSize);
@@ -216,11 +213,13 @@ export default function ConnectFooter() {
       drawWord(words[1], adjSmall);
       cursorY += smallTextHeight + gapIconsBlock;
 
-      // Row 3, icons
+      // Row 3, icons — gap is sized in icon-pixels so the icons stay
+      // tidy whatever scale we land on
       const iconWidth = 8 * adjIcon;
+      const iconGap = Math.max(4, ICON_GAP_RATIO * adjIcon);
       const totalIconsWidth =
         ICON_ORDER.length * iconWidth +
-        (ICON_ORDER.length - 1) * ICON_GAP_RATIO * adjIcon;
+        (ICON_ORDER.length - 1) * iconGap;
       let iconStartX = (canvas.width - totalIconsWidth) / 2;
       ICON_ORDER.forEach((key) => {
         const grid = ICON_MAP[key];
@@ -236,7 +235,7 @@ export default function ConnectFooter() {
             }
           }
         }
-        iconStartX += iconWidth + ICON_GAP_RATIO * adjIcon;
+        iconStartX += iconWidth + iconGap;
       });
 
       // Ball: top-right corner, heading down-left
@@ -248,8 +247,8 @@ export default function ConnectFooter() {
         radius: adjLarge / 2,
       };
 
-      const paddleW = adjLarge;
-      const paddleL = 10 * adjLarge;
+      const paddleW = Math.max(4, Math.round(adjLarge * 0.55));
+      const paddleL = Math.max(40, Math.round(adjLarge * 6));
       paddlesRef.current = [
         {
           x: 0,
@@ -424,12 +423,12 @@ export default function ConnectFooter() {
     <footer
       role="contentinfo"
       ref={wrapperRef}
-      className="relative w-full overflow-hidden"
+      className="relative w-full overflow-hidden border-t border-black/10"
       style={{
-        background: "#000000",
-        height: "min(640px, 70vh)",
+        background: "#FFFFFF",
+        height: "clamp(260px, 32vh, 360px)",
       }}
-      aria-label="Lets connect — pixel pong footer"
+      aria-label="Lets connect, pixel pong footer"
     >
       <canvas
         ref={canvasRef}
