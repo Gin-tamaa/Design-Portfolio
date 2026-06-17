@@ -131,14 +131,13 @@ export default function Footer() {
       </div>
 
       {/* Pink dithering wave, bleeds from the bottom edge of the
-          footer. Taller canvas pushes the wave further up the
-          page, transparent bg (#00000000) so only the pink dots
+          footer. Transparent bg (#00000000) so only the pink dots
           land on the white surface — no black plate. Lighter
           pink (#f472b6 ~ tailwind pink-400) per user feedback. */}
       <div
         aria-hidden="true"
         className="pointer-events-none relative w-full"
-        style={{ height: "clamp(300px, 42vh, 460px)" }}
+        style={{ height: "clamp(160px, 22vh, 240px)" }}
       >
         <DitheringShader
           shape="wave"
