@@ -83,7 +83,7 @@ export default function AgentsThumbnail() {
         src={SKY_SRC}
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 h-full w-full object-cover"
+        className="at-sky absolute inset-0"
         draggable={false}
       />
 
@@ -119,14 +119,15 @@ export default function AgentsThumbnail() {
         <Bracket pos="br" className="top-[78%] right-[20%]" />
       </div>
 
-      {/* Layer 4, agents PNG, rises from below. Anchored top: ~43%
-          to mirror the hero's 332/760 ratio so the wordmark above
-          is never covered. Width kept tight so the figures read at
-          thumbnail scale. */}
+      {/* Layer 4, agents PNG, rises from below. Sizing + positioning
+          live in globals.css under .agents-thumbnail .at-agents so
+          the .feed-card-visual img global rule can be overridden
+          with the right specificity. Anchored top: 44% to mirror
+          the hero's 332/760 ratio. */}
       <img
         src={AGENTS_SRC}
         alt="ShopOS Agents, AI workforce for commerce"
-        className="at-agents pointer-events-none absolute inset-x-0 mx-auto block h-auto w-[55%] max-w-[560px]"
+        className="at-agents pointer-events-none"
         style={{ top: "44%" }}
         draggable={false}
       />
