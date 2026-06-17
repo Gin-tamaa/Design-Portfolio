@@ -963,12 +963,14 @@ export default function ShopOSCaseStudy() {
           </ProseColumn>
 
           <div className="mt-12 grid grid-cols-1 gap-6 md:mt-16 md:grid-cols-2">
-            {/* LEFT card: Chat / Cowork */}
+            {/* LEFT card: Chat / Cowork. Blue/teal gradient matching
+                the agent-panel backgrounds, replacing the original
+                peach. */}
             <article
               className="relative flex flex-col overflow-hidden rounded-3xl p-7 md:p-9"
               style={{
                 background:
-                  "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
+                  "linear-gradient(160deg, #d6ece4 0%, #b8d8cd 40%, #93c0bb 75%, #79afb4 100%)",
               }}
             >
               <h3 className="text-[18px] font-semibold leading-tight text-[#0a0a0a] md:text-[20px]">
@@ -994,12 +996,13 @@ export default function ShopOSCaseStudy() {
               </div>
             </article>
 
-            {/* RIGHT card: Jobs / Kanban */}
+            {/* RIGHT card: Jobs / Kanban — same blue/teal gradient
+                as the left card. */}
             <article
               className="relative flex flex-col overflow-hidden rounded-3xl p-7 md:p-9"
               style={{
                 background:
-                  "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
+                  "linear-gradient(160deg, #d6ece4 0%, #b8d8cd 40%, #93c0bb 75%, #79afb4 100%)",
               }}
             >
               <h3 className="text-[18px] font-semibold leading-tight text-[#0a0a0a] md:text-[20px]">

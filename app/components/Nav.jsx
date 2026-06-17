@@ -74,7 +74,7 @@ export default function Nav() {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-40 h-16 bg-white/70 backdrop-blur-md border-b border-[#E5E5E5]">
+      <header className="fixed inset-x-0 top-0 z-40 h-16 bg-white/70 backdrop-blur-md">
         <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-6 md:px-10">
           {/* Wordmark — home */}
           <Link
