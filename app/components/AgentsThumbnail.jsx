@@ -73,6 +73,9 @@ export default function AgentsThumbnail() {
       style={{
         background:
           "linear-gradient(180deg, #2aa3a8 0%, #66bdc1 28%, #b8dbdc 60%, #ffffff 100%)",
+        // Enable container queries so the wordmark + figures can
+        // scale by card width (cqw), not viewport (vw).
+        containerType: "inline-size",
       }}
     >
       {/* Layer 1, sky bg, always visible */}
@@ -84,41 +87,47 @@ export default function AgentsThumbnail() {
         draggable={false}
       />
 
-      {/* Layer 2, "Agents" wordmark, drops from top */}
+      {/* Layer 2, "Agents" wordmark, drops from top. Sized by card
+          width via clamp so it scales with the card, not the
+          viewport (vw was making it overflow narrow cards). */}
       <h2
         className="at-wordmark absolute left-1/2 m-0 select-none"
         style={{
-          top: "18%",
+          top: "16%",
           transform: "translateX(-50%)",
           fontFamily: "'Space Grotesk', sans-serif",
           fontWeight: 500,
-          fontSize: "clamp(48px, 13vw, 140px)",
-          lineHeight: 1.08,
+          fontSize: "clamp(40px, 8.5cqw, 110px)",
+          lineHeight: 1,
           letterSpacing: "-0.06em",
           color: "#ffffff",
           whiteSpace: "nowrap",
+          textShadow: "0 2px 18px rgba(0,0,0,0.18)",
         }}
       >
         Agents
       </h2>
 
-      {/* Layer 3, brackets, follow the wordmark */}
+      {/* Layer 3, brackets, follow the wordmark, frame the agents */}
       <div
         aria-hidden="true"
         className="at-brackets pointer-events-none absolute inset-0 text-white"
       >
-        <Bracket pos="tl" className="top-[17%] left-[22%]" />
-        <Bracket pos="tr" className="top-[17%] right-[22%]" />
-        <Bracket pos="bl" className="top-[55%] left-[22%]" />
-        <Bracket pos="br" className="top-[55%] right-[22%]" />
+        <Bracket pos="tl" className="top-[14%] left-[20%]" />
+        <Bracket pos="tr" className="top-[14%] right-[20%]" />
+        <Bracket pos="bl" className="top-[78%] left-[20%]" />
+        <Bracket pos="br" className="top-[78%] right-[20%]" />
       </div>
 
-      {/* Layer 4, agents PNG, rises from below */}
+      {/* Layer 4, agents PNG, rises from below. Anchored top: ~43%
+          to mirror the hero's 332/760 ratio so the wordmark above
+          is never covered. Width kept tight so the figures read at
+          thumbnail scale. */}
       <img
         src={AGENTS_SRC}
         alt="ShopOS Agents, AI workforce for commerce"
-        className="at-agents pointer-events-none absolute inset-x-0 mx-auto block w-[78%] max-w-[820px]"
-        style={{ bottom: "0%" }}
+        className="at-agents pointer-events-none absolute inset-x-0 mx-auto block h-auto w-[55%] max-w-[560px]"
+        style={{ top: "44%" }}
         draggable={false}
       />
     </div>
