@@ -41,8 +41,13 @@ export default function MemoryThumbnail() {
   return (
     <div
       ref={rootRef}
-      className="memory-thumbnail relative h-full w-full overflow-hidden bg-white"
-      style={{ containerType: "inline-size" }}
+      className="memory-thumbnail relative h-full w-full overflow-hidden"
+      style={{
+        // Slight off-white so the thumbnail reads as a card against
+        // the homepage bg instead of blending into it.
+        background: "#F3F3F2",
+        containerType: "inline-size",
+      }}
     >
       {/* Layer 1, WebGL Neural Noise canvas (light-theme tinted) */}
       <NeuralNoise />
