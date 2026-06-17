@@ -1074,7 +1074,7 @@ export default function ShopOSCaseStudy() {
               className="relative flex flex-col overflow-hidden rounded-3xl p-7 md:p-9"
               style={{
                 background:
-                  "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
+                  "linear-gradient(160deg, #d6ece4 0%, #b8d8cd 40%, #93c0bb 75%, #79afb4 100%)",
                 minHeight: 420,
               }}
             >
@@ -1101,7 +1101,7 @@ export default function ShopOSCaseStudy() {
               className="relative flex flex-col overflow-hidden rounded-3xl p-7 md:p-9"
               style={{
                 background:
-                  "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
+                  "linear-gradient(160deg, #d6ece4 0%, #b8d8cd 40%, #93c0bb 75%, #79afb4 100%)",
                 minHeight: 420,
               }}
             >
@@ -1163,7 +1163,7 @@ export default function ShopOSCaseStudy() {
               className="relative flex flex-col overflow-hidden rounded-3xl p-7 md:p-9"
               style={{
                 background:
-                  "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
+                  "linear-gradient(160deg, #d6ece4 0%, #b8d8cd 40%, #93c0bb 75%, #79afb4 100%)",
                 minHeight: 420,
               }}
             >
@@ -1196,7 +1196,7 @@ export default function ShopOSCaseStudy() {
               className="relative flex flex-col overflow-hidden rounded-3xl p-7 md:p-9"
               style={{
                 background:
-                  "linear-gradient(160deg, #fcdece 0%, #fcb88f 45%, #fc8870 75%, #fc6972 100%)",
+                  "linear-gradient(160deg, #d6ece4 0%, #b8d8cd 40%, #93c0bb 75%, #79afb4 100%)",
                 minHeight: 420,
               }}
             >
