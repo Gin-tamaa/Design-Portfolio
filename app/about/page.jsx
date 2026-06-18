@@ -1,4 +1,4 @@
-// About page — single column, cream surface, uses the same .cs-scope
+// About page — single column on the white site canvas, uses the same .cs-scope
 // type scale as the ShopOS case study so the editorial voice rhymes.
 //
 // The Contact section is anchored at #contact so the global nav's
@@ -19,7 +19,7 @@ export default function AboutPage() {
   return (
     <main
       className="cs-scope min-h-screen"
-      style={{ background: "#F4F1EA" }}
+      style={{ background: "#ffffff" }}
     >
       <div className="mx-auto w-full max-w-[760px] px-6 py-24 md:px-8 md:py-32">
         {/* Page label */}
