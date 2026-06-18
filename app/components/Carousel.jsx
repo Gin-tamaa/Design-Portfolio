@@ -43,6 +43,18 @@ const CARDS = [
     alt: "Brand Memory — identity system",
   },
   {
+    project: "ShopOS",
+    year: "2026",
+    title: "Enterprise Dashboard",
+    href: "/work/enterprise-dashboard",
+    img: null,
+    // PLACEHOLDER: reusing the Mission Control "eight heads" agents
+    // thumbnail, swap with Enterprise Dashboard exports later.
+    visual: "agents",
+    placeholderBg: "linear-gradient(to bottom, #000000, #2e2e2e)",
+    alt: "Enterprise Dashboard — folding the review tool into the product",
+  },
+  {
     // External link out to the DreamCall Figma prototype (new tab). No
     // /work/dreamcall route and no chat wiring — thumbnail only. The sub
     // copy rides in the meta line (no year), DreamCall stays the title.

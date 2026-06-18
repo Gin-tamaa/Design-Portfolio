@@ -17,7 +17,7 @@ const path = require("node:path");
 
 const ROOT = path.resolve(__dirname, "..");
 const VOICES = ["_shared", "creative-head", "vibe-coder", "ai-tinkerer", "funny-side"];
-const PROJECTS = ["shopos", "brand-memory"];
+const PROJECTS = ["shopos", "brand-memory", "enterprise-dashboard"];
 
 const AGENTS = {};
 for (const v of VOICES) {
@@ -49,6 +49,14 @@ const BRAND_MEMORY_GUARDRAILS = fs.readFileSync(
   path.join(ROOT, "content", "projects", "brand-memory.guardrails.md"),
   "utf8"
 );
+const ENTERPRISE_DASHBOARD_BRIEF = fs.readFileSync(
+  path.join(ROOT, "content", "projects", "enterprise-dashboard.md"),
+  "utf8"
+);
+const ENTERPRISE_DASHBOARD_GUARDRAILS = fs.readFileSync(
+  path.join(ROOT, "content", "projects", "enterprise-dashboard.guardrails.md"),
+  "utf8"
+);
 
 const out = [
   "// AUTO-GENERATED from content/agents/*.md and content/projects/*.md.",
@@ -69,11 +77,16 @@ const out = [
   "",
   `export const BRAND_MEMORY_GUARDRAILS = ${JSON.stringify(BRAND_MEMORY_GUARDRAILS)};`,
   "",
+  `export const ENTERPRISE_DASHBOARD_BRIEF = ${JSON.stringify(ENTERPRISE_DASHBOARD_BRIEF)};`,
+  "",
+  `export const ENTERPRISE_DASHBOARD_GUARDRAILS = ${JSON.stringify(ENTERPRISE_DASHBOARD_GUARDRAILS)};`,
+  "",
 ].join("\n");
 
 fs.writeFileSync(path.join(ROOT, "content", "bundle.js"), out);
 console.log(
   `Wrote content/bundle.js (${out.length} bytes, ${VOICES.length} voices, ` +
     `${PROJECTS.length} projects, +SHOPOS_BRIEF +SHOPOS_GUARDRAILS ` +
-    `+BRAND_MEMORY_BRIEF +BRAND_MEMORY_GUARDRAILS)`
+    `+BRAND_MEMORY_BRIEF +BRAND_MEMORY_GUARDRAILS ` +
+    `+ENTERPRISE_DASHBOARD_BRIEF +ENTERPRISE_DASHBOARD_GUARDRAILS)`
 );

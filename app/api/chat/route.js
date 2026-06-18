@@ -25,6 +25,8 @@ import {
   SHOPOS_GUARDRAILS,
   BRAND_MEMORY_BRIEF,
   BRAND_MEMORY_GUARDRAILS,
+  ENTERPRISE_DASHBOARD_BRIEF,
+  ENTERPRISE_DASHBOARD_GUARDRAILS,
 } from "../../../content/bundle.js";
 
 export const runtime = "nodejs";
@@ -42,6 +44,10 @@ const PROJECT_CONTENT = {
   "brand-memory": {
     brief: BRAND_MEMORY_BRIEF,
     guardrails: BRAND_MEMORY_GUARDRAILS,
+  },
+  "enterprise-dashboard": {
+    brief: ENTERPRISE_DASHBOARD_BRIEF,
+    guardrails: ENTERPRISE_DASHBOARD_GUARDRAILS,
   },
 };
 
