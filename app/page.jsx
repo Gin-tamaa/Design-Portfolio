@@ -135,61 +135,67 @@ export default function Home() {
           willChange: "opacity, transform",
         }}
       >
-        <div
-          className="flex w-[540px] max-w-[92vw] flex-col"
-          style={{ gap: 24 }}
-        >
-          <div className="flex flex-col" style={{ gap: 8 }}>
+        {/* Left-aligned to the cards' content rail: an outer 20px gutter
+            (matches .feed padding) wrapping a centered max-w-[1080px] box
+            (matches .feed-card), so the hero's left edge lines up with the
+            cards below. Uses only the existing fonts (League Spartan +
+            Playfair Display italic). */}
+        <div className="w-full px-5">
+          <div className="mx-auto flex max-w-[1080px] flex-col items-start text-left">
+            {/* Greeting, League Spartan */}
+            <p
+              className="m-0 text-[13px] leading-normal text-[#525252]"
+              style={{
+                fontFamily: "'League Spartan', sans-serif",
+                fontWeight: 400,
+              }}
+            >
+              Here&rsquo;s Sumedh,
+            </p>
+
+            {/* Headline, same editorial voice (Playfair Display italic),
+                just larger and heavier: 700 not 400, clamp-scaled. */}
             <h1
-              className="m-0 text-[56px] italic leading-none text-[#0a0a0a]"
+              className="m-0 mt-4 italic text-[#0a0a0a]"
               style={{
                 fontFamily: "'Playfair Display', serif",
-                fontWeight: 400,
+                fontWeight: 700,
+                fontSize: "clamp(2.25rem, 7vw, 5.5rem)",
+                lineHeight: 1.05,
                 letterSpacing: "-0.005em",
               }}
             >
-              Here&rsquo;s Sumedh
+              designer, builder,
+              <br />
+              <span
+                style={{
+                  backgroundImage:
+                    "linear-gradient(90deg, #34d399, #8b5cf6)",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                  color: "transparent",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                AI tinkerer
+              </span>
+              ,
+              <br />
+              &amp; off the clock, a menace.
             </h1>
-            <div className="flex items-center" style={{ gap: 8 }}>
-              {["Design", "Front End Dev", "AI Agents", "AI Workflows"].map(
-                (label, i, arr) => (
-                  <span
-                    key={label}
-                    className="flex items-center"
-                    style={{ gap: 8 }}
-                  >
-                    <span
-                      className="text-[14px] text-[#525252]"
-                      style={{
-                        fontFamily: "'Playfair Display', serif",
-                        fontWeight: 600,
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {label}
-                    </span>
-                    {i < arr.length - 1 && (
-                      <span
-                        aria-hidden="true"
-                        className="inline-block bg-[#d9d9d9]"
-                        style={{ width: 4, height: 4 }}
-                      />
-                    )}
-                  </span>
-                )
-              )}
-            </div>
+
+            {/* Bio, League Spartan */}
+            <p
+              className="m-0 mt-6 text-[13px] leading-normal text-[#525252]"
+              style={{
+                fontFamily: "'League Spartan', sans-serif",
+                fontWeight: 400,
+              }}
+            >
+              I design AI products and build the front-end myself, so they
+              ship.
+            </p>
           </div>
-          <p
-            className="m-0 text-[12px] leading-normal text-[#525252]"
-            style={{
-              fontFamily: "'League Spartan', sans-serif",
-              fontWeight: 400,
-            }}
-          >
-            brings 6 years of design experience, builds front-ends, ships AI
-            workflows, and understands AI agents
-          </p>
         </div>
       </section>
 
