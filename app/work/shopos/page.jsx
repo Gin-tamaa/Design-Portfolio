@@ -168,14 +168,15 @@ function GlassPill({ children }) {
   );
 }
 
-// Reference-style stat card: a context label where a logo would sit
-// (top-left), a big figure, then a muted caption. White card so the
-// numbers pop against the dark Proof panel — mirrors the bento layout
-// in the reference the user supplied. `big` drives the feature tile.
+// Reference-style stat card: a grey context label where a logo would
+// sit (top-left), the figure in black, then a muted caption. White card
+// with a hairline border + soft shadow so it reads cleanly on the white
+// Proof section — mirrors the bento in the reference the user supplied.
+// `big` drives the feature tile.
 function StatCard({ context, value, label, className = "", big = false }) {
   return (
     <div
-      className={`flex flex-col justify-between rounded-[20px] border border-black/[0.06] bg-white p-6 md:p-8 ${className}`}
+      className={`flex flex-col justify-between rounded-[20px] border border-[#E5E5E5] bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] md:p-8 ${className}`}
     >
       <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#8a8a8a]">
         {context}
@@ -1384,25 +1385,25 @@ export default function ShopOSCaseStudy() {
            placeholders have been removed. */}
       <section className="reveal pb-24 pt-10 md:pb-36 md:pt-14">
         <Container>
-          <div className="rounded-3xl bg-[#0a0a0a] px-8 py-16 text-white md:px-14 md:py-20">
-            <Eyebrow dark>Proof</Eyebrow>
-            <h2 className="cs-section cs-on-dark mt-6">
+          <div>
+            <Eyebrow>Proof</Eyebrow>
+            <h2 className="cs-section mt-6">
               What we&rsquo;re measuring, live and honest about it
             </h2>
-            <p className="mt-6 max-w-[var(--cs-prose-col)] text-[16px] italic leading-[1.7] text-white/65">
+            <p className="mt-6 max-w-[var(--cs-prose-col)] text-[16px] italic leading-[1.7] text-[#525252]">
               The product is live and already moving real numbers.
               Here&rsquo;s the proof that exists today, then the bets
               still being instrumented. No dressed-up data.
             </p>
 
             {/* Real, today */}
-            <p className="mt-14 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55">
+            <p className="mt-14 text-[10px] font-medium uppercase tracking-[0.22em] text-[#8a8a8a]">
               Real, today
             </p>
             {/* Bento stat wall — the reference layout the user supplied:
                 one wide feature tile + a tall tile on top, four equal
-                tiles below. White cards so the figures pop on the dark
-                Proof panel. Numbers are the verbatim pilot results. */}
+                tiles below. White cards on the clean white section;
+                numbers are the verbatim pilot results. */}
             <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-12 md:gap-4">
               <StatCard
                 big
@@ -1442,20 +1443,20 @@ export default function ShopOSCaseStudy() {
                 className="md:col-span-3 md:min-h-[200px]"
               />
             </div>
-            <p className="mt-6 max-w-[var(--cs-prose-col)] text-[14px] italic leading-[1.7] text-white/55">
+            <p className="mt-6 max-w-[var(--cs-prose-col)] text-[14px] italic leading-[1.7] text-[#8a8a8a]">
               One brand, fifteen days — early and directional, but real
               and run end to end by an agent.
             </p>
 
             {/* Still being instrumented */}
-            <p className="mt-14 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55">
+            <p className="mt-14 text-[10px] font-medium uppercase tracking-[0.22em] text-[#8a8a8a]">
               Still being instrumented
             </p>
             <ul className="mt-6 space-y-5 max-w-[var(--cs-prose-col)]">
-              <li className="flex gap-3 text-[15px] leading-[1.7] text-white/85">
+              <li className="flex gap-3 text-[15px] leading-[1.7] text-[#525252]">
                 <span
                   aria-hidden="true"
-                  className="mt-[10px] h-[5px] w-[5px] flex-shrink-0 rounded-full bg-white/40"
+                  className="mt-[10px] h-[5px] w-[5px] flex-shrink-0 rounded-full bg-[#cfcfcf]"
                 />
                 <span>
                   <span aria-hidden="true">🎯</span>{" "}
@@ -1470,10 +1471,10 @@ export default function ShopOSCaseStudy() {
                   hours run per agent, specialist-hours saved
                 </span>
               </li>
-              <li className="flex gap-3 text-[15px] leading-[1.7] text-white/85">
+              <li className="flex gap-3 text-[15px] leading-[1.7] text-[#525252]">
                 <span
                   aria-hidden="true"
-                  className="mt-[10px] h-[5px] w-[5px] flex-shrink-0 rounded-full bg-white/40"
+                  className="mt-[10px] h-[5px] w-[5px] flex-shrink-0 rounded-full bg-[#cfcfcf]"
                 />
                 <span>
                   <span aria-hidden="true">🎯</span>{" "}
