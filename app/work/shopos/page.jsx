@@ -168,6 +168,39 @@ function GlassPill({ children }) {
   );
 }
 
+// Reference-style stat card: a context label where a logo would sit
+// (top-left), a big figure, then a muted caption. White card so the
+// numbers pop against the dark Proof panel — mirrors the bento layout
+// in the reference the user supplied. `big` drives the feature tile.
+function StatCard({ context, value, label, className = "", big = false }) {
+  return (
+    <div
+      className={`flex flex-col justify-between rounded-[20px] border border-black/[0.06] bg-white p-6 md:p-8 ${className}`}
+    >
+      <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#8a8a8a]">
+        {context}
+      </p>
+      <div className={big ? "mt-12 md:mt-20" : "mt-10 md:mt-14"}>
+        <div
+          className="font-semibold leading-[0.95] tracking-[-0.03em] text-[#0a0a0a]"
+          style={{
+            fontFamily: "Inter, sans-serif",
+            fontSize: big ? "clamp(48px, 6vw, 84px)" : "clamp(32px, 3.2vw, 50px)",
+          }}
+        >
+          {value}
+        </div>
+        <p
+          className="mt-3 text-[14px] leading-snug text-[#6b6b6b]"
+          style={{ fontFamily: "Inter, sans-serif" }}
+        >
+          {label}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function PlusMinus({ type, text }) {
   const isPlus = type === "+";
   const sigil = isPlus ? "+" : "−";
@@ -1366,36 +1399,53 @@ export default function ShopOSCaseStudy() {
             <p className="mt-14 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55">
               Real, today
             </p>
-            <ul className="mt-6 space-y-5 max-w-[var(--cs-prose-col)]">
-              <li className="flex gap-3 text-[17px] leading-[1.65] text-white/90">
-                <span
-                  aria-hidden="true"
-                  className="mt-[10px] h-[5px] w-[5px] flex-shrink-0 rounded-full bg-white/40"
-                />
-                <span>
-                  <strong className="font-semibold">8</strong> agents
-                  live with 10+ enterprise brands, running real store
-                  work
-                </span>
-              </li>
-              <li className="flex gap-3 text-[17px] leading-[1.65] text-white/90">
-                <span
-                  aria-hidden="true"
-                  className="mt-[10px] h-[5px] w-[5px] flex-shrink-0 rounded-full bg-white/40"
-                />
-                <span>
-                  <strong className="font-semibold">0 &rarr; 4</strong>{" "}
-                  AI engines: in a 15-day GEO pilot for a denim DTC
-                  brand, the GEO agent took the brand from cited by{" "}
-                  <em>zero</em> engines to cited by <em>all four</em>{" "}
-                  (ChatGPT, Claude, Perplexity, Gemini). Perplexity
-                  citations 7% &rarr; 13%, technical health 59% &rarr;
-                  65%, 20 articles published. One brand, fifteen days,
-                  early and directional, but real and run end to end by
-                  an agent
-                </span>
-              </li>
-            </ul>
+            {/* Bento stat wall — the reference layout the user supplied:
+                one wide feature tile + a tall tile on top, four equal
+                tiles below. White cards so the figures pop on the dark
+                Proof panel. Numbers are the verbatim pilot results. */}
+            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-12 md:gap-4">
+              <StatCard
+                big
+                context="15-day GEO pilot · denim DTC brand"
+                value="0 → 4"
+                label="AI engines now cite the brand, up from zero — ChatGPT, Claude, Perplexity, Gemini"
+                className="md:col-span-8 md:min-h-[340px]"
+              />
+              <StatCard
+                context="The team"
+                value="8"
+                label="Named agents live, each owning a function"
+                className="md:col-span-4 md:min-h-[340px]"
+              />
+              <StatCard
+                context="In production"
+                value="10+"
+                label="Enterprise brands running real store work"
+                className="md:col-span-3 md:min-h-[200px]"
+              />
+              <StatCard
+                context="Output"
+                value="20"
+                label="Articles published by the GEO agent"
+                className="md:col-span-3 md:min-h-[200px]"
+              />
+              <StatCard
+                context="Search visibility"
+                value="7 → 13%"
+                label="Perplexity citation rate"
+                className="md:col-span-3 md:min-h-[200px]"
+              />
+              <StatCard
+                context="Site health"
+                value="59 → 65%"
+                label="Technical SEO health"
+                className="md:col-span-3 md:min-h-[200px]"
+              />
+            </div>
+            <p className="mt-6 max-w-[var(--cs-prose-col)] text-[14px] italic leading-[1.7] text-white/55">
+              One brand, fifteen days — early and directional, but real
+              and run end to end by an agent.
+            </p>
 
             {/* Still being instrumented */}
             <p className="mt-14 text-[10px] font-medium uppercase tracking-[0.22em] text-white/55">
