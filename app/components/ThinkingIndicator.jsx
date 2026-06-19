@@ -256,7 +256,6 @@ function AvatarCluster({ phase, chosenPersonaKey, reducedMotion }) {
               persona={CAMEL_TO_KEBAB[key]}
               size={AVATAR_SIZE}
               ring="white"
-              aura
               offset={i * 110}
               reducedMotion={reducedMotion}
             />
