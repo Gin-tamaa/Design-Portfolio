@@ -409,7 +409,7 @@ export default function AboutPage() {
       style={{ fontFamily: "Inter, sans-serif" }}
     >
       {/* ===== ABOUT / WORK / LINKS ================================= */}
-      <section className="mx-auto w-full max-w-[1400px] px-6 pt-20 md:px-10 md:pt-28">
+      <section className="mx-auto w-full max-w-[1800px] px-5 pt-20 md:pt-28">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-10">
           {/* ABOUT */}
           <div className="reveal md:col-span-6">
@@ -526,7 +526,7 @@ export default function AboutPage() {
       </section>
 
       {/* ===== Workflow masonry feed =============================== */}
-      <section className="mx-auto w-full max-w-[1400px] px-6 pb-32 pt-24 md:px-10 md:pt-36">
+      <section className="mx-auto w-full max-w-[1800px] px-5 pb-32 pt-24 md:pt-36">
         <FaintLabel className="reveal">Workflows</FaintLabel>
         {/* Flex-column masonry: a grid-cols-3 shell (12px gutter) of flex
             columns (24px vertical gap). Varied tile heights stagger
