@@ -399,19 +399,6 @@ export default function AboutPage() {
       className="min-h-screen bg-white text-[#0a0a0a]"
       style={{ fontFamily: "Inter, sans-serif" }}
     >
-      {/* ===== Header row =========================================== */}
-      <div className="border-b border-[#E5E5E5]">
-        <div className="mx-auto w-full max-w-[1400px] px-6 py-5 md:px-10">
-          <div className="flex flex-col gap-1 text-[14px] text-[#0a0a0a] md:flex-row md:items-center md:justify-between">
-            <span className="font-medium">Sumedh Kamble</span>
-            <span className="text-[#525252]">
-              Product Designer + Design Engineer
-            </span>
-            <span className="text-[#525252]">Bengaluru, India</span>
-          </div>
-        </div>
-      </div>
-
       {/* ===== ABOUT / WORK / LINKS ================================= */}
       <section className="mx-auto w-full max-w-[1400px] px-6 pt-20 md:px-10 md:pt-28">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-10">
