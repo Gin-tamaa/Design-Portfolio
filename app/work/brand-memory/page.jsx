@@ -586,14 +586,21 @@ export default function BrandMemoryPage() {
               </Bullet>
             </ul>
           </ProseColumn>
+        </Container>
+
+        {/* Full-bleed Brand DNA, edge to edge with no container chrome,
+            inverted so the dark capture reads light on the white page. */}
+        <img
+          src={`${IMG}/brand-dna-extract.jpg`}
+          alt="Brand DNA extracted from a single URL"
+          loading="lazy"
+          draggable={false}
+          className="mt-16 block w-full md:mt-20"
+          style={{ filter: "invert(1)" }}
+        />
+
+        <Container>
           <div className="mt-16 md:mt-20">
-            <Figure
-              src={`${IMG}/brand-dna-extract.jpg`}
-              alt="Brand DNA extracted from a single URL"
-              caption="Onboarding: a brand URL becomes structured Brand DNA."
-            />
-          </div>
-          <div className="mt-6 md:mt-8">
             <Gallery images={PHASE1} caption="The onboarding flow, screen by screen." />
           </div>
         </Container>
