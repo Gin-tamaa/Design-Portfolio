@@ -82,7 +82,10 @@ const FRAG = `
   }
 `;
 
-export default function NeuralNoise() {
+// `maxDpr` caps the canvas backing-store resolution. The full-screen hero
+// wants crisp detail (default 2); the homepage thumbnail passes a lower cap
+// so its per-frame shader + paint cost during scroll is much cheaper.
+export default function NeuralNoise({ maxDpr = 2 }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -100,7 +103,7 @@ export default function NeuralNoise() {
       });
     if (!gl) return;
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
 
     const compile = (source, type) => {
       const shader = gl.createShader(type);
@@ -182,15 +185,42 @@ export default function NeuralNoise() {
     };
 
     let rafId = null;
+    let running = false;
     const loop = () => {
       drawOnce();
       rafId = requestAnimationFrame(loop);
     };
+    const start = () => {
+      if (running || reduced) return;
+      running = true;
+      rafId = requestAnimationFrame(loop);
+    };
+    const stop = () => {
+      running = false;
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      rafId = null;
+    };
 
+    // Reduced motion paints a single static frame. Otherwise only animate
+    // while the canvas is on-screen, so an off-screen thumbnail (or the
+    // hero once you've scrolled past it) stops burning frames and doesn't
+    // contend with scrolling. A static frame is drawn up front so the
+    // canvas is never blank before it first scrolls into view.
+    let io = null;
     if (reduced) {
       drawOnce();
+    } else if ("IntersectionObserver" in window) {
+      drawOnce();
+      io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) start();
+          else stop();
+        },
+        { rootMargin: "150px" }
+      );
+      io.observe(canvas);
     } else {
-      loop();
+      start();
     }
 
     const onResize = () => resize();
@@ -212,10 +242,11 @@ export default function NeuralNoise() {
     window.addEventListener("touchmove", onTouch);
 
     return () => {
+      if (io) io.disconnect();
       window.removeEventListener("resize", onResize);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("touchmove", onTouch);
-      if (rafId !== null) cancelAnimationFrame(rafId);
+      stop();
     };
   }, []);
 

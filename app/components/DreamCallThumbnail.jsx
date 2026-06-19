@@ -10,11 +10,15 @@
 // The gradient draws on black, so the wordmark is white here (Memory's
 // is black on its light canvas).
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GradientBackground } from "./GradientBackground";
 
 export default function DreamCallThumbnail() {
   const rootRef = useRef(null);
+  // Drives the gradient drift: animate (speed 1) only while on-screen,
+  // pause (speed 0) when scrolled away so it doesn't burn frames in the
+  // background and contend with scrolling.
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = rootRef.current;
@@ -28,14 +32,11 @@ export default function DreamCallThumbnail() {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            el.classList.add("mt-revealed");
-            observer.unobserve(el);
-          }
-        });
+        const onScreen = entries.some((e) => e.isIntersecting);
+        setVisible(onScreen);
+        if (onScreen) el.classList.add("mt-revealed");
       },
-      { threshold: 0.25 }
+      { threshold: 0, rootMargin: "150px" }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -50,8 +51,9 @@ export default function DreamCallThumbnail() {
         containerType: "inline-size",
       }}
     >
-      {/* Layer 1, animated grain gradient (purple over black) */}
-      <GradientBackground />
+      {/* Layer 1, animated grain gradient (purple over black). Paused
+          (speed 0) while off-screen so the feed stays smooth. */}
+      <GradientBackground speed={visible ? 1 : 0} />
 
       {/* Layer 2, "DreamCall" wordmark centered on the gradient */}
       <h2

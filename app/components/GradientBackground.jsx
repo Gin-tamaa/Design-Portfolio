@@ -15,7 +15,10 @@
 
 import { GrainGradient } from "@paper-design/shaders-react";
 
-export function GradientBackground() {
+// `speed` is passed through so the caller can pause the drift (speed 0)
+// when the tile is off-screen; the gradient stays drawn, it just stops
+// advancing, which keeps it from animating while scrolled away.
+export function GradientBackground({ speed = 1 }) {
   return (
     <div className="absolute inset-0">
       <GrainGradient
@@ -29,7 +32,7 @@ export function GradientBackground() {
         offsetY={0}
         scale={1}
         rotation={0}
-        speed={1}
+        speed={speed}
         colors={["hsl(258, 90%, 62%)", "hsl(276, 85%, 58%)", "hsl(294, 80%, 56%)"]}
       />
     </div>

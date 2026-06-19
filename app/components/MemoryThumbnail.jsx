@@ -49,8 +49,10 @@ export default function MemoryThumbnail() {
         containerType: "inline-size",
       }}
     >
-      {/* Layer 1, WebGL Neural Noise canvas (light-theme tinted) */}
-      <NeuralNoise />
+      {/* Layer 1, WebGL Neural Noise canvas (light-theme tinted). Lower
+          resolution than the full-screen hero, and it pauses when the card
+          is off-screen, so the homepage feed stays smooth while scrolling. */}
+      <NeuralNoise maxDpr={1.25} />
 
       {/* Layer 2, "Memory" wordmark centered on the canvas */}
       <h2
