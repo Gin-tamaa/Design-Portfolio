@@ -19,84 +19,103 @@ const DREAMCALL_URL =
   "https://www.figma.com/proto/rVZrlv1O9JKBFDgwjzkzVI/Presentation-DreamCall?node-id=1-106";
 
 /* ---- Workflow feed data -------------------------------------------------
-   PLACEHOLDER assets: real images/videos get swapped in later. Each item
-   carries its intended filename (shown faint in the placeholder box) and a
-   natural aspect ratio (w/h) so the masonry staggers. Aspect ratios are
-   deliberately mixed (3:4, 1:1, 4:3, 16:9) so the column packing reads
-   uneven, not like a uniform grid. */
-const img = (src, w, h) => ({ type: "image", src, w, h });
-const vid = (src, w, h) => ({ type: "video", src, w, h });
+   Real generative-workflow outputs (public/workflow-outputs), grouped into
+   categories with a subtitle each. Each item carries its natural aspect
+   (w/h) so the masonry staggers; videos default to a portrait tile and the
+   cover plays in-view (object-cover crops to fill regardless of true ratio).
+   items[0] is the masonry cover. */
+const WF = "/workflow-outputs";
+const im = (n, w, h) => ({ type: "image", src: `${WF}/img-${n}.jpg`, w, h });
+const vd = (n, w, h) => ({ type: "video", src: `${WF}/vid-${n}.mp4`, w, h });
 
 const WORKFLOWS = [
   {
-    id: "cgi-ad",
-    title: "CGI Ad Pipeline",
-    caption: "Product Film",
+    id: "speedcat-ads",
+    title: "Speedcat Campaign",
+    caption: "AI ad films and posters",
     items: [
-      vid("/images/wf-cgi-01.mp4", 3, 4),
-      vid("/images/wf-cgi-02.mp4", 16, 9),
-      vid("/images/wf-cgi-03.mp4", 1, 1),
-      vid("/images/wf-cgi-04.mp4", 3, 4),
+      im("23", 1024, 1536),
+      im("08", 1536, 2752),
+      im("18", 1024, 1536),
+      im("21", 1024, 1536),
+      im("25", 1024, 1536),
+      im("28", 1024, 1536),
+      im("29", 1024, 1536),
+      im("02", 1024, 1536),
+      im("04", 1536, 2752),
     ],
   },
   {
-    id: "sneaker",
-    title: "Sneaker Architect",
-    caption: "Ecommerce Render System",
+    id: "ecommerce",
+    title: "Ecommerce Renders",
+    caption: "Deterministic product photoshoots",
     items: [
-      img("/images/wf-sneaker-01.png", 1, 1),
-      img("/images/wf-sneaker-02.png", 3, 4),
-      img("/images/wf-sneaker-03.png", 4, 3),
-      img("/images/wf-sneaker-04.png", 1, 1),
-      img("/images/wf-sneaker-05.png", 16, 9),
-      img("/images/wf-sneaker-06.png", 3, 4),
+      im("24", 1024, 1024),
+      im("09", 2048, 2048),
+      im("10", 1024, 1024),
+      im("11", 1024, 1024),
+      im("12", 1024, 1024),
+      im("13", 1024, 1024),
+      im("20", 1024, 1536),
+      im("26", 1536, 2752),
     ],
   },
   {
-    id: "fashion",
-    title: "Fashion Engine",
-    caption: "Garment Forensics to Editorial",
+    id: "lifestyle",
+    title: "Lifestyle",
+    caption: "On-model and street",
     items: [
-      img("/images/wf-fashion-01.png", 3, 4),
-      img("/images/wf-fashion-02.png", 1, 1),
-      img("/images/wf-fashion-03.png", 3, 4),
-      img("/images/wf-fashion-04.png", 4, 3),
-      img("/images/wf-fashion-05.png", 3, 4),
-      img("/images/wf-fashion-06.png", 16, 9),
+      im("17", 768, 1376),
+      im("16", 1024, 1536),
+      im("06", 1024, 1536),
+      im("14", 1024, 1024),
+      im("15", 1024, 1024),
+      im("19", 1536, 2752),
+      im("27", 1536, 2752),
+      im("30", 1024, 1024),
     ],
   },
   {
-    id: "spaces",
-    title: "Spaces",
-    caption: "Deterministic Photoshoots",
+    id: "material",
+    title: "Material Studies",
+    caption: "Macro texture and detail",
     items: [
-      img("/images/wf-spaces-01.png", 16, 9),
-      img("/images/wf-spaces-02.png", 4, 3),
-      img("/images/wf-spaces-03.png", 1, 1),
-      img("/images/wf-spaces-04.png", 3, 4),
-      img("/images/wf-spaces-05.png", 4, 3),
-      img("/images/wf-spaces-06.png", 16, 9),
+      im("01", 1536, 2752),
+      im("05", 1536, 2752),
+      im("03", 1536, 2752),
+      im("07", 1536, 2752),
+      im("22", 1024, 1536),
     ],
   },
   {
-    id: "character",
-    title: "Character System",
-    caption: "Anime Portrait Pipeline",
+    id: "product-films",
+    title: "Product Films",
+    caption: "Render to motion",
     items: [
-      img("/images/wf-character-01.png", 4, 3),
-      img("/images/wf-character-02.png", 3, 4),
-      img("/images/wf-character-03.png", 1, 1),
-      img("/images/wf-character-04.png", 3, 4),
+      vd("01", 3, 4),
+      vd("02", 3, 4),
+      vd("03", 3, 4),
+      vd("04", 3, 4),
+      vd("05", 3, 4),
+      vd("06", 3, 4),
+      vd("07", 3, 4),
+      vd("08", 3, 4),
+      vd("09", 3, 4),
     ],
   },
   {
-    id: "shopos-film",
-    title: "ShopOS Film",
-    caption: "Voxel Announcement",
+    id: "campaign-films",
+    title: "Campaign Films",
+    caption: "Hero spots, generated",
     items: [
-      vid("/images/wf-shopos-01.mp4", 16, 9),
-      vid("/images/wf-shopos-02.mp4", 1, 1),
-      vid("/images/wf-shopos-03.mp4", 16, 9),
+      vd("10", 3, 4),
+      vd("11", 3, 4),
+      vd("12", 3, 4),
+      vd("13", 3, 4),
+      vd("14", 3, 4),
+      vd("15", 3, 4),
+      vd("16", 3, 4),
+      vd("17", 3, 4),
     ],
   },
 ];
@@ -147,23 +166,60 @@ function UpRight() {
   );
 }
 
-// Placeholder asset box: #f6f6f6 fill at the item's natural aspect, with
-// its intended filename centered faint. PLACEHOLDER: when real assets
-// exist, render <img>/<video> here instead. Images stay zoomable in the
-// lightbox; videos render as <video controls playsInline> and do not zoom.
-function PlaceholderBox({ item, rounded = true, style }) {
+// A muted, looping video cover that shows its first frame instantly (the
+// #t=0.1 fragment forces the browser to paint that frame as a still) and
+// only plays while on-screen. preload="metadata" keeps the upfront cost to
+// the first frame, not the whole file, so the feed stays fast.
+function VideoCover({ src, className }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) v.play?.().catch(() => {});
+        else v.pause?.();
+      },
+      { rootMargin: "100px" }
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <video
+      ref={ref}
+      src={`${src}#t=0.1`}
+      muted
+      loop
+      playsInline
+      preload="metadata"
+      className={className}
+      draggable={false}
+    />
+  );
+}
+
+// Masonry cover tile: real image or in-view-playing video, cropped to the
+// item's declared aspect so the columns stagger.
+function CoverMedia({ item }) {
+  const cls = "block h-full w-full object-cover";
   return (
     <div
-      className={`relative w-full bg-[#f6f6f6] ${rounded ? "rounded-[4px]" : ""}`}
-      style={{ aspectRatio: `${item.w} / ${item.h}`, ...style }}
+      className="overflow-hidden rounded-[4px] bg-[#f6f6f6]"
+      style={{ aspectRatio: `${item.w} / ${item.h}` }}
     >
-      <span
-        className="absolute inset-0 flex items-center justify-center px-4 text-center text-[11px] text-[#aaaaaa]"
-        style={{ fontFamily: "Inter, sans-serif" }}
-      >
-        {item.type === "video" ? "video, " : ""}
-        {item.src}
-      </span>
+      {item.type === "video" ? (
+        <VideoCover src={item.src} className={cls} />
+      ) : (
+        <img
+          src={item.src}
+          alt=""
+          loading="lazy"
+          draggable={false}
+          className={cls}
+        />
+      )}
     </div>
   );
 }
@@ -215,7 +271,6 @@ function Lightbox({ workflow, index, onIndex, onClose }) {
   }, [index, go, onClose]);
 
   const isImage = item.type === "image";
-  const aspect = item.w / item.h;
   const transition = reduced ? "none" : "transform 0.25s ease";
 
   function toggleZoom(e) {
@@ -301,14 +356,8 @@ function Lightbox({ workflow, index, onIndex, onClose }) {
           </svg>
         </button>
 
-        {/* Asset */}
-        <div
-          onClick={(e) => e.stopPropagation()}
-          style={{
-            width: `min(90vw, ${aspect * 82}vh)`,
-            maxWidth: "90vw",
-          }}
-        >
+        {/* Asset: zoomable image, or a playing video with controls. */}
+        <div onClick={(e) => e.stopPropagation()}>
           {isImage ? (
             <div
               onClick={toggleZoom}
@@ -319,11 +368,24 @@ function Lightbox({ workflow, index, onIndex, onClose }) {
                 transition,
               }}
             >
-              <PlaceholderBox item={item} />
+              <img
+                src={item.src}
+                alt=""
+                draggable={false}
+                className="block h-auto max-h-[82vh] w-auto max-w-[90vw] rounded-[4px]"
+              />
             </div>
           ) : (
-            // PLACEHOLDER: swap for <video src controls playsInline> later.
-            <PlaceholderBox item={item} />
+            <video
+              src={item.src}
+              controls
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              className="block h-auto max-h-[82vh] w-auto max-w-[90vw] rounded-[4px]"
+            />
           )}
         </div>
 
@@ -545,7 +607,7 @@ export default function AboutPage() {
                     aria-label={`Open ${wf.title} gallery`}
                     className="reveal block w-full cursor-zoom-in text-left"
                   >
-                    <PlaceholderBox item={cover} />
+                    <CoverMedia item={cover} />
                     <h3
                       className="mt-3 text-[16px] font-semibold text-[#0a0a0a]"
                       style={{ fontFamily: "Inter, sans-serif" }}
