@@ -150,7 +150,7 @@ export default function Home() {
               className="m-0 leading-normal text-[#525252]"
               style={{
                 fontFamily: "'League Spartan', sans-serif",
-                fontWeight: 400,
+                fontWeight: 300,
                 fontSize: "clamp(1.15rem, 2vw, 1.6rem)",
               }}
             >
@@ -162,7 +162,7 @@ export default function Home() {
                 overflow-visible so the italic glyph overhang is never
                 clipped by the headline's own box. */}
             <h1
-              className="m-0 mt-4 italic text-[#0a0a0a] overflow-visible"
+              className="m-0 mt-6 italic text-[#0a0a0a] overflow-visible"
               style={{
                 fontFamily: "'Playfair Display', serif",
                 fontWeight: 700,
@@ -184,10 +184,10 @@ export default function Home() {
 
             {/* Bio, League Spartan */}
             <p
-              className="m-0 mt-6 leading-normal text-[#525252]"
+              className="m-0 mt-8 leading-normal text-[#525252]"
               style={{
                 fontFamily: "'League Spartan', sans-serif",
-                fontWeight: 400,
+                fontWeight: 300,
                 fontSize: "clamp(1.15rem, 2vw, 1.6rem)",
               }}
             >
