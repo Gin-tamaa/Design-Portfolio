@@ -14,7 +14,9 @@ import { useEffect, useRef } from "react";
 
 const SKY_SRC = "/images/shopos-hero-sky.png";
 
-export default function AgentsThumbnail() {
+// `word` is the centred wordmark; defaults to "Agents" (ShopOS card) but
+// the Enterprise Dashboard card reuses this thumbnail with word="Dashboard".
+export default function AgentsThumbnail({ word = "Agents" }) {
   const rootRef = useRef(null);
 
   useEffect(() => {
@@ -80,7 +82,7 @@ export default function AgentsThumbnail() {
           textShadow: "0 2px 18px rgba(0,0,0,0.18)",
         }}
       >
-        Agents
+        {word}
       </h2>
     </div>
   );

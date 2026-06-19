@@ -49,8 +49,10 @@ const CARDS = [
     href: "/work/enterprise-dashboard",
     img: null,
     // PLACEHOLDER: reusing the Mission Control "eight heads" agents
-    // thumbnail, swap with Enterprise Dashboard exports later.
+    // thumbnail, swap with Enterprise Dashboard exports later. Wordmark
+    // overridden to "Dashboard" so it doesn't read as the Agents case study.
     visual: "agents",
+    visualWord: "Dashboard",
     placeholderBg: "linear-gradient(to bottom, #000000, #2e2e2e)",
     alt: "Enterprise Dashboard — folding the review tool into the product",
   },
@@ -71,7 +73,7 @@ const CARDS = [
   },
 ];
 
-function FeedCardInner({ project, year, title, img, alt, placeholderBg, visual }) {
+function FeedCardInner({ project, year, title, img, alt, placeholderBg, visual, visualWord }) {
   // `visual` lets a card swap the default placeholder/<img> for a
   // bespoke composition that mirrors its case-study hero. Falls
   // back to img → placeholderBg.
@@ -94,7 +96,7 @@ function FeedCardInner({ project, year, title, img, alt, placeholderBg, visual }
         style={img || hasVisualComponent ? undefined : { background: placeholderBg }}
       >
         {visual === "agents" ? (
-          <AgentsThumbnail />
+          <AgentsThumbnail word={visualWord} />
         ) : visual === "memory" ? (
           <MemoryThumbnail />
         ) : visual === "dreamcall" ? (
