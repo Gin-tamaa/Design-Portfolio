@@ -167,18 +167,11 @@ export default function Home() {
             >
               designer, builder,
               <br />
-              <span
-                style={{
-                  backgroundImage:
-                    "linear-gradient(90deg, #34d399, #8b5cf6)",
-                  WebkitBackgroundClip: "text",
-                  backgroundClip: "text",
-                  color: "transparent",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                AI tinkerer
-              </span>
+              {/* Gradient + drift live in the .hero-grad class (globals.css)
+                  so the animation can be gated behind prefers-reduced-motion
+                  and the background-clip box gets left padding to stop the
+                  italic A from clipping. */}
+              <span className="hero-grad">AI tinkerer</span>
               ,
               <br />
               &amp; off the clock, a menace.

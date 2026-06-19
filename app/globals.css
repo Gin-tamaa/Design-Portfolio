@@ -2,6 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== Homepage hero gradient word ("AI tinkerer") =====
+   Green-to-purple text gradient that slowly drifts. background-size is
+   wider than the text so the position can travel left to right; the clip
+   box gets a touch of left padding (offset by an equal negative margin)
+   so the italic A stops clipping while all three headline lines keep the
+   same left edge. Motion is gated behind prefers-reduced-motion so
+   opt-out users get the static gradient. */
+.hero-grad {
+  background-image: linear-gradient(90deg, #34d399, #8b5cf6);
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  padding-left: 0.08em;
+  margin-left: -0.08em;
+}
+@keyframes heroGradDrift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-grad {
+    animation: heroGradDrift 7s ease-in-out infinite;
+  }
+}
+
 /* ===== ShopOS case-study nav override =====
    The global <Nav /> in app/layout.jsx is white by default. On /work/shopos
    the page sets body.shopos-hero (transparent + white text) and toggles
