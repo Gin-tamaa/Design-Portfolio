@@ -1,10 +1,11 @@
 // app/work/enterprise-dashboard/page.jsx
-// Enterprise Dashboard case study. Same scaffold as the ShopOS and
-// Brand Memory case studies: parallax hero with a wordmark, .cs-scope
-// main with the editorial type primitives, the TL;DR table, the "My
-// role" block, and the section pattern of eyebrow -> SectionHeader ->
-// Lead -> Prose/bullets -> ImageSlot. Content comes from
-// case-study-enterprise-dashboard.md; numbers are quoted verbatim.
+// Enterprise Dashboard case study. Same scannable scaffold as the ShopOS
+// and Brand Memory case studies: parallax hero with a wordmark, .cs-scope
+// main with the editorial type primitives, the TL;DR table, the "My role"
+// strip, and a section pattern of eyebrow -> SectionHeader -> short prose
+// -> the scannable layer (bold-lead-in bullets, Contrast blocks, a pull
+// quote, the impact stat list). Content from
+// case-study-enterprise-dashboard.md; numbers quoted verbatim.
 
 "use client";
 
@@ -12,12 +13,11 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import ChatLauncher from "../../components/ChatLauncher";
 
-// PLACEHOLDER: reusing Mission Control art, swap with Enterprise Dashboard
-// exports later. (Same sky bg the /work/shopos hero uses.)
+// PLACEHOLDER: reusing Mission Control hero, swap later. (Same sky bg the
+// /work/shopos hero uses.)
 const SKY_SRC = "/images/shopos-hero-sky.png";
-// PLACEHOLDER: reusing Mission Control art, swap with Enterprise Dashboard
-// exports later. (Same "eight heads" agents thumbnail the /work/shopos
-// hero uses.)
+// PLACEHOLDER: reusing Mission Control hero, swap later. (Same "eight
+// heads" agents thumbnail the /work/shopos hero uses.)
 const AGENTS_SRC = "/images/agents-hero.png";
 
 /* ============================================================================
@@ -59,6 +59,16 @@ function Prose({ children, className = "" }) {
   );
 }
 
+function Lead({ children, className = "" }) {
+  return (
+    <p
+      className={`mt-6 max-w-[var(--cs-prose-col)] text-[16px] italic leading-[1.7] text-[#525252] ${className}`}
+    >
+      {children}
+    </p>
+  );
+}
+
 function Pill({ href = "#", children, className = "", external = false }) {
   return (
     <Link
@@ -69,57 +79,6 @@ function Pill({ href = "#", children, className = "", external = false }) {
     >
       {children}
     </Link>
-  );
-}
-
-// Empty image placeholder. Cream-toned with a thin warm border and a
-// muted "Image coming" label, so the rhythm of every visual shows on
-// the page without dropping in real assets yet.
-function ImageSlot({ caption, src, alt = "", aspect = "video", className = "" }) {
-  const aspectClass =
-    aspect === "portrait"
-      ? "aspect-[4/5]"
-      : aspect === "square"
-      ? "aspect-square"
-      : aspect === "wide"
-      ? "aspect-[16/10]"
-      : "aspect-video";
-  return (
-    <figure className={className}>
-      <div
-        className={`w-full ${aspectClass} overflow-hidden rounded-2xl border border-[#E5DDD0] bg-[#F4F1EA]`}
-      >
-        {src ? (
-          <img
-            src={src}
-            alt={alt}
-            className="h-full w-full object-cover"
-            draggable={false}
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center px-8">
-            <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-[#857d6d]">
-              Image coming
-            </span>
-          </div>
-        )}
-      </div>
-      {caption ? (
-        <figcaption className="mt-3 max-w-[var(--cs-prose-col)] text-[13px] leading-[1.55] text-[#525252]">
-          {caption}
-        </figcaption>
-      ) : null}
-    </figure>
-  );
-}
-
-function Lead({ children, className = "" }) {
-  return (
-    <p
-      className={`mt-6 max-w-[var(--cs-prose-col)] text-[16px] italic leading-[1.7] text-[#525252] ${className}`}
-    >
-      {children}
-    </p>
   );
 }
 
@@ -154,6 +113,68 @@ function Bullet({ children }) {
       />
       <span>{children}</span>
     </li>
+  );
+}
+
+// Contrast block: the same two-column card pattern as Brand Memory's
+// Rejected/Chosen decision block, generalized to take its labels so it
+// reads as Standalone/Integrated and Before/After here. Left card uses
+// the rose accent (the old/limited state), right uses emerald (the new
+// state), same as the case-study scale.
+function Contrast({ leftLabel, left, rightLabel, right }) {
+  return (
+    <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6">
+      <div className="rounded-2xl border border-[#E5DDD0] bg-white p-6 md:p-7">
+        <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-rose-700/80">
+          {leftLabel}
+        </p>
+        <p className="mt-3 text-[15px] leading-[1.65] text-[#0a0a0a]/85 md:text-[16px]">
+          {left}
+        </p>
+      </div>
+      <div className="rounded-2xl border border-[#E5DDD0] bg-white p-6 md:p-7">
+        <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-emerald-700">
+          {rightLabel}
+        </p>
+        <p className="mt-3 text-[15px] leading-[1.65] text-[#0a0a0a]/85 md:text-[16px]">
+          {right}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// Pull-quote: editorial Playfair Display italic (the same accent voice
+// the homepage hero uses) at the --cs-thesis scale, with a hairline left
+// rule. No new font or color, just the existing type system.
+function PullQuote({ children }) {
+  return (
+    <blockquote className="mt-12 border-l-2 border-[#0a0a0a]/15 pl-6 md:pl-8">
+      <p
+        className="max-w-[var(--cs-prose-col)] italic text-[#0a0a0a]"
+        style={{
+          fontFamily: "'Playfair Display', serif",
+          fontWeight: 500,
+          fontSize: "clamp(1.35rem, 1.1rem + 0.9vw, 1.8rem)",
+          lineHeight: 1.3,
+          letterSpacing: "-0.005em",
+        }}
+      >
+        {children}
+      </p>
+    </blockquote>
+  );
+}
+
+// Faint meta line (#aaaaaa) for the "Addresses:" tags and the
+// AM-estimate caveat, so the bold stats and bullets carry the scan.
+function FaintMeta({ children, className = "" }) {
+  return (
+    <p
+      className={`max-w-[var(--cs-prose-col)] text-[13px] italic leading-[1.6] text-[#aaaaaa] ${className}`}
+    >
+      {children}
+    </p>
   );
 }
 
@@ -266,8 +287,7 @@ export default function EnterpriseDashboardPage() {
           className="absolute inset-0 will-change-transform"
           style={{ top: "-60px", height: "calc(100% + 120px)" }}
         >
-          {/* PLACEHOLDER: reusing Mission Control art, swap with Enterprise
-              Dashboard exports later. */}
+          {/* PLACEHOLDER: reusing Mission Control hero, swap later. */}
           <img
             src={SKY_SRC}
             alt=""
@@ -325,8 +345,7 @@ export default function EnterpriseDashboardPage() {
           className="pointer-events-none absolute inset-x-0 will-change-transform"
           style={{ top: "calc(332/760 * 100%)" }}
         >
-          {/* PLACEHOLDER: reusing Mission Control art, swap with Enterprise
-              Dashboard exports later. */}
+          {/* PLACEHOLDER: reusing Mission Control hero, swap later. */}
           <img
             src={AGENTS_SRC}
             alt=""
@@ -347,20 +366,20 @@ export default function EnterpriseDashboardPage() {
         />
       </section>
 
-      {/* ===== TOP, kicker + H1 + lede =================================== */}
+      {/* ===== TOP, kicker + H1 + subhead =============================== */}
       <Container className="reveal pt-16 md:pt-20">
         <ProseColumn>
           <p className="cs-eyebrow">
-            ShopOS &middot; &ldquo;Enterprise Dashboard&rdquo; &middot;
-            Product Design + Design Engineering
+            Enterprise Dashboard &middot; ShopOS &middot; Product Design +
+            Design Engineering &middot; 2026
           </p>
           <h1 className="cs-thesis mt-4">
-            From a two-week WhatsApp loop to an eight-day review inside
-            the product
+            From a two-week WhatsApp loop to an eight-day review inside the
+            product
           </h1>
           <p className="cs-lede mt-6">
-            How enterprise brands stopped rejecting 500 images to redo
-            one, and started approving the 499 that were fine.
+            How enterprise brands stopped rejecting 500 images to redo one,
+            and started approving the 499 that were fine.
           </p>
         </ProseColumn>
       </Container>
@@ -394,24 +413,22 @@ export default function EnterpriseDashboardPage() {
 
             <dt className="cs-eyebrow md:pt-1">Impact</dt>
             <dd className="cs-body max-w-[var(--cs-prose-col)]">
-              Batch close time 14 days &rarr; 8 to 9. Roughly 20 to 25
-              fewer SKU rejections per 100. 2 of 10 enterprise clients now
-              buy credits to self-serve.
+              Batch close 14 days &rarr; 8 to 9. ~20 to 25 fewer SKU
+              rejections per 100. 2 of 10 clients now buy credits to
+              self-serve.
             </dd>
           </dl>
         </ProseColumn>
       </Container>
 
-      {/* ===== My role + Team / Tools =================================== */}
+      {/* ===== My role + Timeline / Team / Tools ======================== */}
       <Container className="reveal pt-16 md:pt-20">
         <ProseColumn>
           <p className="cs-eyebrow">My role</p>
           <p className="cs-body mt-3">
             <em>Owned:</em> product design and the React frontend, end to
-            end (design and design engineering, so it ships faster, the
-            same dual lens as the Mission Control case study).{" "}
-            <em>Co-created:</em> the integration strategy with PM,
-            engineering, and the account managers.
+            end. <em>Co-created:</em> the strategy with PM, engineering,
+            and the account managers.
           </p>
 
           <dl
@@ -441,41 +458,49 @@ export default function EnterpriseDashboardPage() {
           <ProseColumn>
             <Eyebrow>The problem</Eyebrow>
             <SectionHeader>The batch lived in a WhatsApp thread.</SectionHeader>
-            <Lead>
-              An enterprise brand wants a summer collection: 100 to 500
-              product images, each SKU placed against a generated
-              background.
-            </Lead>
             <Prose className="mt-8">
               <p>
-                They brief the request to their account manager over
-                WhatsApp. ShopOS generates the batch. Then the real work
-                starts, and it also happens over WhatsApp: the client
-                scrolls the outputs, flags the ones they don&rsquo;t
-                like, types out what&rsquo;s wrong, waits, and the
-                production team turns it around.
+                An enterprise brand wants a summer collection: 100 to 500
+                product images, each SKU placed against a generated
+                background. They brief the request to their account manager
+                over WhatsApp. ShopOS generates the batch. Then the real
+                work starts, and it also happens over WhatsApp: the client
+                scrolls the outputs, flags the ones they dislike, types out
+                what&rsquo;s wrong, waits.
               </p>
               <p>
                 The old enterprise dashboard sat next to all of this. It
-                could track batches and show you what got generated. What
-                it couldn&rsquo;t do was let you act on any of it. There
-                was no way to compare a generated image against the
-                garment it came from. No way to leave feedback where the
-                work actually lived. And one rule made everything else
-                worse: approval was all or nothing.
-              </p>
-              <p>
-                Reject a single SKU and the entire batch went back to
-                redo. Out of 500 images you could love 499 and lose all
-                of them over one. For batches that already took two weeks
-                to close, that was the most expensive button in the
-                product.
+                could <em>track</em> batches and <em>show</em> you what got
+                generated. It couldn&rsquo;t let you act on any of it.
               </p>
             </Prose>
+
+            <p className="cs-body mt-10 max-w-[var(--cs-prose-col)]">
+              <strong>Three holes made the work slow:</strong>
+            </p>
+            <ul className="mt-6 space-y-3">
+              <Bullet>
+                <strong>No input to compare against.</strong> You judged a
+                generated image from memory of the garment, never side by
+                side with it.
+              </Bullet>
+              <Bullet>
+                <strong>No feedback where the work lived.</strong> &ldquo;The
+                print is off&rdquo; was a typed WhatsApp message with no
+                image attached to it.
+              </Bullet>
+              <Bullet>
+                <strong>All-or-nothing approval.</strong> Reject one SKU and
+                the <em>entire</em> batch went back to redo.
+              </Bullet>
+            </ul>
+
+            <PullQuote>
+              Out of 500 images you could love 499 and lose all of them over
+              one. For batches that already took two weeks to close, that was
+              the most expensive button in the product.
+            </PullQuote>
           </ProseColumn>
-          <div className="mt-16 md:mt-20">
-            <ImageSlot caption="Before: batches were briefed, reviewed, and rejected in a WhatsApp thread, with all-or-nothing approval." />
-          </div>
         </Container>
       </section>
 
@@ -487,39 +512,40 @@ export default function EnterpriseDashboardPage() {
             <SectionHeader>
               The dashboard wasn&rsquo;t broken. It was alone.
             </SectionHeader>
-            <Lead>
-              As a standalone tool it could only make review faster. It
-              could never make a batch better, because it had no access to
-              the one thing that would: the brand&rsquo;s own context.
-            </Lead>
             <Prose className="mt-8">
               <p>
-                So the decision wasn&rsquo;t to redesign the dashboard. It
-                was to fold it into ShopOS. Once an enterprise account
-                lives inside the product, its Brand Memory, the voice,
-                palette, rules, and past decisions, gets set up at
-                onboarding and compounds with every batch. I called this{" "}
-                <strong>Compounding Context</strong>: in a standalone
-                tool, every batch starts from zero; integrated, each one
-                starts smarter than the last. Better inputs make better
-                outputs, and better outputs mean there is less to reject
-                in the first place.
+                The easy read was &ldquo;redesign the dashboard.&rdquo; The
+                more useful read was that its biggest problem lived{" "}
+                <em>outside</em> of it.
               </p>
               <p>
-                Integration also unlocked things a separate dashboard
-                structurally never could. Brands could create a batch
-                inside the product instead of texting an AM. They could
-                reach past the single lifestyle style the old dashboard
-                allowed into the full range of Spaces, with far more batch
-                types and variations. And they could spend enterprise
-                credits on work of their own. The review fix was the
-                visible part. The integration was the leverage.
+                As a standalone tool, the dashboard could only ever make{" "}
+                <strong>review</strong> faster. It could never make a batch{" "}
+                <strong>better</strong>, because it had no access to the one
+                thing that would: the brand&rsquo;s own context. So the
+                decision wasn&rsquo;t to redesign it. It was to fold it into
+                ShopOS.
+              </p>
+            </Prose>
+
+            <p className="cs-body mt-10 max-w-[var(--cs-prose-col)]">
+              <strong>Compounding Context, the core bet:</strong>
+            </p>
+            <Contrast
+              leftLabel="Standalone"
+              left="Every batch starts from zero."
+              rightLabel="Integrated"
+              right="The brand's Brand Memory (voice, palette, rules, past decisions) is set up at onboarding and compounds with every batch, so each one starts smarter than the last."
+            />
+
+            <Prose className="mt-10">
+              <p>
+                Better inputs make better outputs. Better outputs mean less
+                to reject in the first place. The review fix was the visible
+                part. The integration was the leverage.
               </p>
             </Prose>
           </ProseColumn>
-          <div className="mt-16 md:mt-20">
-            <ImageSlot caption="Compounding Context: integrated into ShopOS, each batch starts from the brand's memory instead of from zero." />
-          </div>
         </Container>
       </section>
 
@@ -531,32 +557,50 @@ export default function EnterpriseDashboardPage() {
             <SectionHeader>
               A batch isn&rsquo;t one decision. It&rsquo;s hundreds.
             </SectionHeader>
-            <Lead>
-              All-or-nothing approval treated a 500-SKU batch as a single
-              object. But a brand doesn&rsquo;t experience a batch that
-              way. They experience 500 individual calls.
-            </Lead>
+            <Lead>The decision I&rsquo;d defend hardest.</Lead>
             <Prose className="mt-8">
               <p>
-                So I decoupled the SKU from the batch. Approve the ones
-                that work and download them now; only the rejected SKUs go
-                back to refine. The batch stops being atomic. One bad
-                image costs you one regeneration, not 499.
-              </p>
-              <p>
-                This sounds small and it reshaped the entire state model.
-                Every SKU now carries its own status, ready, approved,
-                rejected, or refining, the batch becomes the sum of them,
-                and the interface had to make that legible at a glance
-                without drowning the operator in states. The variant rail
-                tracks each SKU with a green or red dot; the batch view
-                rolls them up.
+                All-or-nothing approval treated a 500-SKU batch as a single
+                object. But a brand doesn&rsquo;t experience a batch that
+                way. They experience 500 individual calls. So I decoupled
+                the SKU from the batch.
               </p>
             </Prose>
+
+            <Contrast
+              leftLabel="Before"
+              left={
+                <>
+                  Reject one SKU &rarr; the whole batch (up to 500) goes back
+                  to redo.
+                </>
+              }
+              rightLabel="After"
+              right={
+                <>
+                  Approve and download the SKUs that work <em>now</em>. Only
+                  the rejected ones go to refine.
+                </>
+              }
+            />
+
+            <Prose className="mt-10">
+              <p>One bad image costs one regeneration, not 499.</p>
+              <p>
+                It sounds small and it reshaped the entire state model:
+                every SKU now carries its own status (ready / approved /
+                rejected / refining), the batch becomes the <em>sum</em> of
+                them, and the interface had to make that legible at a
+                glance. The variant rail tracks each SKU with a green or red
+                dot; the batch view rolls them up.
+              </p>
+            </Prose>
+
+            <FaintMeta className="mt-8">
+              Addresses: the all-or-nothing rejection that wasted whole
+              batches.
+            </FaintMeta>
           </ProseColumn>
-          <div className="mt-16 md:mt-20">
-            <ImageSlot caption="Per-SKU approval: each SKU carries its own status (ready, approved, rejected, refining); the batch is the sum of them." />
-          </div>
         </Container>
       </section>
 
@@ -565,37 +609,44 @@ export default function EnterpriseDashboardPage() {
         <Container>
           <ProseColumn>
             <Eyebrow>In-product review</Eyebrow>
-            <SectionHeader>Moving the feedback out of WhatsApp.</SectionHeader>
-            <Lead>
-              &ldquo;The print is off and the color isn&rsquo;t right&rdquo;
-              used to be a typed message with no image attached to it. I
-              brought it into the product as two things.
-            </Lead>
+            <SectionHeader>
+              The feedback was trapped in chat. I built it into the image.
+            </SectionHeader>
             <Prose className="mt-8">
               <p>
-                First, a side-by-side. <strong>View Input</strong> puts
-                the original garment image next to the generated output,
-                so a reviewer judges the work against its source instead
-                of from memory. The old dashboard never showed the input
-                at all.
-              </p>
-              <p>
-                Second, <strong>pinpoint annotations</strong>. Drop a
-                numbered pin on the exact spot of the image and say
-                what&rsquo;s wrong there, with multiple pins per image,
-                each one specific. The vague WhatsApp paragraph becomes
-                structured, located feedback the production team can act
-                on without a single follow-up question. Whole-batch
-                rejections follow the same logic with required reasons,
-                poor quality, incorrect background, incorrect masking, or
-                wrong output format, so &ldquo;redo it&rdquo; is never the
-                entire instruction.
+                The old &ldquo;redo it&rdquo; was a vague paragraph in
+                WhatsApp. I replaced it with three things that live on the
+                work itself:
               </p>
             </Prose>
+            <ul className="mt-6 space-y-3">
+              <Bullet>
+                <strong>View Input.</strong> The original garment image, side
+                by side with the generated output, so a reviewer judges the
+                work against its source instead of from memory. The old
+                dashboard never showed the input at all.
+              </Bullet>
+              <Bullet>
+                <strong>Pinpoint annotations.</strong> Drop a numbered pin on
+                the exact spot and say what&rsquo;s wrong <em>there</em>.
+                Multiple pins per image, each one specific. The vague
+                paragraph becomes located, structured feedback the
+                production team can act on without a follow-up question.
+              </Bullet>
+              <Bullet>
+                <strong>Structured batch rejection.</strong> Whole-batch
+                rejections require a reason (poor quality / incorrect
+                background / incorrect masking / wrong output format) plus
+                written detail, so &ldquo;redo it&rdquo; is never the entire
+                instruction.
+              </Bullet>
+            </ul>
+
+            <FaintMeta className="mt-8">
+              Addresses: feedback that lived in chat, detached from the image
+              it described.
+            </FaintMeta>
           </ProseColumn>
-          <div className="mt-16 md:mt-20">
-            <ImageSlot caption="Full-screen review: input vs output comparison, an annotation layer with numbered pins, and per-SKU approve and reject." />
-          </div>
         </Container>
       </section>
 
@@ -605,71 +656,70 @@ export default function EnterpriseDashboardPage() {
           <ProseColumn>
             <Eyebrow>What shipped</Eyebrow>
             <SectionHeader>What shipped.</SectionHeader>
-            <Lead>
-              All of it built in React and fit into the existing ShopOS
-              ecosystem, so it reads as one product rather than a
-              bolted-on dashboard.
-            </Lead>
             <ul className="mt-8 space-y-3">
               <Bullet>
-                A redesigned enterprise home that replaced the old
-                jargon-heavy stats with a clean status read: in progress,
-                ready for review, approved, rejected
+                A redesigned enterprise home: the old jargon stats replaced
+                with a clean status read (in progress / ready for review /
+                approved / rejected).
               </Bullet>
               <Bullet>
-                A batch view tabbed by SKU state, with both bulk and
-                per-SKU actions
+                A batch view tabbed by SKU state, with both bulk and per-SKU
+                actions.
               </Bullet>
               <Bullet>
-                A full-screen review surface with zoom, the input vs
-                output comparison, the annotation layer, and per-SKU
-                approve and reject
+                A full-screen review surface: zoom, input vs output
+                comparison, the annotation layer, per-SKU approve and reject.
               </Bullet>
               <Bullet>
-                Partial download of the approved SKUs as well as the full
-                batch, plus batch creation inside the tool
+                Partial download of approved SKUs, plus full-batch download.
+              </Bullet>
+              <Bullet>
+                Batch creation inside the tool, instead of texting an AM.
               </Bullet>
             </ul>
+            <Prose className="mt-8">
+              <p>
+                All built in React and fit into the existing ShopOS
+                ecosystem, so it reads as one product, not a bolted-on
+                dashboard.
+              </p>
+            </Prose>
           </ProseColumn>
-          <div className="mt-16 md:mt-20">
-            <ImageSlot caption="Shipped: enterprise home, batch view tabbed by SKU state, and the full-screen review surface." />
-          </div>
         </Container>
       </section>
 
-      {/* ===== 06 · What happened (impact) ============================== */}
+      {/* ===== 06 · What happened (impact stat list) ==================== */}
       <section className="reveal py-24 md:py-36">
         <Container>
           <ProseColumn>
             <Eyebrow>What happened</Eyebrow>
             <SectionHeader>What happened.</SectionHeader>
-            <Lead>
-              The numbers below are estimated from structured debriefs
-              with the account managers who own these clients, not from
+            <FaintMeta className="mt-6">
+              The numbers below are estimated from structured debriefs with
+              the account managers who own these clients, not from
               instrumented analytics. I went to the people closest to the
               work for the most honest read available.
-            </Lead>
-            <ul className="mt-8 space-y-3">
+            </FaintMeta>
+            <ul className="mt-8 space-y-4">
               <Bullet>
                 <strong>Batch close time: 14 days &rarr; 8 to 9 days.</strong>{" "}
-                A batch that averaged two weeks to finalize now closes in
-                a little over one. Less back-and-forth, faster decisions,
-                and outputs that needed less fixing on the production
-                side.
+                A batch that averaged two weeks to finalize now closes in a
+                little over one. Less back-and-forth, faster decisions,
+                outputs that needed less fixing.
               </Bullet>
               <Bullet>
-                <strong>Roughly 20 to 25 fewer SKU rejections per 100.</strong>{" "}
-                Because Brand Memory was set up at onboarding, outputs came
-                back on-brand from the first batch, so there was simply
-                less to send back. Compounding Context, showing up as a
-                lower reject rate.
+                <strong>~20 to 25 fewer SKU rejections per 100.</strong>{" "}
+                Brand Memory set up at onboarding meant outputs came back
+                on-brand from the first batch, so there was less to send
+                back. Compounding Context, showing up as a lower reject
+                rate.
               </Bullet>
               <Bullet>
                 <strong>2 of 10 enterprise clients now buy credits</strong>{" "}
-                to generate on their own, for edits and one-off work
-                beyond their batches. A new revenue motion the standalone
-                dashboard could never have created, because there was
-                nothing else to spend credits on.
+                to generate on their own, for edits and one-off work beyond
+                batches. A new revenue motion the standalone dashboard could
+                never have created, because there was nothing else to spend
+                credits on.
               </Bullet>
             </ul>
           </ProseColumn>
@@ -684,38 +734,36 @@ export default function EnterpriseDashboardPage() {
             <SectionHeader>I designed a flywheel. Two of ten entered it.</SectionHeader>
             <Prose className="mt-8">
               <p>
-                Credits pull enterprise clients into Spaces and Cowork,
-                more surfaces mean more batches, and more batches mean more
-                credits. Two of ten clients have actually entered that
-                loop. The motion is real, those two are spending beyond
-                their batches, but I designed it as a system and it is
-                behaving like an early signal.
+                I designed for a flywheel: credits pull enterprise clients
+                into Spaces and Cowork, more surfaces mean more batches, more
+                batches mean more credits. Two of ten clients have actually
+                entered that loop. The motion is real, those two are
+                spending beyond their batches, but I designed it as a system
+                and it&rsquo;s behaving like an early signal. I still
+                don&rsquo;t know whether the other eight haven&rsquo;t
+                converted because of pricing, discovery, or simply timing,
+                and the move from standalone to integrated didn&rsquo;t ship
+                with the instrumentation to tell me. If I did it again,
+                I&rsquo;d ship the analytics alongside the feature, not
+                behind it, so the flywheel could be read instead of
+                estimated.
               </p>
               <p>
-                I still don&rsquo;t know whether the other eight
-                haven&rsquo;t converted because of pricing, discovery, or
-                simply timing, and the standalone-to-integrated move
-                didn&rsquo;t ship with the instrumentation to tell me. If
-                I did it again, I&rsquo;d ship the analytics alongside the
-                feature, not behind it, so the flywheel could be read
-                instead of estimated.
+                The enterprise dashboard used to be a window the brand looked
+                through. Now it&rsquo;s a room the brand works inside, and
+                because it shares walls with the rest of ShopOS, every batch
+                they run makes the next one easier.
               </p>
             </Prose>
           </ProseColumn>
         </Container>
       </section>
 
-      {/* ===== Closing paragraph + CTA =================================== */}
+      {/* ===== Closing CTA ============================================== */}
       <section className="reveal py-20 md:py-28">
         <Container>
           <ProseColumn>
             <Prose>
-              <p>
-                The enterprise dashboard used to be a window the brand
-                looked through. Now it&rsquo;s a room the brand works
-                inside, and because it shares walls with the rest of
-                ShopOS, every batch they run makes the next one easier.
-              </p>
               <p>
                 Want to see how a batch moves through it end to end?{" "}
                 <Link
