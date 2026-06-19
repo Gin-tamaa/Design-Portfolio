@@ -144,7 +144,7 @@ export default function Home() {
           {/* pl-3 (12px) gives the italic A's left overhang room so it
               isn't clipped; every line shifts together, keeping one left
               edge. */}
-          <div className="mx-auto flex max-w-[1080px] flex-col items-start pl-3 text-left">
+          <div className="mx-auto flex max-w-[1080px] flex-col items-start gap-8 pl-3 text-left">
             {/* Greeting, League Spartan */}
             <p
               className="m-0 leading-normal text-[#525252]"
@@ -162,7 +162,7 @@ export default function Home() {
                 overflow-visible so the italic glyph overhang is never
                 clipped by the headline's own box. */}
             <h1
-              className="m-0 mt-6 italic text-[#0a0a0a] overflow-visible"
+              className="m-0 italic text-[#0a0a0a] overflow-visible"
               style={{
                 fontFamily: "'Playfair Display', serif",
                 fontWeight: 700,
@@ -184,7 +184,7 @@ export default function Home() {
 
             {/* Bio, League Spartan */}
             <p
-              className="m-0 mt-8 leading-normal text-[#525252]"
+              className="m-0 leading-normal text-[#525252]"
               style={{
                 fontFamily: "'League Spartan', sans-serif",
                 fontWeight: 300,
