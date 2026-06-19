@@ -365,6 +365,15 @@ export default function AboutPage() {
   const openWorkflow = (id) => setOpen({ id, index: 0 });
   const close = () => setOpen(null);
 
+  // Masonry via flex columns (not CSS multicol): bucket the covers
+  // round-robin into 3 columns. Each column is a flex flex-col with a
+  // 24px gap, so the varied tile heights stagger naturally. The columns
+  // sit in a grid-cols-3 shell with a 12px gutter (1 column on mobile).
+  const MASONRY_COLS = 3;
+  const masonryColumns = Array.from({ length: MASONRY_COLS }, (_, c) =>
+    WORKFLOWS.filter((_, i) => i % MASONRY_COLS === c)
+  );
+
   // Scroll-reveal, same .reveal / is-visible pattern as the homepage feed
   // and the case study pages. Reduced motion is handled by the .reveal CSS.
   useEffect(() => {
@@ -519,35 +528,41 @@ export default function AboutPage() {
       {/* ===== Workflow masonry feed =============================== */}
       <section className="mx-auto w-full max-w-[1400px] px-6 pb-32 pt-24 md:px-10 md:pt-36">
         <FaintLabel className="reveal">Workflows</FaintLabel>
-        {/* CSS columns masonry: tiles keep their natural height and pack
-            tightly, so the feed reads uneven rather than as a grid. */}
-        <div className="mt-8 columns-1 [column-gap:24px] sm:columns-2 lg:columns-3">
-          {WORKFLOWS.map((wf) => {
-            const cover = wf.items[0];
-            return (
-              <button
-                key={wf.id}
-                type="button"
-                onClick={() => openWorkflow(wf.id)}
-                aria-label={`Open ${wf.title} gallery`}
-                className="reveal mb-6 block w-full cursor-zoom-in break-inside-avoid text-left"
-              >
-                <PlaceholderBox item={cover} />
-                <h3
-                  className="mt-3 text-[16px] font-semibold text-[#0a0a0a]"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                >
-                  {wf.title}
-                </h3>
-                <p
-                  className="mt-1 text-[11px] uppercase tracking-[0.18em] text-[#aaaaaa]"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                >
-                  {wf.caption}
-                </p>
-              </button>
-            );
-          })}
+        {/* Flex-column masonry: a grid-cols-3 shell (12px gutter) of flex
+            columns (24px vertical gap). Varied tile heights stagger
+            naturally; no CSS multicol, so the reveal transforms render
+            cleanly. Stacks to one column on mobile. */}
+        <div className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-3">
+          {masonryColumns.map((col, ci) => (
+            <div key={ci} className="flex flex-col gap-6">
+              {col.map((wf) => {
+                const cover = wf.items[0];
+                return (
+                  <button
+                    key={wf.id}
+                    type="button"
+                    onClick={() => openWorkflow(wf.id)}
+                    aria-label={`Open ${wf.title} gallery`}
+                    className="reveal block w-full cursor-zoom-in text-left"
+                  >
+                    <PlaceholderBox item={cover} />
+                    <h3
+                      className="mt-3 text-[16px] font-semibold text-[#0a0a0a]"
+                      style={{ fontFamily: "Inter, sans-serif" }}
+                    >
+                      {wf.title}
+                    </h3>
+                    <p
+                      className="mt-1 text-[11px] uppercase tracking-[0.18em] text-[#aaaaaa]"
+                      style={{ fontFamily: "Inter, sans-serif" }}
+                    >
+                      {wf.caption}
+                    </p>
+                  </button>
+                );
+              })}
+            </div>
+          ))}
         </div>
       </section>
 
