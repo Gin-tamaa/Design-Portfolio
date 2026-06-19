@@ -78,8 +78,8 @@ export default function Nav() {
             href="/"
             onClick={() => setOpen(false)}
             aria-label="Sumedh, home"
-            className="text-[14px] font-normal tracking-[0.02em] text-[#0a0a0a] transition-colors hover:text-[#525252]"
-            style={{ fontFamily: "Inter, sans-serif" }}
+            className="text-[22px] italic leading-none text-[#0a0a0a] transition-colors hover:text-[#525252] md:text-[24px]"
+            style={{ fontFamily: "'Playfair Display', serif", fontWeight: 400 }}
           >
             Sumedh
           </Link>

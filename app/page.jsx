@@ -141,22 +141,28 @@ export default function Home() {
             cards below. Uses only the existing fonts (League Spartan +
             Playfair Display italic). */}
         <div className="w-full px-5">
-          <div className="mx-auto flex max-w-[1080px] flex-col items-start text-left">
+          {/* pl-3 (12px) gives the italic A's left overhang room so it
+              isn't clipped; every line shifts together, keeping one left
+              edge. */}
+          <div className="mx-auto flex max-w-[1080px] flex-col items-start pl-3 text-left">
             {/* Greeting, League Spartan */}
             <p
-              className="m-0 text-[13px] leading-normal text-[#525252]"
+              className="m-0 leading-normal text-[#525252]"
               style={{
                 fontFamily: "'League Spartan', sans-serif",
                 fontWeight: 400,
+                fontSize: "clamp(1.15rem, 2vw, 1.6rem)",
               }}
             >
               Here&rsquo;s Sumedh,
             </p>
 
             {/* Headline, same editorial voice (Playfair Display italic),
-                just larger and heavier: 700 not 400, clamp-scaled. */}
+                just larger and heavier: 700 not 400, clamp-scaled.
+                overflow-visible so the italic glyph overhang is never
+                clipped by the headline's own box. */}
             <h1
-              className="m-0 mt-4 italic text-[#0a0a0a]"
+              className="m-0 mt-4 italic text-[#0a0a0a] overflow-visible"
               style={{
                 fontFamily: "'Playfair Display', serif",
                 fontWeight: 700,
@@ -167,10 +173,9 @@ export default function Home() {
             >
               designer, builder,
               <br />
-              {/* Gradient + drift live in the .hero-grad class (globals.css)
-                  so the animation can be gated behind prefers-reduced-motion
-                  and the background-clip box gets left padding to stop the
-                  italic A from clipping. */}
+              {/* Gradient + drift live in the .hero-grad class (globals.css),
+                  gated behind prefers-reduced-motion. The left-clip fix is on
+                  the hero block (pl-3) and the h1 (overflow-visible), not here. */}
               <span className="hero-grad">AI tinkerer</span>
               ,
               <br />
@@ -179,10 +184,11 @@ export default function Home() {
 
             {/* Bio, League Spartan */}
             <p
-              className="m-0 mt-6 text-[13px] leading-normal text-[#525252]"
+              className="m-0 mt-6 leading-normal text-[#525252]"
               style={{
                 fontFamily: "'League Spartan', sans-serif",
                 fontWeight: 400,
+                fontSize: "clamp(1.15rem, 2vw, 1.6rem)",
               }}
             >
               I design AI products and build the front-end myself, so they
