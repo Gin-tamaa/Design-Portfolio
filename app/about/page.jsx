@@ -26,7 +26,13 @@ const DREAMCALL_URL =
    items[0] is the masonry cover. */
 const WF = "/workflow-outputs";
 const im = (n, w, h) => ({ type: "image", src: `${WF}/img-${n}.jpg`, w, h });
-const vd = (n, w, h) => ({ type: "video", src: `${WF}/vid-${n}.mp4`, w, h });
+const vd = (n, w, h) => ({
+  type: "video",
+  src: `${WF}/vid-${n}.mp4`,
+  poster: `${WF}/posters/vid-${n}.jpg`,
+  w,
+  h,
+});
 
 const WORKFLOWS = [
   {
@@ -108,8 +114,6 @@ const WORKFLOWS = [
     title: "Campaign Films",
     caption: "Hero spots, generated",
     items: [
-      vd("10", 3, 4),
-      vd("11", 3, 4),
       vd("12", 3, 4),
       vd("13", 3, 4),
       vd("14", 3, 4),
@@ -119,6 +123,22 @@ const WORKFLOWS = [
     ],
   },
 ];
+
+// Every output, flattened in feed order. Each masonry tile opens the
+// lightbox at its flatIndex, so Next/Prev pages through the WHOLE feed,
+// not just one category. SECTIONS keeps the category headers and buckets
+// each category's items round-robin into 3 flex columns (row-major, so
+// Next follows the visual masonry order).
+const FLAT = [];
+const SECTIONS = WORKFLOWS.map((wf) => {
+  const cols = [[], [], []];
+  wf.items.forEach((it, i) => {
+    const entry = { ...it, wfTitle: wf.title, flatIndex: FLAT.length };
+    FLAT.push(entry);
+    cols[i % 3].push(entry);
+  });
+  return { id: wf.id, title: wf.title, caption: wf.caption, cols };
+});
 
 /* ---- Small helpers ------------------------------------------------------ */
 
@@ -166,11 +186,11 @@ function UpRight() {
   );
 }
 
-// A muted, looping video cover that shows its first frame instantly (the
-// #t=0.1 fragment forces the browser to paint that frame as a still) and
-// only plays while on-screen. preload="metadata" keeps the upfront cost to
-// the first frame, not the whole file, so the feed stays fast.
-function VideoCover({ src, className }) {
+// A muted, looping video cover. A real generated poster shows instantly as
+// the first-frame thumbnail (reliable, unlike the #t fragment which paints
+// black on many browsers), and the clip only plays while on-screen.
+// preload="none" means nothing but the poster loads until it plays.
+function VideoCover({ src, poster, className }) {
   const ref = useRef(null);
   useEffect(() => {
     const v = ref.current;
@@ -189,11 +209,12 @@ function VideoCover({ src, className }) {
   return (
     <video
       ref={ref}
-      src={`${src}#t=0.1`}
+      src={src}
+      poster={poster}
       muted
       loop
       playsInline
-      preload="metadata"
+      preload="none"
       className={className}
       draggable={false}
     />
@@ -210,7 +231,7 @@ function CoverMedia({ item }) {
       style={{ aspectRatio: `${item.w} / ${item.h}` }}
     >
       {item.type === "video" ? (
-        <VideoCover src={item.src} className={cls} />
+        <VideoCover src={item.src} poster={item.poster} className={cls} />
       ) : (
         <img
           src={item.src}
@@ -226,8 +247,7 @@ function CoverMedia({ item }) {
 
 /* ---- Lightbox carousel -------------------------------------------------- */
 
-function Lightbox({ workflow, index, onIndex, onClose }) {
-  const items = workflow.items;
+function Lightbox({ items, index, onIndex, onClose }) {
   const item = items[index];
   const total = items.length;
   const reduced = usePrefersReducedMotion();
@@ -300,7 +320,7 @@ function Lightbox({ workflow, index, onIndex, onClose }) {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label={`${workflow.title} gallery`}
+      aria-label={`${item.wfTitle} gallery`}
       onClick={onClose}
       className="fixed inset-0 z-[100] flex flex-col"
       style={{ background: "rgba(0,0,0,0.92)" }}
@@ -314,7 +334,7 @@ function Lightbox({ workflow, index, onIndex, onClose }) {
           className="text-[14px] text-white/85"
           style={{ fontFamily: "Inter, sans-serif" }}
         >
-          {workflow.title}
+          {item.wfTitle}
         </span>
         <button
           ref={closeRef}
@@ -378,6 +398,7 @@ function Lightbox({ workflow, index, onIndex, onClose }) {
           ) : (
             <video
               src={item.src}
+              poster={item.poster}
               controls
               autoPlay
               muted
@@ -421,20 +442,11 @@ function Lightbox({ workflow, index, onIndex, onClose }) {
 /* ---- Page --------------------------------------------------------------- */
 
 export default function AboutPage() {
-  const [open, setOpen] = useState(null); // { id, index } or null
+  // Flat index of the open output (or null). Next/Prev walk FLAT.
+  const [open, setOpen] = useState(null);
   const rootRef = useRef(null);
 
-  const openWorkflow = (id) => setOpen({ id, index: 0 });
   const close = () => setOpen(null);
-
-  // Masonry via flex columns (not CSS multicol): bucket the covers
-  // round-robin into 3 columns. Each column is a flex flex-col with a
-  // 24px gap, so the varied tile heights stagger naturally. The columns
-  // sit in a grid-cols-3 shell with a 12px gutter (1 column on mobile).
-  const MASONRY_COLS = 3;
-  const masonryColumns = Array.from({ length: MASONRY_COLS }, (_, c) =>
-    WORKFLOWS.filter((_, i) => i % MASONRY_COLS === c)
-  );
 
   // Scroll-reveal, same .reveal / is-visible pattern as the homepage feed
   // and the case study pages. Reduced motion is handled by the .reveal CSS.
@@ -461,8 +473,6 @@ export default function AboutPage() {
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, []);
-
-  const activeWorkflow = open ? WORKFLOWS.find((w) => w.id === open.id) : null;
 
   return (
     <main
@@ -588,52 +598,55 @@ export default function AboutPage() {
       </section>
 
       {/* ===== Workflow masonry feed =============================== */}
+      {/* Every output is shown, grouped under its category header. Each
+          category is a grid-cols-3 shell (12px gutter) of flex columns
+          (24px vertical gap) so tiles stagger. Tiles open the lightbox at
+          their flat index; Next/Prev walk the whole feed in order. */}
       <section className="mx-auto w-full max-w-[1800px] px-5 pb-32 pt-24 md:pt-36">
         <FaintLabel className="reveal">Workflows</FaintLabel>
-        {/* Flex-column masonry: a grid-cols-3 shell (12px gutter) of flex
-            columns (24px vertical gap). Varied tile heights stagger
-            naturally; no CSS multicol, so the reveal transforms render
-            cleanly. Stacks to one column on mobile. */}
-        <div className="mt-8 grid grid-cols-1 gap-3 md:grid-cols-3">
-          {masonryColumns.map((col, ci) => (
-            <div key={ci} className="flex flex-col gap-6">
-              {col.map((wf) => {
-                const cover = wf.items[0];
-                return (
-                  <button
-                    key={wf.id}
-                    type="button"
-                    onClick={() => openWorkflow(wf.id)}
-                    aria-label={`Open ${wf.title} gallery`}
-                    className="reveal block w-full cursor-zoom-in text-left"
-                  >
-                    <CoverMedia item={cover} />
-                    <h3
-                      className="mt-3 text-[16px] font-semibold text-[#0a0a0a]"
-                      style={{ fontFamily: "Inter, sans-serif" }}
-                    >
-                      {wf.title}
-                    </h3>
-                    <p
-                      className="mt-1 text-[11px] uppercase tracking-[0.18em] text-[#aaaaaa]"
-                      style={{ fontFamily: "Inter, sans-serif" }}
-                    >
-                      {wf.caption}
-                    </p>
-                  </button>
-                );
-              })}
+        {SECTIONS.map((section) => (
+          <div key={section.id} className="mt-14 first:mt-9">
+            <div className="reveal mb-5">
+              <h3
+                className="text-[16px] font-semibold text-[#0a0a0a]"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                {section.title}
+              </h3>
+              <p
+                className="mt-1 text-[11px] uppercase tracking-[0.18em] text-[#aaaaaa]"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                {section.caption}
+              </p>
             </div>
-          ))}
-        </div>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+              {section.cols.map((col, ci) => (
+                <div key={ci} className="flex flex-col gap-6">
+                  {col.map((it) => (
+                    <button
+                      key={it.flatIndex}
+                      type="button"
+                      onClick={() => setOpen(it.flatIndex)}
+                      aria-label={`Open ${section.title} output`}
+                      className="reveal block w-full cursor-zoom-in"
+                    >
+                      <CoverMedia item={it} />
+                    </button>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
       </section>
 
-      {/* ===== Lightbox ============================================ */}
-      {activeWorkflow ? (
+      {/* ===== Lightbox (pages the whole feed) ===================== */}
+      {open !== null ? (
         <Lightbox
-          workflow={activeWorkflow}
-          index={open.index}
-          onIndex={(i) => setOpen((o) => ({ ...o, index: i }))}
+          items={FLAT}
+          index={open}
+          onIndex={setOpen}
           onClose={close}
         />
       ) : null}
