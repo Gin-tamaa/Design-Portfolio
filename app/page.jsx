@@ -26,7 +26,25 @@ import Carousel from "./components/Carousel";
 export default function Home() {
   const [revealed, setRevealed] = useState(false);
   const [scrollFadeOn, setScrollFadeOn] = useState(false);
+  // Scroll cue is shown at the top, hidden once the user starts scrolling
+  // (so it doesn't linger over the feed). Only flips state on threshold
+  // crossing to avoid re-rendering on every scroll frame.
+  const [showCue, setShowCue] = useState(true);
   const heroRef = useRef(null);
+
+  useEffect(() => {
+    let shown = true;
+    const onScroll = () => {
+      const next = window.scrollY < 80;
+      if (next !== shown) {
+        shown = next;
+        setShowCue(next);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Phase 1 — reveal animation when the intro hands off (replaces the old
   // framer-motion path). A short CSS transition fades the hero in, then we
@@ -196,6 +214,47 @@ export default function Home() {
             </p>
           </div>
         </div>
+
+        {/* Scroll cue, anchored bottom-center. Nudges users to the work
+            feed under the fixed hero; clicking smooth-scrolls down a
+            viewport. Fades out once you start scrolling. */}
+        <button
+          type="button"
+          onClick={() =>
+            window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
+          }
+          aria-label="Scroll to work"
+          className="scroll-cue absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2"
+          style={{
+            opacity: showCue ? 1 : 0,
+            pointerEvents: showCue ? "auto" : "none",
+            transition: "opacity 0.4s ease",
+          }}
+        >
+          <span
+            className="text-[11px] uppercase tracking-[0.22em] text-[#aaaaaa]"
+            style={{ fontFamily: "'League Spartan', sans-serif" }}
+          >
+            Scroll
+          </span>
+          <svg
+            className="scroll-cue__arrow"
+            width="40"
+            height="40"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+            style={{ color: "#525252" }}
+          >
+            <path
+              d="M6 9l6 6 6-6"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </button>
       </section>
 
       {/* Cards rise over the fixed hero. Wrapper is z-10 to sit above it;

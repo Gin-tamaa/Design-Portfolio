@@ -289,15 +289,7 @@ export default function Intro({ onFinish }) {
         ))}
       </div>
 
-      <div className="intro-ui intro-ui--brand">s — k © intro</div>
-      <div className="intro-ui intro-ui--ctrls">
-        <button onClick={() => skipFnRef.current && skipFnRef.current()}>
-          skip
-        </button>
-        <button onClick={() => replayFnRef.current && replayFnRef.current()}>
-          replay
-        </button>
-      </div>
+      <div className="intro-ui intro-ui--brand">s k © intro</div>
     </div>
   );
 }

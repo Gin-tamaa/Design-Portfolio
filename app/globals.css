@@ -28,6 +28,30 @@
   }
 }
 
+/* ===== Homepage hero scroll cue =====
+   Soft-bounce chevron that nudges users to the feed below the fixed hero.
+   translate3d + will-change keep it on the GPU; the bounce is gated behind
+   prefers-reduced-motion. On hover it stops bouncing and scales up slightly
+   to read as interactive. */
+@keyframes heroScrollBounce {
+  0%, 100% { transform: translate3d(0, 0, 0); opacity: 0.4; }
+  50% { transform: translate3d(0, 10px, 0); opacity: 1; }
+}
+.scroll-cue__arrow {
+  will-change: transform;
+  transition: transform 0.25s ease;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-cue__arrow {
+    animation: heroScrollBounce 1.8s ease-in-out infinite;
+  }
+}
+.scroll-cue:hover .scroll-cue__arrow {
+  animation: none;
+  transform: scale(1.1);
+  opacity: 1;
+}
+
 /* ===== ShopOS case-study nav override =====
    The global <Nav /> in app/layout.jsx is white by default. On /work/shopos
    the page sets body.shopos-hero (transparent + white text) and toggles
