@@ -52,6 +52,40 @@
   opacity: 1;
 }
 
+/* ===== Chat agent avatar aura (EXPERIMENT, easy to revert) =====
+   A slow persona-colored sheen that rotates behind the pixel character,
+   so each agent reads as "alive" (the same idea as the Memory wordmark
+   over its moving canvas), reused wherever the avatar shows including the
+   assembling cluster. Pure CSS, clipped inside the avatar circle, GPU
+   transform only. Color comes from the per-avatar --aura var. To revert:
+   delete this block + the `aura` prop usage in AgentAvatar. */
+@keyframes agentAuraSpin {
+  to { transform: rotate(1turn); }
+}
+.agent-aura {
+  position: absolute;
+  inset: -30%;
+  border-radius: 9999px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    var(--aura, #7c5cff) 70deg,
+    transparent 150deg,
+    var(--aura, #7c5cff) 240deg,
+    transparent 320deg
+  );
+}
+@media (prefers-reduced-motion: no-preference) {
+  .agent-aura {
+    transform-origin: center;
+    will-change: transform;
+    animation: agentAuraSpin 4.5s linear infinite;
+  }
+}
+
 /* ===== ShopOS case-study nav override =====
    The global <Nav /> in app/layout.jsx is white by default. On /work/shopos
    the page sets body.shopos-hero (transparent + white text) and toggles

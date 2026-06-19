@@ -635,7 +635,7 @@ function EmptyState() {
           const p = PERSONAS[id];
           return (
             <div key={id} className="flex w-[108px] flex-col items-center gap-4">
-              <AgentAvatar persona={id} size={108} />
+              <AgentAvatar persona={id} size={108} aura />
               <p
                 className="text-[14px] leading-[24px] text-black"
                 style={{ fontFamily: "Inter, sans-serif", fontWeight: 300 }}

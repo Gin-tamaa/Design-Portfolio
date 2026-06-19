@@ -20,24 +20,30 @@ import { useEffect, useState } from "react";
 // No per-persona width/height/top/left crops anywhere — those caused the
 // stretched + left-biased look this avatar atlas was originally built to
 // hide. Keep it simple: cover + top-center + scale + a single translateY.
+// `accent` is the vivid persona color (matches the chat persona palette),
+// used by the optional animated aura behind the portrait.
 export const AGENT_AVATARS = {
   "creative-head": {
     bg: "#8dbded",
+    accent: "#7C5CFF",
     default: { url: "/images/agents-chat-raw/creative-head.png", translateY: "12%" },
     thinking: { url: "/images/agents-chat-raw/creative-head-thinking.png", translateY: "12%" },
   },
   "ai-tinkerer": {
     bg: "#b08ded",
+    accent: "#0E9FB8",
     default: { url: "/images/agents-chat-raw/ai-tinkerer.png", translateY: "12%" },
     thinking: { url: "/images/agents-chat-raw/ai-tinkerer-thinking.png", translateY: "12%" },
   },
   "vibe-coder": {
     bg: "#edd78d",
+    accent: "#3D6BE5",
     default: { url: "/images/agents-chat-raw/vibe-coder.png", translateY: "8%" },
     thinking: { url: "/images/agents-chat-raw/vibe-coder-thinking.png", translateY: "8%" },
   },
   "funny-side": {
     bg: "#ed8dc2",
+    accent: "#E0A93B",
     default: { url: "/images/agents-chat-raw/funny-side.png", translateY: "12%" },
     thinking: { url: "/images/agents-chat-raw/funny-side-thinking.png", translateY: "12%" },
   },
@@ -75,6 +81,7 @@ export default function AgentAvatar({
   state = "default",
   size = 24,
   ring = "none",
+  aura = false,
   className = "",
 }) {
   const data = AGENT_AVATARS[persona];
@@ -99,6 +106,13 @@ export default function AgentAvatar({
       className={`relative inline-block overflow-hidden rounded-full ${className}`}
       style={{ width: size, height: size, background: data.bg, ...ringStyle }}
     >
+      {aura ? (
+        <span
+          className="agent-aura"
+          aria-hidden="true"
+          style={{ "--aura": data.accent }}
+        />
+      ) : null}
       <Pose url={pose.url} translateY={pose.translateY} />
     </span>
   );
@@ -112,6 +126,7 @@ export function CyclingAgentAvatar({
   persona,
   size = 24,
   ring = "none",
+  aura = false,
   className = "",
   offset = 0,
   reducedMotion = false,
@@ -135,6 +150,7 @@ export function CyclingAgentAvatar({
       state={showThinking ? "thinking" : "default"}
       size={size}
       ring={ring}
+      aura={aura}
       className={className}
     />
   );
