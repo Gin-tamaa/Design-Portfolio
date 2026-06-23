@@ -18,11 +18,21 @@ import { GrainGradient } from "@paper-design/shaders-react";
 // `speed` is passed through so the caller can pause the drift (speed 0)
 // when the tile is off-screen; the gradient stays drawn, it just stops
 // advancing, which keeps it from animating while scrolled away.
+//
+// `maxPixelCount` caps the shader's render resolution (width × height ×
+// dpr²). Without it the canvas renders at full device pixel ratio — on a
+// 2× display that's ~4× the pixels per frame, which made scrolling onto
+// the DreamCall card stutter. The card visual is at most ~1080×480, so we
+// cap near that (≈1× DPR). The gradient is heavily softened, so the lower
+// resolution is invisible. Mirrors MemoryThumbnail's maxDpr={1.25} intent.
+const MAX_PIXEL_COUNT = 1080 * 480;
+
 export function GradientBackground({ speed = 1 }) {
   return (
     <div className="absolute inset-0">
       <GrainGradient
         style={{ height: "100%", width: "100%" }}
+        maxPixelCount={MAX_PIXEL_COUNT}
         colorBack="hsl(0, 0%, 0%)"
         softness={0.76}
         intensity={0.45}
