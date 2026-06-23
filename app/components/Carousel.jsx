@@ -176,6 +176,36 @@ export default function Carousel() {
 
   return (
     <section className="feed">
+      {/* Section intro — eyebrow + headline + sub, centered above the
+          stacked cards. Echoes the "Selected Work" reference but uses the
+          site's own type (Poppins 800 headline, League Spartan sub) and
+          the hero's green→purple gradient on the sparkle glyph. Carries
+          the `feed-card` class so the homepage IntersectionObserver gives
+          it the same rise-in reveal as the cards. */}
+      <header className="feed-intro feed-card">
+        <p className="feed-intro-eyebrow">
+          <span className="feed-intro-glyph" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="100%" height="100%" fill="none">
+              <defs>
+                <linearGradient id="feedSparkle" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stopColor="#34d399" />
+                  <stop offset="100%" stopColor="#8b5cf6" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M12 0 L14.6 9.4 L24 12 L14.6 14.6 L12 24 L9.4 14.6 L0 12 L9.4 9.4 Z"
+                fill="url(#feedSparkle)"
+              />
+            </svg>
+          </span>
+          Selected Work
+        </p>
+        <h2 className="feed-intro-title">check out some of my work</h2>
+        <p className="feed-intro-sub">
+          A few products I&rsquo;ve helped shape, and the thinking behind them.
+        </p>
+      </header>
+
       {CARDS.map((card) => (
         <FeedCard
           key={card.title}

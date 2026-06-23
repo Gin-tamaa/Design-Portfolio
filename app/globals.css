@@ -921,6 +921,58 @@ body.brand-memory-hero.brand-memory-nav-solid header {
   }
 }
 
+/* ===== Home feed intro header ("Selected Work", Carousel.jsx) =====
+   Centered eyebrow + headline + sub above the stacked cards. Shares the
+   .feed-card class so it inherits the rise-in reveal (and the reduced-
+   motion / no-IntersectionObserver fallbacks above); these rules only set
+   its centered layout and type. Headline = Poppins 800 (the Intro's voice),
+   sub = League Spartan 300 (the hero bio's voice), sparkle = the hero's
+   green→purple gradient (see #feedSparkle in Carousel.jsx). */
+.feed-intro {
+  align-items: center;
+  text-align: center;
+  gap: 18px;
+  padding-bottom: 8px;
+}
+.feed-intro-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6b6b6b;
+}
+.feed-intro-glyph {
+  display: inline-flex;
+  width: 15px;
+  height: 15px;
+}
+.feed-intro-title {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.25rem, 5.5vw, 4rem);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: #0a0a0a;
+}
+.feed-intro-sub {
+  margin: 0;
+  max-width: 42ch;
+  font-family: "League Spartan", sans-serif;
+  font-weight: 300;
+  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  line-height: 1.5;
+  color: #525252;
+}
+@media (max-width: 768px) {
+  .feed-intro { gap: 14px; }
+}
+
 /* ===== Legacy masonry (no longer used by /; kept for reference) ===== */
 .masonry {
   width: 100%;
