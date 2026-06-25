@@ -144,6 +144,47 @@ function Contrast({ leftLabel, left, rightLabel, right }) {
   );
 }
 
+// Problem card: dark feature card adapted from the reference (teal line
+// glyph -> bold white title -> muted description). Laid out as a horizontal
+// row at the use site. Hand-drawn SVG icons, same as Bracket; the teal
+// accent echoes the hero sky, and white/title-on-dark stays on the cs system.
+function ProblemCard({ icon, title, children }) {
+  return (
+    <div className="rounded-2xl border border-white/[0.08] bg-[#0d0d0d] p-6 md:p-7">
+      <span aria-hidden="true" className="block text-[#34d399]">
+        {icon}
+      </span>
+      <h3 className="mt-5 text-[18px] font-semibold leading-tight text-white md:text-[19px]">
+        {title}
+      </h3>
+      <p className="mt-2.5 text-[14px] leading-[1.6] text-white/55 md:text-[15px]">
+        {children}
+      </p>
+    </div>
+  );
+}
+
+// The three line glyphs for the problem cards, drawn to match the reference's
+// thin emerald outline style.
+const ICON_COMPARE = (
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="5" width="7.5" height="14" rx="1.6" />
+    <rect x="13.5" y="5" width="7.5" height="14" rx="1.6" />
+  </svg>
+);
+const ICON_FEEDBACK = (
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="4" width="18" height="13" rx="3" />
+    <path d="M8 17v3.5L13 17" />
+  </svg>
+);
+const ICON_APPROVAL = (
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="3" width="18" height="18" rx="4.5" />
+    <path d="M7.5 12.2l3 3 6-6.4" />
+  </svg>
+);
+
 // Challenge card: a dark, centered "key tension" moment, adapted from the
 // reference treatment (warning glyph -> eyebrow -> large headline). Stays on
 // the existing system — Inter, the --cs-section scale, and the cs-on-dark
@@ -509,22 +550,19 @@ export default function EnterpriseDashboardPage() {
             <p className="cs-body mt-10 max-w-[var(--cs-prose-col)]">
               <strong>Three holes made the work slow:</strong>
             </p>
-            <ul className="mt-6 space-y-3">
-              <Bullet>
-                <strong>No input to compare against.</strong> You judged a
-                generated image from memory of the garment, never side by
-                side with it.
-              </Bullet>
-              <Bullet>
-                <strong>No feedback where the work lived.</strong> &ldquo;The
-                print is off&rdquo; was a typed WhatsApp message with no
-                image attached to it.
-              </Bullet>
-              <Bullet>
-                <strong>All-or-nothing approval.</strong> Reject one SKU and
-                the <em>entire</em> batch went back to redo.
-              </Bullet>
-            </ul>
+            <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
+              <ProblemCard icon={ICON_COMPARE} title="No input to compare against">
+                You judged a generated image from memory of the garment, never
+                side by side with it.
+              </ProblemCard>
+              <ProblemCard icon={ICON_FEEDBACK} title="No feedback where the work lived">
+                &ldquo;The print is off&rdquo; was a typed WhatsApp message with
+                no image attached to it.
+              </ProblemCard>
+              <ProblemCard icon={ICON_APPROVAL} title="All-or-nothing approval">
+                Reject one SKU and the entire batch went back to redo.
+              </ProblemCard>
+            </div>
 
             <ChallengeCard>
               Out of 500 images you could love 499 and lose all of them over
