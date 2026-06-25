@@ -151,11 +151,11 @@ function Contrast({ leftLabel, left, rightLabel, right }) {
 // accent echoes the hero sky. Stacked vertically at the use site.
 function ProblemCard({ icon, title, children }) {
   return (
-    <div className="flex gap-4 rounded-2xl border border-[#E5DDD0] bg-white p-5 md:gap-5 md:p-6">
-      <span aria-hidden="true" className="mt-[2px] shrink-0 text-[#0d9488]">
+    <div className="flex items-start gap-4 rounded-2xl border border-[#E5DDD0] bg-white px-6 py-5 md:gap-5 md:px-7 md:py-6">
+      <span aria-hidden="true" className="mt-[3px] shrink-0 text-[#0d9488]">
         {icon}
       </span>
-      <p className="text-[14px] leading-[1.6] text-[#525252] md:text-[15px]">
+      <p className="text-[14px] leading-[1.65] text-[#525252] md:text-[15px]">
         <strong className="font-semibold text-[#0a0a0a]">{title}.</strong>{" "}
         {children}
       </p>
@@ -525,7 +525,7 @@ export default function EnterpriseDashboardPage() {
           {/* Two-column editorial block, faithful to the reference: a short
               umbrella heading on the left (top-aligned, sticky on desktop),
               the narrative + the three constraint cards stacked on the right. */}
-          <div className="mt-12 grid grid-cols-1 gap-x-16 gap-y-8 md:mt-16 md:grid-cols-[minmax(0,16rem)_minmax(0,1fr)]">
+          <div className="mt-12 grid grid-cols-1 gap-x-16 gap-y-8 md:mt-16 md:grid-cols-[minmax(0,1fr)_minmax(0,640px)]">
             <h3 className="text-[20px] font-semibold leading-snug tracking-[-0.01em] text-[#0a0a0a] md:sticky md:top-28 md:self-start md:text-[22px]">
               Three holes made the work slow.
             </h3>
