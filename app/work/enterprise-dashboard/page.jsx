@@ -522,45 +522,47 @@ export default function EnterpriseDashboardPage() {
           <Eyebrow>The problem</Eyebrow>
           <SectionHeader>The batch lived in a WhatsApp thread.</SectionHeader>
 
-          {/* Linear, single-column flow, faithful to the reference: the
-              umbrella line sits directly under the header, then the narrative,
-              then the three constraint cards stacked. */}
-          <ProseColumn>
-            <h3 className="mt-5 text-[20px] font-semibold leading-snug tracking-[-0.01em] text-[#0a0a0a] md:text-[22px]">
+          {/* Two-column editorial block, faithful to the reference: a short
+              umbrella heading on the left (top-aligned, sticky on desktop),
+              the narrative + the three constraint cards stacked on the right. */}
+          <div className="mt-12 grid grid-cols-1 gap-x-16 gap-y-8 md:mt-16 md:grid-cols-[minmax(0,16rem)_minmax(0,1fr)]">
+            <h3 className="text-[20px] font-semibold leading-snug tracking-[-0.01em] text-[#0a0a0a] md:sticky md:top-28 md:self-start md:text-[22px]">
               Three holes made the work slow.
             </h3>
 
-            <Prose className="mt-8">
-              <p>
-                An enterprise brand wants a summer collection: 100 to 500
-                product images, each SKU placed against a generated
-                background. They brief the request to their account manager
-                over WhatsApp. ShopOS generates the batch. Then the real work
-                starts, and it also happens over WhatsApp: the client scrolls
-                the outputs, flags the ones they dislike, types out
-                what&rsquo;s wrong, waits.
-              </p>
-              <p>
-                The old enterprise dashboard sat next to all of this. It could{" "}
-                <em>track</em> batches and <em>show</em> you what got
-                generated. It couldn&rsquo;t let you act on any of it.
-              </p>
-            </Prose>
+            <div>
+              <Prose>
+                <p>
+                  An enterprise brand wants a summer collection: 100 to 500
+                  product images, each SKU placed against a generated
+                  background. They brief the request to their account manager
+                  over WhatsApp. ShopOS generates the batch. Then the real
+                  work starts, and it also happens over WhatsApp: the client
+                  scrolls the outputs, flags the ones they dislike, types out
+                  what&rsquo;s wrong, waits.
+                </p>
+                <p>
+                  The old enterprise dashboard sat next to all of this. It
+                  could <em>track</em> batches and <em>show</em> you what got
+                  generated. It couldn&rsquo;t let you act on any of it.
+                </p>
+              </Prose>
 
-            <div className="mt-10 space-y-4">
-              <ProblemCard icon={ICON_COMPARE} title="No input to compare against">
-                You judged a generated image from memory of the garment, never
-                side by side with it.
-              </ProblemCard>
-              <ProblemCard icon={ICON_FEEDBACK} title="No feedback where the work lived">
-                &ldquo;The print is off&rdquo; was a typed WhatsApp message
-                with no image attached to it.
-              </ProblemCard>
-              <ProblemCard icon={ICON_APPROVAL} title="All-or-nothing approval">
-                Reject one SKU and the entire batch went back to redo.
-              </ProblemCard>
+              <div className="mt-8 space-y-4">
+                <ProblemCard icon={ICON_COMPARE} title="No input to compare against">
+                  You judged a generated image from memory of the garment,
+                  never side by side with it.
+                </ProblemCard>
+                <ProblemCard icon={ICON_FEEDBACK} title="No feedback where the work lived">
+                  &ldquo;The print is off&rdquo; was a typed WhatsApp message
+                  with no image attached to it.
+                </ProblemCard>
+                <ProblemCard icon={ICON_APPROVAL} title="All-or-nothing approval">
+                  Reject one SKU and the entire batch went back to redo.
+                </ProblemCard>
+              </div>
             </div>
-          </ProseColumn>
+          </div>
 
           <ChallengeCard>
             Out of 500 images you could love 499 and lose all of them over
