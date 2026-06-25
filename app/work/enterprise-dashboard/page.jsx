@@ -14,9 +14,8 @@ import Link from "next/link";
 import ChatLauncher from "../../components/ChatLauncher";
 
 const SKY_SRC = "/images/dashboard-hero-sky.png";
-// PLACEHOLDER: reusing Mission Control hero, swap later. (Same "eight
-// heads" agents thumbnail the /work/shopos hero uses.)
-const AGENTS_SRC = "/images/agents-hero.png";
+// Dashboard UI screenshot layered over the wordmark in the hero.
+const AGENTS_SRC = "/images/dashboard-hero-ui.png";
 
 /* ============================================================================
    Primitives copied verbatim from the ShopOS / Brand Memory scaffold so the
@@ -412,11 +411,11 @@ export default function EnterpriseDashboardPage() {
           className="pointer-events-none absolute inset-x-0 will-change-transform"
           style={{ top: "calc(332/760 * 100%)" }}
         >
-          {/* PLACEHOLDER: reusing Mission Control hero, swap later. */}
+          {/* Dashboard UI screenshot, floats as a rounded card over the wordmark */}
           <img
             src={AGENTS_SRC}
             alt=""
-            className="mx-auto block h-auto w-[80vw] max-w-[1145px] select-none"
+            className="mx-auto block h-auto w-[66vw] max-w-[1000px] select-none rounded-2xl shadow-[0_30px_80px_-20px_rgba(0,0,0,0.45)]"
             draggable={false}
           />
         </div>
