@@ -13,9 +13,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import ChatLauncher from "../../components/ChatLauncher";
 
-// PLACEHOLDER: reusing Mission Control hero, swap later. (Same sky bg the
-// /work/shopos hero uses.)
-const SKY_SRC = "/images/shopos-hero-sky.png";
+const SKY_SRC = "/images/dashboard-hero-sky.png";
 // PLACEHOLDER: reusing Mission Control hero, swap later. (Same "eight
 // heads" agents thumbnail the /work/shopos hero uses.)
 const AGENTS_SRC = "/images/agents-hero.png";
@@ -357,7 +355,6 @@ export default function EnterpriseDashboardPage() {
           className="absolute inset-0 will-change-transform"
           style={{ top: "-60px", height: "calc(100% + 120px)" }}
         >
-          {/* PLACEHOLDER: reusing Mission Control hero, swap later. */}
           <img
             src={SKY_SRC}
             alt=""
