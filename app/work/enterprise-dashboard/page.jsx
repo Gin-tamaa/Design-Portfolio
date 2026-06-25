@@ -491,21 +491,15 @@ export default function EnterpriseDashboardPage() {
         </ProseColumn>
       </Container>
 
-      {/* ===== My role + Timeline / Team / Tools ======================== */}
+      {/* ===== My role / Timeline / Team / Tools ======================== */}
       <Container className="reveal pt-16 md:pt-20">
         <ProseColumn>
-          <p className="cs-eyebrow">My role</p>
-          <p className="cs-body mt-3">
-            <em>Owned:</em> product design and the React frontend, end to
-            end. <em>Co-created:</em> the strategy with PM, engineering,
-            and the account managers.
-          </p>
-
           <dl
-            className="mt-10 grid grid-cols-1 gap-x-8 gap-y-10 md:mt-12 md:grid-cols-3 md:gap-x-10"
+            className="grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-4 md:gap-x-10"
             style={{ fontFamily: "Inter, sans-serif" }}
           >
             {[
+              { k: "My role", v: "User Research, Design, Front End" },
               { k: "Timeline", v: "2026" },
               {
                 k: "Team",
