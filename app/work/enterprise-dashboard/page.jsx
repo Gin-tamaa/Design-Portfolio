@@ -144,21 +144,19 @@ function Contrast({ leftLabel, left, rightLabel, right }) {
   );
 }
 
-// Problem card: feature card adapted from the reference (teal line glyph ->
-// title -> description), on the white case-study theme — white bg, warm
-// #E5DDD0 hairline, ink title, secondary body — matching the Contrast cards.
-// Laid out as a horizontal row at the use site. Hand-drawn SVG icons, same as
-// Bracket; the teal accent echoes the hero sky.
+// Problem card: horizontal constraint card adapted from the reference — a
+// teal line glyph in its own left rail, then a bold ink lead-in flowing into
+// the secondary body. White case-study theme (white bg, warm #E5DDD0 hairline)
+// to match the Contrast cards. Hand-drawn SVG icons, same as Bracket; the teal
+// accent echoes the hero sky. Stacked vertically at the use site.
 function ProblemCard({ icon, title, children }) {
   return (
-    <div className="rounded-2xl border border-[#E5DDD0] bg-white p-6 md:p-7">
-      <span aria-hidden="true" className="block text-[#0d9488]">
+    <div className="flex gap-4 rounded-2xl border border-[#E5DDD0] bg-white p-5 md:gap-5 md:p-6">
+      <span aria-hidden="true" className="mt-[2px] shrink-0 text-[#0d9488]">
         {icon}
       </span>
-      <h3 className="mt-5 text-[16px] font-semibold leading-snug text-[#0a0a0a] md:text-[17px]">
-        {title}
-      </h3>
-      <p className="mt-2 text-[14px] leading-[1.6] text-[#525252] md:text-[15px]">
+      <p className="text-[14px] leading-[1.6] text-[#525252] md:text-[15px]">
+        <strong className="font-semibold text-[#0a0a0a]">{title}.</strong>{" "}
         {children}
       </p>
     </div>
@@ -527,49 +525,56 @@ export default function EnterpriseDashboardPage() {
       {/* ===== 01 · The problem ========================================= */}
       <section className="reveal py-24 md:py-36">
         <Container>
-          <ProseColumn>
-            <Eyebrow>The problem</Eyebrow>
-            <SectionHeader>The batch lived in a WhatsApp thread.</SectionHeader>
-            <Prose className="mt-8">
-              <p>
-                An enterprise brand wants a summer collection: 100 to 500
-                product images, each SKU placed against a generated
-                background. They brief the request to their account manager
-                over WhatsApp. ShopOS generates the batch. Then the real
-                work starts, and it also happens over WhatsApp: the client
-                scrolls the outputs, flags the ones they dislike, types out
-                what&rsquo;s wrong, waits.
-              </p>
-              <p>
-                The old enterprise dashboard sat next to all of this. It
-                could <em>track</em> batches and <em>show</em> you what got
-                generated. It couldn&rsquo;t let you act on any of it.
-              </p>
-            </Prose>
+          <Eyebrow>The problem</Eyebrow>
+          <SectionHeader>The batch lived in a WhatsApp thread.</SectionHeader>
 
-            <p className="cs-body mt-10 max-w-[var(--cs-prose-col)]">
-              <strong>Three holes made the work slow:</strong>
-            </p>
-            <div className="mt-6 grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
-              <ProblemCard icon={ICON_COMPARE} title="No input to compare against">
-                You judged a generated image from memory of the garment, never
-                side by side with it.
-              </ProblemCard>
-              <ProblemCard icon={ICON_FEEDBACK} title="No feedback where the work lived">
-                &ldquo;The print is off&rdquo; was a typed WhatsApp message with
-                no image attached to it.
-              </ProblemCard>
-              <ProblemCard icon={ICON_APPROVAL} title="All-or-nothing approval">
-                Reject one SKU and the entire batch went back to redo.
-              </ProblemCard>
+          {/* Two-column editorial block: a short umbrella heading on the left
+              (sticky on desktop), the narrative + the three constraint cards
+              on the right — same shape as the reference. */}
+          <div className="mt-12 grid grid-cols-1 gap-x-16 gap-y-8 md:mt-16 md:grid-cols-[minmax(0,16rem)_minmax(0,1fr)]">
+            <h3 className="text-[20px] font-semibold leading-snug tracking-[-0.01em] text-[#0a0a0a] md:sticky md:top-28 md:self-start md:text-[22px]">
+              Three holes made the work slow.
+            </h3>
+
+            <div>
+              <Prose>
+                <p>
+                  An enterprise brand wants a summer collection: 100 to 500
+                  product images, each SKU placed against a generated
+                  background. They brief the request to their account manager
+                  over WhatsApp. ShopOS generates the batch. Then the real
+                  work starts, and it also happens over WhatsApp: the client
+                  scrolls the outputs, flags the ones they dislike, types out
+                  what&rsquo;s wrong, waits.
+                </p>
+                <p>
+                  The old enterprise dashboard sat next to all of this. It
+                  could <em>track</em> batches and <em>show</em> you what got
+                  generated. It couldn&rsquo;t let you act on any of it.
+                </p>
+              </Prose>
+
+              <div className="mt-8 space-y-4">
+                <ProblemCard icon={ICON_COMPARE} title="No input to compare against">
+                  You judged a generated image from memory of the garment,
+                  never side by side with it.
+                </ProblemCard>
+                <ProblemCard icon={ICON_FEEDBACK} title="No feedback where the work lived">
+                  &ldquo;The print is off&rdquo; was a typed WhatsApp message
+                  with no image attached to it.
+                </ProblemCard>
+                <ProblemCard icon={ICON_APPROVAL} title="All-or-nothing approval">
+                  Reject one SKU and the entire batch went back to redo.
+                </ProblemCard>
+              </div>
             </div>
+          </div>
 
-            <ChallengeCard>
-              Out of 500 images you could love 499 and lose all of them over
-              one. For batches that already took two weeks to close, that was
-              the most expensive button in the product.
-            </ChallengeCard>
-          </ProseColumn>
+          <ChallengeCard>
+            Out of 500 images you could love 499 and lose all of them over
+            one. For batches that already took two weeks to close, that was
+            the most expensive button in the product.
+          </ChallengeCard>
         </Container>
       </section>
 
