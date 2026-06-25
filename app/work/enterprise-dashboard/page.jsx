@@ -144,25 +144,56 @@ function Contrast({ leftLabel, left, rightLabel, right }) {
   );
 }
 
-// Pull-quote: editorial Playfair Display italic (the same accent voice
-// the homepage hero uses) at the --cs-thesis scale, with a hairline left
-// rule. No new font or color, just the existing type system.
-function PullQuote({ children }) {
+// Challenge card: a dark, centered "key tension" moment, adapted from the
+// reference treatment (warning glyph -> eyebrow -> large headline). Stays on
+// the existing system — Inter, the --cs-section scale, and the cs-on-dark
+// eyebrow color — so the only new ink is the amber caution accent on the
+// glyph. Pops against the white page exactly as the reference pops against
+// its own dark page.
+function ChallengeCard({ label = "The challenge", children }) {
   return (
-    <blockquote className="mt-12 border-l-2 border-[#0a0a0a]/15 pl-6 md:pl-8">
-      <p
-        className="max-w-[var(--cs-prose-col)] italic text-[#0a0a0a]"
+    <div className="mt-12 overflow-hidden rounded-3xl border border-white/10 bg-[#0a0a0a] px-6 py-14 text-center md:px-10 md:py-16">
+      {/* amber warning glyph in a soft ring (hand-drawn, same as Bracket) */}
+      <span
+        aria-hidden="true"
+        className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-[#E0A82E]/40"
         style={{
-          fontFamily: "'Playfair Display', serif",
+          background:
+            "radial-gradient(circle at 50% 45%, rgba(224,168,46,0.22), rgba(224,168,46,0.04) 70%)",
+        }}
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M12 3.5 L21.5 20 L2.5 20 Z"
+            stroke="#E0A82E"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M12 9.5 V14"
+            stroke="#E0A82E"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          <circle cx="12" cy="16.7" r="0.95" fill="#E0A82E" />
+        </svg>
+      </span>
+
+      <p className="cs-eyebrow cs-on-dark mt-6">{label}</p>
+
+      <p
+        className="mx-auto mt-5 max-w-[640px] text-white"
+        style={{
+          fontFamily: "'Inter', sans-serif",
           fontWeight: 500,
-          fontSize: "clamp(1.35rem, 1.1rem + 0.9vw, 1.8rem)",
+          fontSize: "var(--cs-section)",
           lineHeight: 1.3,
-          letterSpacing: "-0.005em",
+          letterSpacing: "-0.015em",
         }}
       >
         {children}
       </p>
-    </blockquote>
+    </div>
   );
 }
 
@@ -495,11 +526,11 @@ export default function EnterpriseDashboardPage() {
               </Bullet>
             </ul>
 
-            <PullQuote>
+            <ChallengeCard>
               Out of 500 images you could love 499 and lose all of them over
               one. For batches that already took two weeks to close, that was
               the most expensive button in the product.
-            </PullQuote>
+            </ChallengeCard>
           </ProseColumn>
         </Container>
       </section>
