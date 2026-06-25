@@ -14,9 +14,15 @@ import { useEffect, useRef } from "react";
 
 const SKY_SRC = "/images/shopos-hero-sky.png";
 
-// `word` is the centred wordmark; defaults to "Agents" (ShopOS card) but
-// the Enterprise Dashboard card reuses this thumbnail with word="Dashboard".
-export default function AgentsThumbnail({ word = "Agents" }) {
+// `word` is the centred wordmark; defaults to "Agents" (ShopOS card). The
+// Enterprise Dashboard card reuses this thumbnail with word="Dashboard" and
+// its own tree/cloud hero background via `sky`. `bg` is the CSS gradient that
+// shows only if the sky asset fails to load — keep it close to the artwork.
+export default function AgentsThumbnail({
+  word = "Agents",
+  sky = SKY_SRC,
+  bg = "linear-gradient(180deg, #2aa3a8 0%, #66bdc1 28%, #b8dbdc 60%, #ffffff 100%)",
+}) {
   const rootRef = useRef(null);
 
   useEffect(() => {
@@ -49,8 +55,7 @@ export default function AgentsThumbnail({ word = "Agents" }) {
       ref={rootRef}
       className="agents-thumbnail relative h-full w-full overflow-hidden"
       style={{
-        background:
-          "linear-gradient(180deg, #2aa3a8 0%, #66bdc1 28%, #b8dbdc 60%, #ffffff 100%)",
+        background: bg,
         // Enable container queries so the wordmark + figures can
         // scale by card width (cqw), not viewport (vw).
         containerType: "inline-size",
@@ -58,7 +63,7 @@ export default function AgentsThumbnail({ word = "Agents" }) {
     >
       {/* Layer 1, sky bg, always visible */}
       <img
-        src={SKY_SRC}
+        src={sky}
         alt=""
         aria-hidden="true"
         className="at-sky absolute inset-0"

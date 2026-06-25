@@ -47,9 +47,14 @@ const CARDS = [
     year: "2026",
     title: "Enterprise Dashboard",
     href: "/work/enterprise-dashboard",
-    img: "/images/dashboard-hero-ui.png",
-    imgFit: "contain",
-    placeholderBg: "#f6f6f6",
+    img: null,
+    // Mirror the case-study hero: tree/cloud background + "Dashboard"
+    // wordmark, the same composition as the ShopOS Agents card.
+    visual: "agents",
+    visualWord: "Dashboard",
+    visualSky: "/images/dashboard-hero-sky.png",
+    visualBg:
+      "linear-gradient(180deg, #18b6e6 0%, #57c7e0 32%, #8fd3b0 70%, #6cb86a 100%)",
     alt: "Enterprise Dashboard — folding the review tool into the product",
   },
   {
@@ -69,7 +74,7 @@ const CARDS = [
   },
 ];
 
-function FeedCardInner({ project, year, title, img, imgFit, alt, placeholderBg, visual, visualWord }) {
+function FeedCardInner({ project, year, title, img, imgFit, alt, placeholderBg, visual, visualWord, visualSky, visualBg }) {
   // `visual` lets a card swap the default placeholder/<img> for a
   // bespoke composition that mirrors its case-study hero. Falls
   // back to img → placeholderBg.
@@ -92,7 +97,7 @@ function FeedCardInner({ project, year, title, img, imgFit, alt, placeholderBg, 
         style={img || hasVisualComponent ? undefined : { background: placeholderBg }}
       >
         {visual === "agents" ? (
-          <AgentsThumbnail word={visualWord} />
+          <AgentsThumbnail word={visualWord} sky={visualSky} bg={visualBg} />
         ) : visual === "memory" ? (
           <MemoryThumbnail />
         ) : visual === "dreamcall" ? (
