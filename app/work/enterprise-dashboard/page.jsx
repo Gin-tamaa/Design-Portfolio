@@ -144,20 +144,21 @@ function Contrast({ leftLabel, left, rightLabel, right }) {
   );
 }
 
-// Problem card: dark feature card adapted from the reference (teal line
-// glyph -> bold white title -> muted description). Laid out as a horizontal
-// row at the use site. Hand-drawn SVG icons, same as Bracket; the teal
-// accent echoes the hero sky, and white/title-on-dark stays on the cs system.
+// Problem card: feature card adapted from the reference (teal line glyph ->
+// title -> description), on the white case-study theme — white bg, warm
+// #E5DDD0 hairline, ink title, secondary body — matching the Contrast cards.
+// Laid out as a horizontal row at the use site. Hand-drawn SVG icons, same as
+// Bracket; the teal accent echoes the hero sky.
 function ProblemCard({ icon, title, children }) {
   return (
-    <div className="rounded-2xl border border-white/[0.08] bg-[#0d0d0d] p-6 md:p-7">
-      <span aria-hidden="true" className="block text-[#34d399]">
+    <div className="rounded-2xl border border-[#E5DDD0] bg-white p-6 md:p-7">
+      <span aria-hidden="true" className="block text-[#0d9488]">
         {icon}
       </span>
-      <h3 className="mt-5 text-[18px] font-semibold leading-tight text-white md:text-[19px]">
+      <h3 className="mt-5 text-[16px] font-semibold leading-snug text-[#0a0a0a] md:text-[17px]">
         {title}
       </h3>
-      <p className="mt-2.5 text-[14px] leading-[1.6] text-white/55 md:text-[15px]">
+      <p className="mt-2 text-[14px] leading-[1.6] text-[#525252] md:text-[15px]">
         {children}
       </p>
     </div>
@@ -167,69 +168,68 @@ function ProblemCard({ icon, title, children }) {
 // The three line glyphs for the problem cards, drawn to match the reference's
 // thin emerald outline style.
 const ICON_COMPARE = (
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="5" width="7.5" height="14" rx="1.6" />
     <rect x="13.5" y="5" width="7.5" height="14" rx="1.6" />
   </svg>
 );
 const ICON_FEEDBACK = (
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="4" width="18" height="13" rx="3" />
     <path d="M8 17v3.5L13 17" />
   </svg>
 );
 const ICON_APPROVAL = (
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
     <rect x="3" y="3" width="18" height="18" rx="4.5" />
     <path d="M7.5 12.2l3 3 6-6.4" />
   </svg>
 );
 
-// Challenge card: a dark, centered "key tension" moment, adapted from the
-// reference treatment (warning glyph -> eyebrow -> large headline). Stays on
-// the existing system — Inter, the --cs-section scale, and the cs-on-dark
-// eyebrow color — so the only new ink is the amber caution accent on the
-// glyph. Pops against the white page exactly as the reference pops against
-// its own dark page.
+// Challenge card: a centered "key tension" moment, adapted from the reference
+// treatment (warning glyph -> eyebrow -> headline) onto the white case-study
+// theme — white bg, warm #E5DDD0 hairline, ink headline at the --cs-thesis
+// scale, the standard cs-eyebrow. The only new ink is the amber caution
+// accent on the glyph.
 function ChallengeCard({ label = "The challenge", children }) {
   return (
-    <div className="mt-12 overflow-hidden rounded-3xl border border-white/10 bg-[#0a0a0a] px-6 py-14 text-center md:px-10 md:py-16">
+    <div className="mt-12 overflow-hidden rounded-3xl border border-[#E5DDD0] bg-white px-6 py-12 text-center md:px-10 md:py-14">
       {/* amber warning glyph in a soft ring (hand-drawn, same as Bracket) */}
       <span
         aria-hidden="true"
-        className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-[#E0A82E]/40"
+        className="mx-auto flex h-11 w-11 items-center justify-center rounded-full border border-[#C0851A]/35"
         style={{
           background:
-            "radial-gradient(circle at 50% 45%, rgba(224,168,46,0.22), rgba(224,168,46,0.04) 70%)",
+            "radial-gradient(circle at 50% 45%, rgba(192,133,26,0.14), rgba(192,133,26,0.02) 70%)",
         }}
       >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
           <path
             d="M12 3.5 L21.5 20 L2.5 20 Z"
-            stroke="#E0A82E"
+            stroke="#C0851A"
             strokeWidth="1.5"
             strokeLinejoin="round"
           />
           <path
             d="M12 9.5 V14"
-            stroke="#E0A82E"
+            stroke="#C0851A"
             strokeWidth="1.5"
             strokeLinecap="round"
           />
-          <circle cx="12" cy="16.7" r="0.95" fill="#E0A82E" />
+          <circle cx="12" cy="16.7" r="0.95" fill="#C0851A" />
         </svg>
       </span>
 
-      <p className="cs-eyebrow cs-on-dark mt-6">{label}</p>
+      <p className="cs-eyebrow mt-5">{label}</p>
 
       <p
-        className="mx-auto mt-5 max-w-[640px] text-white"
+        className="mx-auto mt-4 max-w-[620px] text-[#0a0a0a]"
         style={{
           fontFamily: "'Inter', sans-serif",
           fontWeight: 500,
-          fontSize: "var(--cs-section)",
-          lineHeight: 1.3,
-          letterSpacing: "-0.015em",
+          fontSize: "var(--cs-thesis)",
+          lineHeight: 1.35,
+          letterSpacing: "-0.01em",
         }}
       >
         {children}
