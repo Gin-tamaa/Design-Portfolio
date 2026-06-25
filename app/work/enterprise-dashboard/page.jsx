@@ -79,28 +79,6 @@ function Pill({ href = "#", children, className = "", external = false }) {
   );
 }
 
-// Bracket primitive: 24x24 SVG drawing the bottom-left L shape; the
-// `pos` prop rotates it for the other three corners of the hero stage.
-function Bracket({ pos, className = "" }) {
-  const rot = { tl: 90, tr: 180, br: -90, bl: 0 }[pos] ?? 0;
-  return (
-    <span
-      aria-hidden="true"
-      className={`pointer-events-none absolute h-6 w-6 ${className}`}
-      style={{ transform: `rotate(${rot}deg)` }}
-    >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path
-          d="M0 0 L0 23 L24 23"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="square"
-        />
-      </svg>
-    </span>
-  );
-}
-
 function Bullet({ children }) {
   return (
     <li className="flex gap-4">
@@ -252,7 +230,6 @@ function FaintMeta({ children, className = "" }) {
 export default function EnterpriseDashboardPage() {
   const heroRef = useRef(null);
   const skyRef = useRef(null);
-  const bracketsRef = useRef(null);
   const wordmarkRef = useRef(null);
   const agentsRef = useRef(null);
 
@@ -286,9 +263,6 @@ export default function EnterpriseDashboardPage() {
 
         if (skyRef.current) {
           skyRef.current.style.transform = `translate3d(0, ${y * 0.35 * mult}px, 0)`;
-        }
-        if (bracketsRef.current) {
-          bracketsRef.current.style.transform = `translate3d(0, ${y * 0.5 * mult}px, 0)`;
         }
         if (wordmarkRef.current) {
           wordmarkRef.current.style.transform = `translate3d(-50%, ${y * 0.55 * mult}px, 0)`;
@@ -370,18 +344,6 @@ export default function EnterpriseDashboardPage() {
                 "linear-gradient(180deg, #2aa3a8 0%, #66bdc1 28%, #b8dbdc 60%, #ffffff 100%)",
             }}
           />
-        </div>
-
-        {/* Layer 2: brackets (parallax 0.50), 4 corners */}
-        <div
-          ref={bracketsRef}
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 text-white will-change-transform"
-        >
-          <Bracket pos="tl" className="top-[17.2%] left-[23.75%]" />
-          <Bracket pos="tr" className="top-[17.2%] right-[23.75%]" />
-          <Bracket pos="bl" className="top-[50.1%] left-[23.75%]" />
-          <Bracket pos="br" className="top-[50.1%] right-[23.75%]" />
         </div>
 
         {/* Layer 3: wordmark (parallax 0.55, fades) */}

@@ -47,13 +47,9 @@ const CARDS = [
     year: "2026",
     title: "Enterprise Dashboard",
     href: "/work/enterprise-dashboard",
-    img: null,
-    // PLACEHOLDER: reusing the Mission Control "eight heads" agents
-    // thumbnail, swap with Enterprise Dashboard exports later. Wordmark
-    // overridden to "Dashboard" so it doesn't read as the Agents case study.
-    visual: "agents",
-    visualWord: "Dashboard",
-    placeholderBg: "linear-gradient(to bottom, #000000, #2e2e2e)",
+    img: "/images/dashboard-hero-ui.png",
+    imgFit: "contain",
+    placeholderBg: "#f6f6f6",
     alt: "Enterprise Dashboard — folding the review tool into the product",
   },
   {
@@ -73,7 +69,7 @@ const CARDS = [
   },
 ];
 
-function FeedCardInner({ project, year, title, img, alt, placeholderBg, visual, visualWord }) {
+function FeedCardInner({ project, year, title, img, imgFit, alt, placeholderBg, visual, visualWord }) {
   // `visual` lets a card swap the default placeholder/<img> for a
   // bespoke composition that mirrors its case-study hero. Falls
   // back to img → placeholderBg.
@@ -102,7 +98,12 @@ function FeedCardInner({ project, year, title, img, alt, placeholderBg, visual, 
         ) : visual === "dreamcall" ? (
           <DreamCallThumbnail />
         ) : img ? (
-          <img src={img} alt={alt || title} draggable={false} />
+          <img
+            src={img}
+            alt={alt || title}
+            draggable={false}
+            style={imgFit ? { objectFit: imgFit } : undefined}
+          />
         ) : null}
       </div>
     </article>
