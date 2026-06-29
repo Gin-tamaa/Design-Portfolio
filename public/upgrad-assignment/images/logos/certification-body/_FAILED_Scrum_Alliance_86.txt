@@ -1,0 +1,3 @@
+Source: https://d2o2utebsixu4k.cloudfront.net/Scrum%20Alliance1-ce077ba9fca540ba98b1ec20bbbf7714.svg
+Alt: Scrum Alliance
+Error: Failed to fetch

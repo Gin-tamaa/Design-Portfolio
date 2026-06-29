@@ -1,0 +1,3 @@
+Source: https://d2o2utebsixu4k.cloudfront.net/Duke_University_logo%201-1608efb117e2466e8401ba4ed13c9a99.svg
+Alt: Duke
+Error: Failed to fetch

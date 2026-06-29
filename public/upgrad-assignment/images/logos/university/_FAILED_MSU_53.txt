@@ -1,0 +1,3 @@
+Source: https://d2o2utebsixu4k.cloudfront.net/Michigan-94f511e0a80f4aeebf2b2ac1a5cb7930.svg
+Alt: MSU
+Error: Failed to fetch

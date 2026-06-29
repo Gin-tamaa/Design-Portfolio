@@ -1,0 +1,3 @@
+Source: https://d2o2utebsixu4k.cloudfront.net/Liverpool%20John%20Moores%201-43fe7c4fe8ee4f11b40a48066fa24ffb.svg
+Alt: Liverpool John Moores University
+Error: Failed to fetch

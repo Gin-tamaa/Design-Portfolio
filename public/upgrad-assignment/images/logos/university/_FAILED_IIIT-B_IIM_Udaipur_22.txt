@@ -1,0 +1,3 @@
+Source: https://d2o2utebsixu4k.cloudfront.net/IIMUIIITBDualLogo-a584d4832cfe4bad8aadcc52d39db7bc.svg
+Alt: IIIT-B & IIM, Udaipur
+Error: Failed to fetch

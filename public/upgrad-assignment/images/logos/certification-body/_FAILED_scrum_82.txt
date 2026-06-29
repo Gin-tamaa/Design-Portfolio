@@ -1,0 +1,3 @@
+Source: https://d2o2utebsixu4k.cloudfront.net/Scrum_org10-47f6062fdaa743e88a916af630fe59b2.svg
+Alt: scrum
+Error: Failed to fetch

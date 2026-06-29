@@ -1,0 +1,3 @@
+Source: https://d2o2utebsixu4k.cloudfront.net/upgrad/new-home/svg/IITB.svg
+Alt: IIIT Bangalore
+Error: Failed to fetch
