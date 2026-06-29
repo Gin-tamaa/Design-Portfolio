@@ -1270,3 +1270,215 @@ body.brand-memory-hero.brand-memory-nav-solid header {
   background: #fff;
   border-color: #b8b2a5;
 }
+
+/* ===== Flow carousel: click micro-animation =====
+   Loops: zoom into a target button -> cursor clicks -> a flash and crossfade
+   swap to the next screen -> zoom back out. The target point (zoom origin +
+   cursor / ring target) is set per instance via --fa-x / --fa-y, defaulting
+   to the dashboard's "Create a Batch" card at 32% / 44%. */
+.flow-anim {
+  position: relative;
+}
+.flow-anim__zoom {
+  position: relative;
+  transform-origin: var(--fa-x, 32%) var(--fa-y, 44%);
+  animation: flowZoom 6s ease-in-out infinite;
+  will-change: transform;
+}
+.flow-anim__screen {
+  display: block;
+  width: 100%;
+}
+.flow-anim__screen--b {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: flowSwap 6s ease-in-out infinite;
+}
+.flow-anim__ring {
+  position: absolute;
+  left: var(--fa-x, 32%);
+  top: var(--fa-y, 44%);
+  width: 92px;
+  height: 92px;
+  margin: -46px 0 0 -46px;
+  border-radius: 9999px;
+  border: 2px solid rgba(10, 10, 10, 0.4);
+  opacity: 0;
+  transform: scale(0);
+  pointer-events: none;
+  animation: flowRing 6s ease-out infinite;
+}
+.flow-anim__flash {
+  position: absolute;
+  inset: 0;
+  background: #ffffff;
+  opacity: 0;
+  pointer-events: none;
+  animation: flowFlash 6s ease-in-out infinite;
+}
+.flow-anim__cursor {
+  position: absolute;
+  left: 80%;
+  top: 86%;
+  opacity: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+  animation: flowCursor 6s ease-in-out infinite;
+}
+@keyframes flowZoom {
+  0%, 12% { transform: scale(1); }
+  30%, 50% { transform: scale(1.32); }
+  68%, 100% { transform: scale(1); }
+}
+@keyframes flowCursor {
+  0% { left: 80%; top: 86%; opacity: 0; transform: scale(1); }
+  8% { opacity: 1; }
+  28% { left: var(--fa-x, 32%); top: var(--fa-y, 44%); transform: scale(1); }
+  34% { left: var(--fa-x, 32%); top: var(--fa-y, 44%); transform: scale(0.78); }
+  40% { left: var(--fa-x, 32%); top: var(--fa-y, 44%); transform: scale(1); }
+  58% { left: var(--fa-x, 32%); top: var(--fa-y, 44%); opacity: 1; }
+  70% { opacity: 0; }
+  100% { left: 80%; top: 86%; opacity: 0; transform: scale(1); }
+}
+@keyframes flowRing {
+  0%, 32% { transform: scale(0); opacity: 0; }
+  37% { opacity: 0.6; }
+  50% { transform: scale(1); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+@keyframes flowSwap {
+  0%, 44% { opacity: 0; }
+  53%, 78% { opacity: 1; }
+  90%, 100% { opacity: 0; }
+}
+@keyframes flowFlash {
+  0%, 46% { opacity: 0; }
+  51% { opacity: 0.42; }
+  58% { opacity: 0; }
+  100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow-anim__zoom,
+  .flow-anim__screen--b,
+  .flow-anim__ring,
+  .flow-anim__flash,
+  .flow-anim__cursor {
+    animation: none !important;
+  }
+  .flow-anim__screen--b,
+  .flow-anim__ring,
+  .flow-anim__flash,
+  .flow-anim__cursor {
+    display: none;
+  }
+}
+
+/* ===== Flow carousel: annotate animation (slide 03) — JS-driven =====
+   Stacked screens (dress -> empty popup -> posted) with a LIVE typed-text
+   overlay: the comment is typed character-by-character over the input with a
+   blinking caret, then the posted state crossfades in. All timing/opacities
+   are set imperatively from a rAF loop in the AnnotateScreen component. */
+.anno {
+  position: relative;
+}
+.anno__s1 {
+  display: block;
+  width: 100%;
+}
+.anno__layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+}
+/* the comment-input popup, recreated in DOM (matches the Container assets):
+   lavender pin badge, text field (placeholder -> typed), send button that
+   activates from grey to black once there is text. Sizes are in em and the
+   popup font-size is set proportional to the screenshot so it all scales. */
+.anno__popup {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  box-sizing: border-box;
+  padding: 0.3em 0.34em;
+  background: #ffffff;
+  border: 1px solid #ececec;
+  border-radius: 999px;
+  box-shadow: 0 8px 22px -10px rgba(0, 0, 0, 0.3);
+  font-family: "Inter", sans-serif;
+  opacity: 0;
+}
+.anno__badge {
+  flex: none;
+  width: 1.85em;
+  height: 1.85em;
+  border-radius: 999px;
+  background: #9b87f5;
+  color: #ffffff;
+  font-size: 0.8em;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.anno__field {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 0.95em;
+  letter-spacing: -0.01em;
+}
+.anno__txt {
+  color: #9ca3af;
+}
+.anno__caret {
+  margin-left: 0.5px;
+  color: #171717;
+  font-weight: 300;
+  opacity: 0;
+}
+.anno__send {
+  flex: none;
+  width: 1.95em;
+  height: 1.95em;
+  border-radius: 999px;
+  background: #e9e9ee;
+  color: #b6b6bf;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+.anno__send.is-active {
+  background: #0a0a0a;
+  color: #ffffff;
+}
+.anno__cur,
+.anno__rng {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+}
+.anno__cur {
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+}
+.anno__rng {
+  width: 80px;
+  height: 80px;
+  margin: -40px 0 0 -40px;
+  border-radius: 9999px;
+  border: 2px solid rgba(10, 10, 10, 0.4);
+  transform: scale(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .anno__layer,
+  .anno__type,
+  .anno__cur,
+  .anno__rng {
+    display: none;
+  }
+}
