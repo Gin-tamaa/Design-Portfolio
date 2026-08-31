@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 The portfolio site for Sumedh Kamble — product designer and design engineer on ShopOS. Next.js 14 (App Router), plain JavaScript `.jsx` (no TypeScript), Tailwind, framer-motion, GSAP. There is no test suite and no CMS: every page is hand-written JSX.
 
-Three case studies are fully built — ShopOS Agents, Brand Memory, Enterprise Dashboard — plus a homepage, a `/work` index, and `/about`. Each case study carries an AI chat where four personas answer questions about that project.
+Three case studies are fully built — ShopOS Agents, Brand Memory, Enterprise Dashboard — plus a homepage and `/about`. Each case study carries an AI chat where four personas answer questions about that project.
 
 ## Running locally
 
@@ -26,14 +26,13 @@ Environment variables (none are committed; `.env*.local` is gitignored):
 | Route | File | Notes |
 |---|---|---|
 | `/` | `app/page.jsx` | Intro overlay → fixed hero → `Carousel` feed |
-| `/work` | `app/work/page.jsx` | H1 + `CaseCards` — not linked from the nav |
 | `/work/shopos` | `app/work/shopos/page.jsx` | ~1,570 lines |
 | `/work/brand-memory` | `app/work/brand-memory/page.jsx` | ~910 lines |
 | `/work/enterprise-dashboard` | `app/work/enterprise-dashboard/page.jsx` | ~1,170 lines |
 | `/about` | `app/about/page.jsx` | Bio, work list, workflows media feed |
 | `/api/chat` | `app/api/chat/route.js` | Server-only OpenAI proxy |
 
-**Two separate project lists exist and have drifted apart.** `Carousel.jsx` (homepage) lists ShopOS, Brand Memory, Enterprise Dashboard, and DreamCall. `CaseCards.jsx` (`/work`) lists ShopOS, Brand Memory, and HEYY. Editing one does not update the other — change both, or consolidate them.
+`Carousel.jsx` on the homepage is the single work index — ShopOS, Brand Memory, Enterprise Dashboard, DreamCall. There is no `/work` route; a `/work` index page and its `CaseCards` component were removed as leftovers from an earlier iteration, and the case studies' "Back to Work" pills point at `/`.
 
 ## The case-study chat
 
@@ -78,8 +77,5 @@ The model is a single constant, `MODEL`, at the top of `app/api/chat/route.js`.
 
 ## Known gaps
 
-- `/work/shopos` renders an `<ImageSlot>` with no `src` in section 11, which displays a literal "IMAGE COMING" placeholder on the live site.
-- The ShopOS footer's "Next" link points to `/work` rather than `/work/brand-memory`; the "HEYY, Studio Reel" card on `/work` also points to `/work`.
-- All three case studies close with a link to `/about#contact`, but no `id="contact"` exists on the about page.
 - `RESUME_URL` is duplicated in `Nav.jsx` and `Footer.jsx`.
 - `content/bundle.js` is committed with CRLF line endings. Regenerating it on a LF checkout rewrites the whole file — check `git diff` is real content before committing it.

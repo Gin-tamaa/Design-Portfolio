@@ -1055,14 +1055,6 @@ body.brand-memory-hero.brand-memory-nav-solid header {
   .masonry-column:nth-child(2) { display: none; }
 }
 
-/* CaseCards: stack like a deck on mobile (matches md: breakpoint at 768px) */
-@media (max-width: 767px) {
-  .sticky-stack-item {
-    position: sticky;
-    top: 20px;
-    margin-bottom: 50px;
-  }
-}
 
 /* ===== Intro (typewriter + font-morph onboarding) ===== */
 .intro-overlay {

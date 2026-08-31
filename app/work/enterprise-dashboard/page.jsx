@@ -1130,7 +1130,7 @@ export default function EnterpriseDashboardPage() {
       <section className="border-t border-[#E5E5E5] py-24">
         <Container>
           <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
-            <Pill href="/work">
+            <Pill href="/">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path
                   d="M19 12H5M11 6l-6 6 6 6"
