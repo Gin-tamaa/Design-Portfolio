@@ -14,6 +14,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import CaseStudyChat from "./CaseStudyChat";
 import ChatBox from "./ChatBox";
+import ChatPet from "./ChatPet";
 
 // Matches the clip-path duration in globals.css (.csc-takeover)
 const WIPE_MS = 620;
@@ -119,11 +120,14 @@ export default function ChatLauncher({ project }) {
         aria-hidden={mounted || atFooter}
       >
         <div
-          className="mx-auto w-full max-w-[48rem]"
+          className="relative mx-auto w-full max-w-[48rem]"
           style={{
             pointerEvents: mounted || atFooter ? "none" : "auto",
           }}
         >
+          {/* Funny Side perched on the pill — autonomous walk/sit/idle,
+              click = wave, double-click = jump, 5 fast clicks = dizzy. */}
+          {!mounted ? <ChatPet /> : null}
           <ChatBox mode="display" onClick={openOverlay} />
 
           {/* Helper line — same 12px / #525252 as the takeover. mt-2 is
