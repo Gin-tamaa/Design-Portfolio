@@ -13,12 +13,6 @@ const cards = [
     href: "/work/brand-memory",
     img: "/images/card-project2.png",
   },
-  {
-    client: "Enterprise Dashboard",
-    tags: "Platform, Review Tooling",
-    href: "/work/enterprise-dashboard",
-    img: "/images/dashboard-full.png",
-  },
   // No destination yet — the reel has no case-study page and no external
   // URL, so this renders as a static tile rather than a link. Give it an
   // `href` and it becomes a card like the others.
