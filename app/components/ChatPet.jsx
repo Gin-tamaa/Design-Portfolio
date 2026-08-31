@@ -61,7 +61,7 @@ export default function ChatPet() {
     const flipEl = root.querySelector(".cp-flip");
 
     // ---- low-level sprite control -------------------------------------
-    let x = 0.78;              // fraction of pill width
+    let x = 0.3;               // fraction of pill width (right corner is VC's)
     let frameTimer = null, walkRaf = null, planTimer = null;
     let busy = false;          // an interaction owns the sprite
     let hovering = false;
@@ -139,7 +139,8 @@ export default function ChatPet() {
       if (!alive || busy || hovering) { schedule(800); return; }
       const roll = Math.random();
       if (roll < 0.5) {
-        walkTo(rand(0.08, 0.92), () => { play("idle"); schedule(rand(2500, 6000)); });
+        // Wander range caps at 0.72 — the right corner is Vibe Coder's.
+        walkTo(rand(0.08, 0.72), () => { play("idle"); schedule(rand(2500, 6000)); });
       } else if (roll < 0.7) {
         play("sitting");
         schedule(rand(4000, 9000));
@@ -230,7 +231,7 @@ export default function ChatPet() {
       style={{
         position: "absolute",
         bottom: "100%",
-        left: "78%",
+        left: "30%",
         marginBottom: -2,
         height: PET_H,
         transform: "translateX(-50%)",

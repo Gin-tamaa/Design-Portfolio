@@ -15,6 +15,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import CaseStudyChat from "./CaseStudyChat";
 import ChatBox from "./ChatBox";
 import ChatPet from "./ChatPet";
+import VibeCoderPet from "./VibeCoderPet";
 
 // Matches the clip-path duration in globals.css (.csc-takeover)
 const WIPE_MS = 620;
@@ -125,9 +126,11 @@ export default function ChatLauncher({ project }) {
             pointerEvents: mounted || atFooter ? "none" : "auto",
           }}
         >
-          {/* Funny Side perched on the pill — autonomous walk/sit/idle,
-              click = wave, double-click = jump, 5 fast clicks = dizzy. */}
+          {/* Funny Side wanders the left/middle of the pill; Vibe Coder is
+              parked coding at the right corner. Click/double-click/5-click
+              each for different reactions. */}
           {!mounted ? <ChatPet /> : null}
+          {!mounted ? <VibeCoderPet /> : null}
           <ChatBox mode="display" onClick={openOverlay} />
 
           {/* Helper line — same 12px / #525252 as the takeover. mt-2 is
