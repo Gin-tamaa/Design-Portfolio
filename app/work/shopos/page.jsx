@@ -97,6 +97,10 @@ function Pill({ href = "#", children, className = "", external = false }) {
 // muted "Image coming" empty state when no src is passed; the caption
 // renders BELOW the box in small muted body type. Accepts an optional
 // src so a real 2x export can be dropped in later without layout change.
+// Currently unrendered. Section 11 dropped its slot rather than ship the
+// "Image coming" empty state; restore it with a real `src` when the
+// shipped-surfaces composite exists. Without `src` it renders that
+// placeholder, so never mount it bare on a live page.
 function ImageSlot({
   caption,
   src,
@@ -1346,7 +1350,7 @@ export default function ShopOSCaseStudy() {
       </section>
 
       {/* ===== 11 · What shipped =========================================
-           Scaffolded: italic lead + 3-bullet stack + ImageSlot. */}
+           Scaffolded: italic lead + 3-bullet stack. */}
       <section className="reveal py-24 md:py-36">
         <Container>
           <ProseColumn>
@@ -1370,10 +1374,6 @@ export default function ShopOSCaseStudy() {
               </Bullet>
             </ul>
           </ProseColumn>
-
-          <div className="mt-16 md:mt-20">
-            <ImageSlot caption="Shipped surfaces: onboarding, agent setup, org view, agent panel, Cowork, Kanban, Mission Control." />
-          </div>
         </Container>
       </section>
 
@@ -1541,7 +1541,7 @@ export default function ShopOSCaseStudy() {
               Back to Work
             </Pill>
             <Link
-              href="/work"
+              href="/work/brand-memory"
               className="inline-flex items-center gap-4 text-[15px] font-medium text-[#525252] transition-colors hover:text-[#0a0a0a]"
             >
               <span className="text-[10px] uppercase tracking-[0.22em] text-[#525252]">

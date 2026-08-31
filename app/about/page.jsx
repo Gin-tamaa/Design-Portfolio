@@ -480,8 +480,16 @@ export default function AboutPage() {
       className="min-h-screen bg-white text-[#0a0a0a]"
       style={{ fontFamily: "Inter, sans-serif" }}
     >
-      {/* ===== ABOUT / WORK / LINKS ================================= */}
-      <section className="mx-auto w-full max-w-[1800px] px-5 pt-20 md:pt-28">
+      {/* ===== ABOUT / WORK / LINKS =================================
+           id="contact" is the target for the "Say hello" CTA that closes
+           every case study (/about#contact). It lands here because this
+           block holds the bio, the get-in-touch mailto, and the links. */}
+      <section
+        id="contact"
+        // scroll-mt-16 clears the fixed 64px nav so the anchor doesn't
+        // land underneath it.
+        className="scroll-mt-16 mx-auto w-full max-w-[1800px] px-5 pt-20 md:pt-28"
+      >
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-10">
           {/* ABOUT */}
           <div className="reveal md:col-span-6">
