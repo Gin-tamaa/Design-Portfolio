@@ -15,6 +15,7 @@ import Link from "next/link";
 import ChatBox, { ChevronDownIcon } from "./ChatBox";
 import ThinkingIndicator from "./ThinkingIndicator";
 import AgentAvatar from "./AgentAvatar";
+import LetsBegin from "./LetsBegin";
 
 // Two-state 8-bit avatar atlas (Figma 162:1223): every persona has a
 // `default` portrait and a `thinking` variant. Default is what shows in
@@ -87,21 +88,6 @@ function UsersIcon() {
       <circle cx="9" cy="7" r="4" />
       <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
       <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-    </svg>
-  );
-}
-function CopyIcon({ size = 14 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-    </svg>
-  );
-}
-function CheckIcon({ size = 14 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M20 6 9 17l-5-5" />
     </svg>
   );
 }
@@ -427,32 +413,30 @@ export default function CaseStudyChat({ project = "shopos", onClose }) {
           (`body.shopos-hero header button { color: #fff }`) don't paint
           the button white-on-white when the takeover is open. */}
       <div className="h-16">
-        <div className="mx-auto flex h-full max-w-[1400px] items-center justify-between px-6 md:px-10">
+        <div className="flex h-full items-center justify-between px-3">
+          {/* Back CTA: circled arrow + label, one clickable unit. The
+              group-hover inverts the circle; !text beats nav-inversion. */}
           <button
             type="button"
             onClick={onClose}
-            // Explicit !text-[#0a0a0a] beats the global nav-inversion
-            // selector specificity if the body class is still applied.
-            className="inline-flex items-center gap-2 !text-[#0a0a0a] text-[14px] tracking-[0.02em] transition-colors hover:!text-[#525252]"
-            style={{ fontFamily: "Inter, sans-serif", color: "#0a0a0a" }}
+            className="group flex items-center gap-3 !text-[#0a0a0a]"
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M19 12H5M11 6l-6 6 6 6"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            Back to Case Study
+            <span className="flex h-10 w-10 items-center justify-center rounded-full border border-[#E5E5E5] bg-white transition-colors group-hover:bg-[#0a0a0a] group-hover:text-white">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M19 12H5M11 6l-6 6 6 6"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+            <span className="text-[14px] tracking-[0.02em] transition-colors group-hover:text-[#525252]">
+              Back to Case Study
+            </span>
           </button>
-          <p
-            className="text-[14px] tracking-[0.02em] text-[#525252]"
-            style={{ fontFamily: "Inter, sans-serif", color: "#525252" }}
-          >
-            {asked}/{SESSION_CAP}
-          </p>
         </div>
       </div>
 
@@ -611,41 +595,15 @@ export default function CaseStudyChat({ project = "shopos", onClose }) {
 // gap-40 between them (outer container is items-center / justify-center
 // gap-40). Avatar order matches Figma. Labels use Inter Light 14/24.
 
-const EMPTY_AVATAR_ORDER = ["creative-head", "ai-tinkerer", "vibe-coder", "funny-side"];
-
+// 8-bit opening scene: LETS BEGIN letter blocks converge center-screen
+// (phase 2 adds the four characters pushing/joining them). The old avatar
+// circle row is retired; the personas introduce themselves via the routed
+// message chips instead.
 function EmptyState() {
   return (
-    <div className="flex flex-col items-center gap-10 text-center">
-      {/* Headline — Figma 102:1495: Inter Medium black, always single line.
-          Font scales 14→24px with viewport so the line never breaks. */}
-      <h2
-        className="font-medium leading-normal text-black whitespace-nowrap"
-        style={{
-          fontFamily: "Inter, sans-serif",
-          fontSize: "clamp(14px, 2vw, 24px)",
-        }}
-      >
-        My Agents are here to answer any of your questions. Just shoot em&rsquo;
-      </h2>
-
-      {/* Avatar row — Figma 102:1359: gap-40 between items, each item is
-          flex-col gap-16 (avatar 108px + label below). */}
-      <div className="flex flex-wrap items-start justify-center gap-x-10 gap-y-8">
-        {EMPTY_AVATAR_ORDER.map((id) => {
-          const p = PERSONAS[id];
-          return (
-            <div key={id} className="flex w-[108px] flex-col items-center gap-4">
-              <AgentAvatar persona={id} size={108} />
-              <p
-                className="text-[14px] leading-[24px] text-black"
-                style={{ fontFamily: "Inter, sans-serif", fontWeight: 300 }}
-              >
-                {p.short}
-              </p>
-            </div>
-          );
-        })}
-      </div>
+    <div className="flex flex-col items-center text-center">
+      {/* LetsBegin renders the whole scene INCLUDING the subline */}
+      <LetsBegin />
     </div>
   );
 }

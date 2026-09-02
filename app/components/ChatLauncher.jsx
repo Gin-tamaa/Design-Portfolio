@@ -166,10 +166,18 @@ export default function ChatLauncher({ project }) {
           role="dialog"
           aria-modal="true"
           aria-label="Chat with my team"
-          className={`csc-takeover fixed inset-0 z-[70] bg-white ${open ? "is-open" : ""}`}
+          className={`csc-takeover fixed inset-0 z-[70] ${open ? "is-open" : ""}`}
         >
-          <div className={`csc-content flex h-full flex-col ${open ? "is-visible" : ""}`}>
+          {/* Chat scenery: the ShopOS hero sky full-bleed behind a floating
+              white card, with cloud clusters popping from the bottom
+              corners after the wipe. */}
+          <div className="csc-scenery" aria-hidden="true" />
+          <div className={`csc-content csc-card flex flex-col ${open ? "is-visible" : ""}`}>
             <CaseStudyChat project={project} onClose={closeOverlay} />
+          </div>
+          <div className="csc-fg" aria-hidden="true">
+            <img src="/images/scenes/cloud-left.png" alt="" className="csc-cloud-l" draggable={false} />
+            <img src="/images/scenes/cloud-right.png" alt="" className="csc-cloud-r" draggable={false} />
           </div>
         </div>
       ) : null}

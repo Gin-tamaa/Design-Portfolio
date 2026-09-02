@@ -1474,3 +1474,79 @@ body.brand-memory-hero.brand-memory-nav-solid header {
     display: none;
   }
 }
+
+/* ===== Chat takeover scenery (Figma 1226-7330) ======================== */
+/* The ShopOS hero sky full-bleed behind a floating white card; cloud
+   clusters pop from the bottom corners after the wipe-in. The sky drifts
+   slowly; the cloud layer is pinned so the corners never gap. */
+
+.csc-scenery {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.csc-scenery::before {
+  content: "";
+  position: absolute;
+  inset: -4% -2.5%;
+  background: url("/images/shopos-hero-sky.png") center / cover no-repeat;
+  image-rendering: pixelated;
+  animation: csc-drift-a 52s ease-in-out infinite alternate;
+}
+
+.csc-card {
+  position: absolute;
+  inset: clamp(10px, 1.2vw, 18px);
+  background: #fff;
+  border-radius: clamp(12px, 1.3vw, 22px);
+  overflow: hidden;
+  z-index: 10;
+}
+
+
+.csc-fg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 30;
+  overflow: hidden;
+}
+.csc-cloud-l {
+  position: absolute;
+  left: -3vw;
+  bottom: -3.5vw;
+  width: clamp(135px, 14.25vw, 300px);
+  height: auto;
+  /* the pane wipes in first (620ms); clouds pop from the corners after */
+  opacity: 0;
+  transform-origin: bottom left;
+  animation: csc-cloud-pop 0.55s cubic-bezier(0.3, 1.35, 0.5, 1) both;
+  animation-delay: 0.74s;
+}
+.csc-cloud-r {
+  position: absolute;
+  right: -3vw;
+  bottom: -3.5vw;
+  width: clamp(220px, 24vw, 500px);
+  height: auto;
+  opacity: 0;
+  transform-origin: bottom right;
+  animation: csc-cloud-pop 0.55s cubic-bezier(0.3, 1.35, 0.5, 1) both;
+  animation-delay: 0.92s;
+}
+@keyframes csc-cloud-pop {
+  from { opacity: 0; transform: scale(0.55) translateY(14%); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes csc-drift-a { from { transform: translateX(-0.6%); } to { transform: translateX(0.6%); } }
+@keyframes csc-drift-b { from { transform: translateX(0.7%); } to { transform: translateX(-0.7%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .csc-scenery::before, .csc-fg { animation: none; }
+  .csc-cloud-l, .csc-cloud-r { animation: none; opacity: 1; }
+}
+
+
