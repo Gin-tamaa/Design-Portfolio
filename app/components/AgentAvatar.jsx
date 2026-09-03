@@ -1,26 +1,35 @@
 "use client";
 
-// Per-persona avatar: a colored CSS circle with the raw transparent pixel
-// portrait positioned on top using the EXACT Figma crop ratios from node
-// 162:1223 / 164:1245. Same numbers used everywhere — 18px inline cluster,
-// 20px chat header, 24px thinking row, 108px empty state — so framing is
-// identical across the site.
+// TWO avatar treatments, deliberately different:
+//
+//   AgentAvatar (default export) — the new head portraits from
+//     public/images/faces, no circle and no backdrop. Used on the message
+//     header, matching the chat empty state so the two read as one system.
+//
+//   CyclingAgentAvatar — the ORIGINAL circular pose avatars (colored disc +
+//     full-body crop, default↔thinking swap). The thinking cluster relies
+//     on those coloured discs overlapping with white rings to read as a
+//     crowd; flat cut-out heads lose that, so the loader keeps the old art.
 
 import { useEffect, useState } from "react";
 
-// Alignment approach (validated externally — see chat history):
-//   - object-fit: cover + object-position: top center → character anchored
-//     to the top of the circle so the head stays in frame.
-//   - transform: scale(1.8) translateY(12%) → zooms into the top-of-frame
-//     portion of the source PNG (which is shot full-body) so what's left
-//     visible is a torso-up crop, not legs.
-//   - Vibe Coder needs translateY(8%) — its source PNG has the character
-//     positioned LOWER in the frame, so the standard 12% over-shifts it
-//     down and clips the head. 8% lifts it back to match the others.
-// No per-persona width/height/top/left crops anywhere — those caused the
-// stretched + left-biased look this avatar atlas was originally built to
-// hide. Keep it simple: cover + top-center + scale + a single translateY.
+// The shared canvas has a little transparent margin around each head, so
+// the portrait is scaled slightly past its box to fill the avatar footprint
+// instead of floating small inside it. The `thinking` variant reuses the
+// same art — the ThinkingIndicator conveys activity through motion and copy.
 export const AGENT_AVATARS = {
+  "creative-head": { url: "/images/faces/creative-head.png" },
+  "ai-tinkerer":   { url: "/images/faces/ai-tinkerer.png" },
+  "vibe-coder":    { url: "/images/faces/vibe-coder.png" },
+  "funny-side":    { url: "/images/faces/funny-side.png" },
+};
+
+// portraits carry transparent padding — scale past the box so the head
+// actually fills the avatar's footprint
+const FILL_SCALE = 1.28;
+
+// Legacy circular avatars — kept for the thinking cluster only.
+const LEGACY_AVATARS = {
   "creative-head": {
     bg: "#8dbded",
     default: { url: "/images/agents-chat-raw/creative-head.png", translateY: "12%" },
@@ -42,23 +51,59 @@ export const AGENT_AVATARS = {
     thinking: { url: "/images/agents-chat-raw/funny-side-thinking.png", translateY: "12%" },
   },
 };
+const LEGACY_SCALE = 1.8;
 
-const AVATAR_SCALE = 1.8;
+// Legacy circle avatar: coloured disc, full-body pose zoomed to a torso-up
+// crop, optional white ring so overlapping avatars stay separable.
+function LegacyAvatar({ persona, state = "default", size = 24, ring = "none", className = "" }) {
+  const data = LEGACY_AVATARS[persona];
+  if (!data) {
+    return (
+      <span className={`block rounded-full bg-[#E5E5E5] ${className}`}
+        style={{ width: size, height: size }} aria-hidden="true" />
+    );
+  }
+  const pose = state === "thinking" && data.thinking ? data.thinking : data.default;
+  const ringStyle =
+    ring === "white" ? { outline: "1px solid #ffffff", outlineOffset: "-1px" } : null;
+  return (
+    <span
+      className={`relative inline-block overflow-hidden rounded-full ${className}`}
+      style={{ width: size, height: size, background: data.bg, ...ringStyle }}
+    >
+      <img
+        src={pose.url}
+        alt=""
+        aria-hidden="true"
+        draggable={false}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          objectPosition: "top center",
+          transform: `scale(${LEGACY_SCALE}) translateY(${pose.translateY})`,
+          transformOrigin: "top center",
+        }}
+      />
+    </span>
+  );
+}
 
-// Internal — render the persona portrait inside the circle. See the
-// "Alignment approach" comment on AGENT_AVATARS for the rationale; this
-// component is just the visual carrier of those rules.
-function Pose({ url, translateY }) {
+// Internal — the portrait inside the circle. Sits slightly proud of the
+// bottom edge so the head fills the circle rather than floating in it.
+function Pose({ url }) {
   const style = {
     position: "absolute",
-    top: 0,
-    left: 0,
+    inset: 0,
     width: "100%",
     height: "100%",
-    objectFit: "cover",
-    objectPosition: "top center",
-    transform: `scale(${AVATAR_SCALE}) translateY(${translateY})`,
-    transformOrigin: "top center",
+    objectFit: "contain",
+    objectPosition: "center",
+    transform: `scale(${FILL_SCALE})`,
+    imageRendering: "pixelated",
   };
   return <img src={url} alt="" aria-hidden="true" draggable={false} style={style} />;
 }
@@ -67,9 +112,8 @@ function Pose({ url, translateY }) {
 //   persona   kebab-case id (matches API)
 //   state     "default" | "thinking"
 //   size      px
-//   ring      "white" | none — adds a 1px white outline. Used by the
-//             Figma 164:1245 inline cluster so overlapping circles
-//             stay readable as separate avatars.
+//   ring      accepted but a no-op now that avatars have no disc to ring;
+//             kept so existing callers (the thinking cluster) still work.
 export default function AgentAvatar({
   persona,
   state = "default",
@@ -81,32 +125,25 @@ export default function AgentAvatar({
   if (!data) {
     return (
       <span
-        className={`block rounded-full bg-[#E5E5E5] ${className}`}
+        className={`block ${className}`}
         style={{ width: size, height: size }}
         aria-hidden="true"
       />
     );
   }
-  const pose = state === "thinking" && data.thinking ? data.thinking : data.default;
-  // White ring goes on the OUTSIDE via outline (overflow:hidden inside the
-  // circle would clip an inset shadow). Doesn't add to layout box size.
-  const ringStyle =
-    ring === "white"
-      ? { outline: "1px solid #ffffff", outlineOffset: "-1px" }
-      : null;
   return (
     <span
-      className={`relative inline-block overflow-hidden rounded-full ${className}`}
-      style={{ width: size, height: size, background: data.bg, ...ringStyle }}
+      className={`relative inline-block ${className}`}
+      style={{ width: size, height: size }}
     >
-      <Pose url={pose.url} translateY={pose.translateY} />
+      <Pose url={data.url} />
     </span>
   );
 }
 
-// Cycling avatar — swaps default ↔ thinking on a short loop so the agent
-// reads as alive while it's thinking. `offset` lets a row stagger so they
-// don't twitch in lockstep.
+// Cycling avatar — the thinking cluster's circular avatar, swapping
+// default ↔ thinking on a short loop so the agent reads as alive.
+// `offset` lets a row stagger so they don't twitch in lockstep.
 const FRAME_INTERVAL = 460;
 export function CyclingAgentAvatar({
   persona,
@@ -130,7 +167,7 @@ export function CyclingAgentAvatar({
     };
   }, [reducedMotion, offset]);
   return (
-    <AgentAvatar
+    <LegacyAvatar
       persona={persona}
       state={showThinking ? "thinking" : "default"}
       size={size}

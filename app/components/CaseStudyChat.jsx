@@ -16,6 +16,7 @@ import ChatBox, { ChevronDownIcon } from "./ChatBox";
 import ThinkingIndicator from "./ThinkingIndicator";
 import AgentAvatar from "./AgentAvatar";
 import LetsBegin from "./LetsBegin";
+import ThunderStrike from "./ThunderStrike";
 
 // Two-state 8-bit avatar atlas (Figma 162:1223): every persona has a
 // `default` portrait and a `thinking` variant. Default is what shows in
@@ -107,6 +108,69 @@ function CheckIcon({ size = 14 }) {
   );
 }
 
+// Domain glyphs shown after the agent's name instead of the word
+// ("design" / "build" / "agents" / "everything else"). 12x12 pixel grid,
+// currentColor so they inherit the meta line's grey.
+function DomainGlyph({ cells, title }) {
+  return (
+    <svg
+      width="13"
+      height="13"
+      viewBox="0 0 12 12"
+      shapeRendering="crispEdges"
+      role="img"
+      aria-label={title}
+    >
+      <title>{title}</title>
+      {cells.map(([x, y, w = 1, h = 1], i) => (
+        <rect key={i} x={x} y={y} width={w} height={h} fill="currentColor" />
+      ))}
+    </svg>
+  );
+}
+
+// design — a pencil on the diagonal
+const GLYPH_DESIGN = [
+  [8,1,3,1],[8,2,3,1],[7,3,3,1],[6,4,3,1],[5,5,3,1],[4,6,3,1],
+  [3,7,3,1],[2,8,3,1],[1,9,3,1],[1,10,2,1],[1,11,1,1],
+];
+// build — angle brackets
+const GLYPH_BUILD = [
+  [3,3,1,1],[2,4,1,1],[1,5,1,2],[2,7,1,1],[3,8,1,1],
+  [8,3,1,1],[9,4,1,1],[10,5,1,2],[9,7,1,1],[8,8,1,1],
+  [6,2,1,2],[5,4,1,3],[5,7,1,3],
+];
+// agents — a little robot head
+const GLYPH_AGENTS = [
+  [5,0,2,1],[6,1,1,1],
+  [2,2,8,1],[1,3,1,6],[10,3,1,6],[2,9,8,1],
+  [3,4,2,2],[7,4,2,2],
+  [4,7,4,1],
+];
+// everything else (Funny Side) — a laughing face: round outline, two
+// squeezed-shut caret eyes, wide open grin
+const GLYPH_LAUGH = [
+  // outline
+  [4,0,4,1],
+  [2,1,2,1],[8,1,2,1],
+  [1,2,1,1],[10,2,1,1],
+  [0,3,1,5],[11,3,1,5],
+  [1,8,1,1],[10,8,1,1],
+  [2,9,2,1],[8,9,2,1],
+  [4,10,4,1],
+  // eyes, squeezed shut from laughing
+  [3,4,1,1],[2,5,1,1],[4,5,1,1],
+  [8,4,1,1],[7,5,1,1],[9,5,1,1],
+  // open grin
+  [3,7,6,1],[4,8,4,1],[5,9,2,1],
+];
+
+const DOMAIN_GLYPHS = {
+  design: GLYPH_DESIGN,
+  build: GLYPH_BUILD,
+  agents: GLYPH_AGENTS,
+};
+
 const SUGGESTED_PROMPTS = [
   { text: "Summarise for me", Icon: SparklesIcon },
   { text: "What are the pain points", Icon: TargetIcon },
@@ -121,6 +185,25 @@ const STREAM_CHARS_PER_TICK = 3;
 // the answer arrives faster, we hold the reveal until this floor passes,
 // so the team-assemble → handoff → persona beat is never skipped.
 const MIN_THINKING = 1200;
+
+// Local-only stub so the thinking → strike → agent beat can be exercised
+// without an API key. Enable with NEXT_PUBLIC_DUMMY_CHAT=1 (dev), or by
+// setting window.__dummyChat = true in the console. Never on in prod
+// unless the env var is deliberately set.
+const DUMMY_CHAT = process.env.NEXT_PUBLIC_DUMMY_CHAT === "1";
+const DUMMY_REPLIES = [
+  { persona: "creative-head", domain: "design", answer: "I kept the bracketed org view because comprehension jumped, even though the metaphor isn't my favourite. I'd redesign how it's drawn, not what it conveys." },
+  { persona: "vibe-coder", domain: "build", answer: "Each agent is one configurable template; eight instances differ only by data. Every empty, loading, error and success state is built." },
+  { persona: "ai-tinkerer", domain: "agents", answer: "soul.md isn't a system prompt buried in settings — it's a persona file the owner can read and rewrite. Editable personality is the trust unlock." },
+  { persona: "funny-side", domain: "everything else", answer: "That's not in the brief. Happy to talk about the multi-agent part though." },
+];
+let dummyTurn = 0;
+function dummyFetch() {
+  const reply = DUMMY_REPLIES[dummyTurn++ % DUMMY_REPLIES.length];
+  return new Promise((res) =>
+    setTimeout(() => res({ ok: true, status: 200, json: async () => reply }), 700)
+  );
+}
 
 /* ---- Avatar (image with initial-circle fallback) ------------------------- */
 
@@ -181,6 +264,8 @@ export default function CaseStudyChat({ project = "shopos", onClose }) {
   // true, flips false when the user manually scrolls up, flips back to true
   // when they scroll near the bottom OR send a new message.
   const [followBottom, setFollowBottom] = useState(true);
+  // id of the assistant message currently playing its arrival strike
+  const [strikeId, setStrikeId] = useState(null);
 
   const scrollRef = useRef(null);
   const streamCancelRef = useRef(null);
@@ -304,6 +389,7 @@ export default function CaseStudyChat({ project = "shopos", onClose }) {
         ...m,
         { id, role: "assistant", persona, domain, text: "", full: fullText },
       ]);
+      setStrikeId(id);
       setPending(false);
       setAsked((n) => n + 1);
       startStream(id, fullText);
@@ -312,12 +398,18 @@ export default function CaseStudyChat({ project = "shopos", onClose }) {
     const controller = new AbortController();
     abortRef.current = controller;
 
-    fetch("/api/chat", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ project, message: trimmed }),
-      signal: controller.signal,
-    })
+    const useDummy =
+      DUMMY_CHAT ||
+      (typeof window !== "undefined" && window.__dummyChat === true);
+
+    (useDummy
+      ? dummyFetch()
+      : fetch("/api/chat", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ project, message: trimmed }),
+          signal: controller.signal,
+        }))
       .then(async (res) => {
         if (res.status === 429) {
           const d = await res.json().catch(() => ({}));
@@ -475,6 +567,8 @@ export default function CaseStudyChat({ project = "shopos", onClose }) {
                   streamingId={streaming ? messages[messages.length - 1]?.id : null}
                   tightWithPrev={tightWithPrev}
                   isFirst={idx === 0}
+                  striking={strikeId === msg.id}
+                  onStrikeDone={() => setStrikeId((cur) => (cur === msg.id ? null : cur))}
                 />
               );
             })}
@@ -628,7 +722,7 @@ function EmptyState() {
 // (mt-1), 0 for the first message. System messages get the same spacing as
 // a turn break since they interrupt the flow.
 
-function Message({ msg, streamingId, tightWithPrev, isFirst }) {
+function Message({ msg, streamingId, tightWithPrev, isFirst, striking, onStrikeDone }) {
   const spacing = isFirst ? "" : tightWithPrev ? "mt-1" : "mt-8";
 
   if (msg.role === "system") {
@@ -655,10 +749,10 @@ function Message({ msg, streamingId, tightWithPrev, isFirst }) {
 
   // Assistant — left, transparent, full width, with a subtle persona meta
   // line and a hover-revealed action bar (Copy) below the bubble.
-  return <AssistantMessage msg={msg} spacing={spacing} streamingId={streamingId} />;
+  return <AssistantMessage msg={msg} spacing={spacing} streamingId={streamingId} striking={striking} onStrikeDone={onStrikeDone} />;
 }
 
-function AssistantMessage({ msg, spacing, streamingId }) {
+function AssistantMessage({ msg, spacing, streamingId, striking, onStrikeDone }) {
   const p = PERSONAS[msg.persona] || PERSONAS["creative-head"];
   const isStreaming = msg.id === streamingId;
   const [copied, setCopied] = useState(false);
@@ -673,13 +767,29 @@ function AssistantMessage({ msg, spacing, streamingId }) {
 
   return (
     <div className={`${spacing} group flex flex-col items-start`}>
-      <div className="csc-chip-in mb-2 flex items-center gap-2">
+      <div className="csc-chip-in relative mb-2 flex items-center gap-2">
+        {striking ? <ThunderStrike onDone={onStrikeDone} /> : null}
+        {/* the agent arrives in the bolt's wake */}
+        <span
+          className="flex items-center gap-2"
+          style={{
+            opacity: striking ? 0 : 1,
+            transform: striking ? "translateX(-4px)" : "none",
+            transition: "opacity 220ms ease-out, transform 220ms ease-out",
+          }}
+        >
         <AgentAvatar persona={msg.persona || "creative-head"} size={20} />
         <span
-          className="text-[14px] leading-[20px] text-[#525252]"
+          className="flex items-center gap-1.5 text-[14px] leading-[20px] text-[#525252]"
           style={{ fontFamily: "Inter, sans-serif" }}
         >
-          {p.short} · {msg.domain}
+          {p.short}
+          <span aria-hidden="true">·</span>
+          <DomainGlyph
+            cells={DOMAIN_GLYPHS[msg.domain] || GLYPH_LAUGH}
+            title={msg.domain}
+          />
+        </span>
         </span>
       </div>
       <div

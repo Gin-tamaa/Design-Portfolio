@@ -24,7 +24,7 @@
 // static phase.
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import AgentAvatar, { CyclingAgentAvatar } from "./AgentAvatar";
+import { CyclingAgentAvatar } from "./AgentAvatar";
 import { ShiningText } from "./ShiningText";
 
 /* ============================================================================
