@@ -171,10 +171,19 @@ export async function POST(request) {
     );
   }
 
-  // Per-IP rate limit
+  // Per-IP rate limit. Fails OPEN: if Upstash is unreachable (archived DB,
+  // rotated token, quota hit) the call throws, and an uncaught throw here
+  // takes the whole chat down with an empty 500. Log it and serve anyway.
   if (ratelimit) {
     const ip = getIp(request);
-    const { success, reset } = await ratelimit.limit(`ip:${ip}`);
+    let limit = { success: true, reset: 0 };
+    try {
+      limit = await ratelimit.limit(`ip:${ip}`);
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error("[api/chat] rate limiter error, failing open:", err?.message || err);
+    }
+    const { success, reset } = limit;
     if (!success) {
       const retryAfter = Math.max(1, Math.ceil((reset - Date.now()) / 1000));
       return Response.json(
